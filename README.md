@@ -1,4 +1,3 @@
-# Blk 127A Jalan Rajah #08-162 — home planner (local copy)
 
 Runs entirely on your laptop. No account or internet needed, except for the
 optional "Ask Claude" feature and the web fonts (it falls back to system fonts offline).
