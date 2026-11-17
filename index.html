@@ -1,81 +1,1504 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2775.2">
-  <style type="text/css">
-    body {background-color: #131311}
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.5px 'Hiragino Sans'; color: #9a9387; -webkit-text-stroke: #9a9387}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 14.0px 'Hiragino Sans'; color: #e7e1d5; -webkit-text-stroke: #e7e1d5}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 14.0px 'Hiragino Sans'; color: #1a1a18; -webkit-text-stroke: #1a1a18; background-color: #e7e1d5}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Hiragino Sans'; color: #e7e1d5; -webkit-text-stroke: #e7e1d5; background-color: #23221f}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Hiragino Sans'; color: #e7e1d5; -webkit-text-stroke: #e7e1d5; min-height: 21.0px}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.5px 'Hiragino Sans'; color: #e7e1d5; -webkit-text-stroke: #e7e1d5; background-color: #1a1a18; background-color: rgba(26, 26, 24, 0.92)}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.5px 'Hiragino Sans'; color: #1a1a18; -webkit-text-stroke: #1a1a18; background-color: #e7e1d5}
-    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.5px 'Hiragino Sans'; color: #e7e1d5; -webkit-text-stroke: #e7e1d5; background-color: #1a1a18; background-color: rgba(26, 26, 24, 0.92); min-height: 19.0px}
-    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: center; font: 14.0px 'Hiragino Sans'; color: #9a9387; -webkit-text-stroke: #9a9387}
-    p.p11 {margin: 0.0px 0.0px 10.0px 0.0px; font: 12.5px 'Hiragino Sans'; color: #9a9387; -webkit-text-stroke: #9a9387}
-    p.p12 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px 'Hiragino Sans'; color: #e7e1d5; -webkit-text-stroke: #e7e1d5}
-    p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Hiragino Sans'; color: #1a1a18; -webkit-text-stroke: #1a1a18; background-color: #e7e1d5}
-    p.p15 {margin: 0.0px 0.0px 0.0px 0.0px; font: 14.0px Times; color: #e7e1d5; -webkit-text-stroke: #e7e1d5; background-color: #23221f}
-    span.s1 {font-kerning: none; background-color: #1a1a18}
-    span.s2 {font-kerning: none}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Planner — Blk 127A Jalan Rajah #08-162</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:wght@500;700&display=swap');
+
+:root {
+  --bg: #faf5ef;
+  --panel: #fff9f3;
+  --panel-shadow: rgba(180,140,120,0.12);
+  --accent: #e8a0b4;
+  --accent-dark: #c97a93;
+  --accent-light: #f5d0dc;
+  --text: #4a3728;
+  --text-light: #8a7568;
+  --card-bg: #fff;
+  --card-hover: #fff5f8;
+  --border: #f0e0d6;
+  --success: #7ec8a0;
+  --warning: #f0c060;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ─── Top bar ─── */
+#topbar {
+  position: fixed; top:0; left:0; right:0;
+  height: 56px;
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+  display: flex; align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 12px rgba(200,100,130,0.15);
+}
+#topbar h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(150,60,80,0.2);
+  flex: 1;
+}
+#topbar .view-btn {
+  background: rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,255,255,0.5);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.2s;
+}
+#topbar .view-btn:hover, #topbar .view-btn.active {
+  background: rgba(255,255,255,0.6);
+  color: #8b3a5a;
+}
+
+/* ─── Side panel ─── */
+#sidepanel {
+  position: fixed; top: 56px; right: 0;
+  width: 320px;
+  height: calc(100vh - 56px);
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+  z-index: 900;
+  box-shadow: -4px 0 20px var(--panel-shadow);
+  transition: transform 0.3s ease;
+}
+#sidepanel.collapsed { transform: translateX(320px); }
+
+#sidepanel::-webkit-scrollbar { width: 6px; }
+#sidepanel::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 3px; }
+
+.panel-section {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.panel-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-weight: 700;
+  color: var(--accent-dark);
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.panel-section h2 .emoji { font-size: 18px; }
+
+/* ─── Category tabs ─── */
+.cat-tabs {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-bottom: 12px;
+}
+.cat-tab {
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 12px; font-weight: 600;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-light);
+}
+.cat-tab:hover { border-color: var(--accent); color: var(--accent-dark); }
+.cat-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ─── Item cards ─── */
+.item-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.item-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: grab;
+  transition: all 0.2s;
+  user-select: none;
+}
+.item-card:hover {
+  border-color: var(--accent);
+  background: var(--card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(200,100,130,0.12);
+}
+.item-card:active { cursor: grabbing; transform: scale(0.96); }
+.item-card .icon { font-size: 28px; margin-bottom: 4px; display: block; }
+.item-card .name { font-size: 11px; font-weight: 600; color: var(--text); line-height: 1.3; }
+.item-card .price { font-size: 10px; color: var(--text-light); margin-top: 2px; }
+
+/* ─── Color swatches ─── */
+.swatch-row {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-top: 8px;
+}
+.swatch {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+.swatch:hover { transform: scale(1.2); }
+.swatch.active { border-color: var(--accent-dark); box-shadow: 0 0 0 3px var(--accent-light); }
+
+/* ─── Canvas ─── */
+#canvas-wrap {
+  position: fixed;
+  top: 56px; left: 0;
+  right: 320px;
+  bottom: 0;
+  background: linear-gradient(180deg, #f5ebe3 0%, #ede2d8 100%);
+}
+#canvas-wrap.full { right: 0; }
+canvas { display: block; width: 100%; height: 100%; }
+
+/* ─── Controls overlay ─── */
+#controls-hint {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(calc(-50% - 160px));
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 10px 20px;
+  display: flex; gap: 16px; align-items: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  font-size: 12px;
+  color: var(--text-light);
+  z-index: 800;
+}
+#controls-hint kbd {
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* ─── Toast ─── */
+#toast {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-size: 13px; font-weight: 600;
+  color: var(--accent-dark);
+  box-shadow: 0 4px 20px rgba(200,100,130,0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 2000;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ─── Selected item toolbar ─── */
+#selected-toolbar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(calc(-50% - 160px));
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 8px 12px;
+  display: none; gap: 8px; align-items: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  z-index: 850;
+}
+#selected-toolbar.visible { display: flex; }
+#selected-toolbar button {
+  padding: 6px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.2s;
+}
+#selected-toolbar button:hover {
+  background: var(--accent-light);
+  border-color: var(--accent);
+}
+#selected-toolbar .delete-btn:hover {
+  background: #fdd; border-color: #e88; color: #c44;
+}
+
+/* ─── Toggle panel button ─── */
+#toggle-panel {
+  position: fixed;
+  top: 64px; right: 324px;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 950;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(200,100,130,0.2);
+  transition: all 0.3s;
+}
+#toggle-panel.shifted { right: 4px; }
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  #sidepanel { width: 280px; }
+  #canvas-wrap { right: 0; }
+  #controls-hint { transform: translateX(-50%); }
+}
+</style>
 </head>
 <body>
-<p class="p1"><span class="s1">Home planner for the 4‑room flat. Sizes in centimetres.</span></p>
-<p class="p2"><span class="s1">Walk</span></p>
-<p class="p3"><span class="s2">Orbit</span></p>
-<p class="p2"><span class="s1">Plan</span></p>
-<p class="p4"><span class="s2">Panel</span></p>
-<p class="p5"><span class="s2"></span><br></p>
-<p class="p6"><span class="s2">Measure</span></p>
-<p class="p6"><span class="s2">Wi‑Fi map</span></p>
-<p class="p6"><span class="s2">Bagua</span></p>
-<p class="p6"><span class="s2">Show services</span></p>
-<p class="p6"><span class="s2">Ask Claude</span></p>
-<p class="p6"><span class="s2">Decorate</span></p>
-<p class="p7"><span class="s2">Labels on</span></p>
-<p class="p8"><span class="s2"></span><br></p>
-<p class="p2"><span class="s1">Items</span></p>
-<p class="p9"><span class="s1">Services</span></p>
-<p class="p9"><span class="s1">Light &amp; sound</span></p>
-<p class="p9"><span class="s1">Feng shui</span></p>
-<p class="p9"><span class="s1">You &amp; site</span></p>
-<h2 style="margin: 0.0px 0.0px 6.0px 0.0px; font: 17.0px Georgia; color: #e7e1d5; -webkit-text-stroke: #e7e1d5"><span class="s1"><b>Ask for a change</b><b></b></span></h2>
-<p class="p11"><span class="s1">Describe what you want, such as a walk‑in wardrobe or a vanity corner. Claude rearranges the flat, and you can undo it.</span></p>
-<p class="p12"><span class="s1">Your request</span></p>
-<p class="p13"><span class="s2">Make the change</span></p>
-<p class="p5"><span class="s2"></span><br></p>
-<h3 style="margin: 0.0px 0.0px 6.0px 0.0px; font: 13.5px 'Hiragino Sans'; color: #e7e1d5; -webkit-text-stroke: #e7e1d5"><span class="s1"><b>Or use a ready‑made layout</b><b></b></span></h3>
-<p class="p11"><span class="s1">Works without Claude. Pick a room, then a layout; you can undo it the same way.</span></p>
-<p class="p15"><span class="s2">Bedroom 3Bedroom 2Master bedroom</span></p>
-<p class="p4"><span class="s2">Walk‑in wardrobe</span></p>
-<p class="p4"><span class="s2">Vanity space</span></p>
-<h2 style="margin: 0.0px 0.0px 6.0px 0.0px; font: 17.0px Georgia; color: #e7e1d5; -webkit-text-stroke: #e7e1d5"><span class="s1"><b>Doors</b><b></b></span></h2>
-<p class="p11"><span class="s1">Open, close or change how each door moves. In Walk mode, click a door or press F (or the Door button) to open the one in front of you.</span></p>
-<p class="p5"><span class="s2"></span><br></p>
-<p class="p4"><span class="s2">Open all</span></p>
-<p class="p4"><span class="s2">Close all</span></p>
-<h2 style="margin: 0.0px 0.0px 6.0px 0.0px; font: 17.0px Georgia; color: #e7e1d5; -webkit-text-stroke: #e7e1d5"><span class="s1"><b>Add to the flat</b><b></b></span></h2>
-<p class="p11"><span class="s1">Pieces drop at the centre of your view. Drag to move; wall items slide along the nearest wall. Q and E rotate, Delete removes.</span></p>
-<p class="p5"><span class="s2"></span><br></p>
-<h2 style="margin: 0.0px 0.0px 6.0px 0.0px; font: 17.0px Georgia; color: #e7e1d5; -webkit-text-stroke: #e7e1d5"><span class="s1"><b>Your uploads</b><b></b></span></h2>
-<p class="p11"><span class="s1">Photos become wall art, a printed block, a rug or a cut‑out. 3D models must be .glb. Photos are stored with this page; models and audio stay in this browser.</span></p>
-<p class="p13"><span class="s2">Upload photo or model</span></p>
-<h2 style="margin: 0.0px 0.0px 6.0px 0.0px; font: 17.0px Georgia; color: #e7e1d5; -webkit-text-stroke: #e7e1d5"><span class="s1"><b>Interior palette</b><b></b></span></h2>
-<p class="p3"><span class="s2">Warm minimal</span></p>
-<p class="p2"><span class="s1">Japandi</span></p>
-<p class="p2"><span class="s1">Brutalist</span></p>
-<p class="p2"><span class="s1">Minimal</span></p>
-<h2 style="margin: 0.0px 0.0px 6.0px 0.0px; font: 17.0px Georgia; color: #e7e1d5; -webkit-text-stroke: #e7e1d5"><span class="s1"><b>Layout</b><b></b></span></h2>
-<p class="p11"><span class="s1">Changes save automatically in this browser on this laptop. Use Download layout to back up or move a layout.</span></p>
-<p class="p4"><span class="s2">Download layout</span></p>
-<p class="p4"><span class="s2">Open layout file</span></p>
-<p class="p4"><span class="s2">Download schedule (CSV)</span></p>
-<p class="p4"><span class="s2">Reset to suggested</span></p>
+
+<!-- Top bar -->
+<div id="topbar">
+  <h1>🏠 Home Planner — Blk 127A #08-162</h1>
+  <button class="view-btn active" onclick="setView('iso')" id="btn-iso">Isometric</button>
+  <button class="view-btn" onclick="setView('top')" id="btn-top">Floor Plan</button>
+  <button class="view-btn" onclick="setView('walk')" id="btn-walk">Walk</button>
+  <button class="view-btn" onclick="togglePanel()">☰ Items</button>
+</div>
+
+<!-- Canvas -->
+<div id="canvas-wrap">
+  <canvas id="c"></canvas>
+</div>
+
+<!-- Toggle panel -->
+<button id="toggle-panel" onclick="togglePanel()">›</button>
+
+<!-- Side panel -->
+<div id="sidepanel">
+
+  <!-- Category tabs -->
+  <div class="panel-section">
+    <h2><span class="emoji">🪑</span> Furniture & Decor</h2>
+    <div class="cat-tabs" id="cat-tabs"></div>
+    <div class="item-grid" id="item-grid"></div>
+  </div>
+
+  <!-- Wall color -->
+  <div class="panel-section">
+    <h2><span class="emoji">🎨</span> Wall Colour</h2>
+    <div class="swatch-row" id="wall-swatches"></div>
+  </div>
+
+  <!-- Floor style -->
+  <div class="panel-section">
+    <h2><span class="emoji">🪵</span> Floor Style</h2>
+    <div class="swatch-row" id="floor-swatches"></div>
+  </div>
+
+  <!-- Palette presets -->
+  <div class="panel-section">
+    <h2><span class="emoji">✨</span> Style Presets</h2>
+    <div class="cat-tabs" id="preset-tabs"></div>
+  </div>
+
+  <!-- Layout -->
+  <div class="panel-section">
+    <h2><span class="emoji">💾</span> Layout</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;">
+      <button class="cat-tab" onclick="saveLayout()">Save</button>
+      <button class="cat-tab" onclick="loadLayout()">Load</button>
+      <button class="cat-tab" onclick="downloadLayout()">Download</button>
+      <button class="cat-tab" onclick="uploadLayout()">Open file</button>
+      <button class="cat-tab" onclick="resetLayout()">Reset</button>
+    </div>
+    <input type="file" id="upload-input" accept=".json" style="display:none">
+  </div>
+
+  <!-- Controls reference -->
+  <div class="panel-section" style="border-bottom:none;">
+    <h2><span class="emoji">🎮</span> Controls</h2>
+    <div style="font-size:12px;color:var(--text-light);line-height:1.8;">
+      <b>Click</b> item in panel → place it<br>
+      <b>Click</b> placed item → select it<br>
+      <b>Drag</b> selected → move it<br>
+      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 6px;border-radius:4px;font-size:11px;">Q</kbd> /
+      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 6px;border-radius:4px;font-size:11px;">E</kbd> Rotate<br>
+      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 6px;border-radius:4px;font-size:11px;">Del</kbd> Remove<br>
+      <b>Scroll</b> → zoom &nbsp; <b>Right-drag</b> → pan
+    </div>
+  </div>
+</div>
+
+<!-- Controls hint -->
+<div id="controls-hint">
+  <span><kbd>Click</kbd> item to place</span>
+  <span><kbd>Q</kbd><kbd>E</kbd> rotate</span>
+  <span><kbd>Del</kbd> delete</span>
+  <span><kbd>Scroll</kbd> zoom</span>
+</div>
+
+<!-- Selected item toolbar -->
+<div id="selected-toolbar">
+  <button onclick="rotateSelected(-1)">↺ Rotate</button>
+  <button onclick="rotateSelected(1)">↻ Rotate</button>
+  <button onclick="duplicateSelected()">⎘ Copy</button>
+  <button class="delete-btn" onclick="deleteSelected()">✕ Delete</button>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<script src="vendor/three.min.js"></script>
+<script>
+// ─── Catalog ───
+const CATALOG = {
+  "🛋️ Living": [
+    { id:"sofa", name:"L-Sofa", icon:"🛋️", w:220, d:90, h:80, color:0x8b4060, price:"" },
+    { id:"sofa2", name:"2-Seater Sofa", icon:"🛋️", w:160, d:80, h:75, color:0x9b5070, price:"" },
+    { id:"armchair", name:"Armchair", icon:"💺", w:80, d:80, h:85, color:0x8b4060, price:"" },
+    { id:"coffeetable", name:"Coffee Table", icon:"☕", w:120, d:60, h:42, color:0xc8a882, price:"" },
+    { id:"tvunit", name:"TV Console", icon:"📺", w:180, d:45, h:55, color:0xd4b896, price:"" },
+    { id:"bookshelf", name:"Bookshelf", icon:"📚", w:90, d:35, h:200, color:0xc8a882, price:"" },
+    { id:"rug", name:"Area Rug", icon:"🟫", w:200, d:150, h:2, color:0xc07060, price:"" },
+    { id:"pooltable", name:"Pool Table Dining", icon:"🎱", w:240, d:130, h:80, color:0x2a5a3a, price:"High-end" },
+  ],
+  "🍳 Kitchen": [
+    { id:"counter", name:"Kitchen Counter", icon:"🍳", w:240, d:65, h:90, color:0xf0e6d8, price:"" },
+    { id:"island", name:"Kitchen Island", icon:"🏝️", w:150, d:80, h:90, color:0xe8dcd0, price:"" },
+    { id:"fridge", name:"Fridge", icon:"🧊", w:70, d:70, h:180, color:0xe0e0e0, price:"" },
+    { id:"dineset", name:"Dining Set", icon:"🍽️", w:140, d:80, h:75, color:0xc8a882, price:"" },
+    { id:"barcart", name:"Bar Cart", icon:"🍷", w:70, d:40, h:85, color:0xd4a860, price:"" },
+    { id:"winecooler", name:"Wine Cooler", icon:"🍾", w:60, d:60, h:85, color:0x444444, price:"" },
+  ],
+  "🛏️ Bedroom": [
+    { id:"queenbed", name:"Queen Bed", icon:"🛏️", w:160, d:200, h:50, color:0xf0d0d8, price:"" },
+    { id:"kingbed", name:"King Bed", icon:"🛏️", w:190, d:210, h:50, color:0xe0c0c8, price:"" },
+    { id:"nightstand", name:"Nightstand", icon:"🪔", w:45, d:40, h:55, color:0xc8a882, price:"" },
+    { id:"dresser", name:"Dresser", icon:"🪞", w:120, d:50, h:80, color:0xd4b896, price:"" },
+    { id:"wardrobe", name:"Wardrobe", icon:"👗", w:180, d:60, h:220, color:0xe8dcd0, price:"" },
+    { id:"vanity", name:"Vanity Table", icon:"💄", w:100, d:50, h:75, color:0xf8e8f0, price:"" },
+  ],
+  "🚿 Bath": [
+    { id:"shower", name:"Shower Encl.", icon:"🚿", w:90, d:90, h:200, color:0xc8e0e8, price:"" },
+    { id:"bathtub", name:"Bathtub", icon:"🛁", w:170, d:75, h:60, color:0xf8f8f8, price:"" },
+    { id:"toilet", name:"Toilet", icon:"🚽", w:40, d:65, h:75, color:0xf8f8f8, price:"" },
+    { id:"basin", name:"Basin", icon:"🪥", w:60, d:45, h:85, color:0xf0f0f0, price:"" },
+  ],
+  "🪞 Smart Home": [
+    { id:"smartmirror", name:"Lululemon Mirror", icon:"🪞", w:56, d:8, h:132, color:0x222222, price:"Smart fitness" },
+    { id:"vestaboard", name:"Vestaboard", icon:"📋", w:90, d:6, h:50, color:0x1a1a1a, price:"Smart display" },
+    { id:"smartspeaker", name:"Smart Speaker", icon:"🔊", w:20, d:20, h:30, color:0x303030, price:"Voice control" },
+    { id:"robotvac", name:"Robot Vacuum", icon:"🤖", w:35, d:35, h:10, color:0xe0e0e0, price:"" },
+    { id:"airpurifier", name:"Air Purifier", icon:"💨", w:30, d:30, h:60, color:0xf0f0f0, price:"" },
+    { id:"smartlight", name:"Smart Light Strip", icon:"💡", w:200, d:4, h:4, color:0xffaacc, price:"RGB" },
+    { id:"projector", name:"Projector", icon:"🎬", w:30, d:25, h:12, color:0x333333, price:"4K" },
+    { id:"smartblind", name:"Smart Blinds", icon:"🪟", w:120, d:6, h:150, color:0xf0e8d8, price:"Auto" },
+  ],
+  "🌸 Flowers & Plants": [
+    { id:"vase_rose", name:"Rose Bouquet", icon:"🌹", w:25, d:25, h:40, color:0xe84070, price:"" },
+    { id:"vase_peony", name:"Peony Vase", icon:"🌸", w:30, d:30, h:45, color:0xf8a0c0, price:"" },
+    { id:"vase_mixed", name:"Mixed Bouquet", icon:"💐", w:30, d:30, h:50, color:0xf0b870, price:"" },
+    { id:"orchid", name:"Orchid Pot", icon:"🪻", w:20, d:20, h:55, color:0xd070d0, price:"" },
+    { id:"succulent", name:"Succulent Set", icon:"🪴", w:25, d:25, h:15, color:0x60a060, price:"" },
+    { id:"monstera", name:"Monstera", icon:"🌿", w:50, d:50, h:120, color:0x3a8a3a, price:"" },
+    { id:"fiddle", name:"Fiddle Leaf Fig", icon:"🌳", w:45, d:45, h:150, color:0x4a9a4a, price:"" },
+    { id:"driedflower", name:"Dried Flowers", icon:"🥀", w:20, d:20, h:45, color:0xc8a080, price:"" },
+    { id:"lavender", name:"Lavender Pot", icon:"💜", w:22, d:22, h:35, color:0x9a70c0, price:"" },
+    { id:"hanging", name:"Hanging Planter", icon:"🌱", w:25, d:25, h:60, color:0x5a9a5a, price:"" },
+  ],
+  "🖼️ Wall Art": [
+    { id:"abstract", name:"Abstract Art", icon:"🖼️", w:80, d:4, h:60, color:0xf06080, price:"" },
+    { id:"landscape", name:"Landscape", icon:"🏞️", w:100, d:4, h:60, color:0x80b0d0, price:"" },
+    { id:"photo_frame", name:"Photo Frame", icon:"📸", w:30, d:4, h:40, color:0xd4b896, price:"" },
+    { id:"wall_clock", name:"Wall Clock", icon:"🕐", w:30, d:5, h:30, color:0xd4a860, price:"" },
+    { id:"neon_sign", name:"Neon Sign", icon:"✨", w:60, d:4, h:30, color:0xff70a0, price:"Custom" },
+    { id:"wallmirror", name:"Round Mirror", icon:"🔮", w:60, d:4, h:60, color:0xc8d8e0, price:"" },
+  ],
+  "🪑 Accent": [
+    { id:"ottoman", name:"Ottoman", icon:"🟤", w:60, d:60, h:40, color:0xc8a080, price:"" },
+    { id:"floorlamp", name:"Floor Lamp", icon:"🪔", w:30, d:30, h:160, color:0xd4a860, price:"" },
+    { id:"tablelamp", name:"Table Lamp", icon:"💡", w:25, d:25, h:45, color:0xf0d8c0, price:"" },
+    { id:"candle_set", name:"Candle Set", icon:"🕯️", w:20, d:20, h:20, color:0xf8e8d0, price:"" },
+    { id:"throwpillow", name:"Throw Pillows", icon:"🟣", w:45, d:45, h:15, color:0xe0a0c0, price:"" },
+    { id:"sidetable", name:"Side Table", icon:"🔘", w:45, d:45, h:55, color:0xd4b896, price:"" },
+    { id:"piano", name:"Grand Piano", icon:"🎹", w:150, d:155, h:100, color:0x1a1a1a, price:"" },
+    { id:"sculpture", name:"Sculpture", icon:"🗿", w:20, d:20, h:40, color:0xf0e0d0, price:"Ceramic" },
+  ],
+};
+
+// ─── Wall & floor palettes ───
+const WALL_COLORS = [
+  { name:"Blush Pink", hex:"#f5c6d0" },
+  { name:"Rose", hex:"#e8a0b4" },
+  { name:"Cream", hex:"#f5ead6" },
+  { name:"Warm White", hex:"#f8f4ee" },
+  { name:"Sage", hex:"#c8d8c0" },
+  { name:"Lavender", hex:"#d8c8e0" },
+  { name:"Sky", hex:"#c0d8e8" },
+  { name:"Terracotta", hex:"#d4a080" },
+  { name:"Grey", hex:"#d8d4d0" },
+  { name:"Charcoal", hex:"#5a5650" },
+];
+
+const FLOOR_COLORS = [
+  { name:"Light Oak", hex:"#e0c8a0" },
+  { name:"Honey", hex:"#d4aa70" },
+  { name:"Walnut", hex:"#9a7050" },
+  { name:"White Wash", hex:"#ece4d8" },
+  { name:"Herringbone", hex:"#c8a878" },
+  { name:"Grey Stone", hex:"#b8b0a8" },
+  { name:"Marble", hex:"#e8e4e0" },
+  { name:"Concrete", hex:"#c0bab4" },
+];
+
+const PRESETS = [
+  { name:"Warm Minimal", wall:"#f8f4ee", floor:"#e0c8a0" },
+  { name:"Japandi", wall:"#f5ead6", floor:"#c8a878" },
+  { name:"Pink Dream", wall:"#f5c6d0", floor:"#ece4d8" },
+  { name:"Sage & Stone", wall:"#c8d8c0", floor:"#b8b0a8" },
+  { name:"Moody", wall:"#5a5650", floor:"#9a7050" },
+  { name:"Lavender Haze", wall:"#d8c8e0", floor:"#e8e4e0" },
+];
+
+// ─── Three.js setup ───
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xf5ebe3);
+scene.fog = new THREE.Fog(0xf5ebe3, 2000, 4000);
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true });
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+// Camera
+const frustum = 600;
+let aspect = 1;
+const camera = new THREE.OrthographicCamera(-frustum*aspect, frustum*aspect, frustum, -frustum, -2000, 4000);
+camera.position.set(800, 800, 800);
+camera.lookAt(0, 0, 0);
+
+// Lights
+const ambient = new THREE.AmbientLight(0xffeedd, 0.6);
+scene.add(ambient);
+const dirLight = new THREE.DirectionalLight(0xfff5ee, 0.8);
+dirLight.position.set(500, 1000, 500);
+dirLight.castShadow = true;
+dirLight.shadow.mapSize.set(2048, 2048);
+dirLight.shadow.camera.left = -800;
+dirLight.shadow.camera.right = 800;
+dirLight.shadow.camera.top = 800;
+dirLight.shadow.camera.bottom = -800;
+scene.add(dirLight);
+const fillLight = new THREE.DirectionalLight(0xeeddff, 0.3);
+fillLight.position.set(-400, 600, -300);
+scene.add(fillLight);
+
+// ─── Room geometry ───
+// HDB 4-room approximate layout in cm (origin at floor centre)
+const ROOM_W = 900;  // total width
+const ROOM_D = 700;  // total depth
+const WALL_H = 270;
+const WALL_T = 12;
+
+let wallColor = new THREE.Color(0xf5c6d0);
+let floorColor = new THREE.Color(0xe0c8a0);
+const wallMat = new THREE.MeshLambertMaterial({ color: wallColor });
+const wallInnerMat = new THREE.MeshLambertMaterial({ color: 0xf8e8ec });
+const floorMat = new THREE.MeshLambertMaterial({ color: floorColor });
+
+const roomGroup = new THREE.Group();
+scene.add(roomGroup);
+
+function buildRoom() {
+  while(roomGroup.children.length) roomGroup.remove(roomGroup.children[0]);
+
+  wallMat.color.copy(wallColor);
+  const lighterWall = wallColor.clone();
+  lighterWall.lerp(new THREE.Color(0xffffff), 0.15);
+  wallInnerMat.color.copy(lighterWall);
+  floorMat.color.copy(floorColor);
+
+  // Floor
+  const floor = new THREE.Mesh(
+    new THREE.BoxGeometry(ROOM_W, 4, ROOM_D),
+    floorMat
+  );
+  floor.position.y = -2;
+  floor.receiveShadow = true;
+  roomGroup.add(floor);
+
+  // Floor pattern (subtle lines)
+  const lineGeo = new THREE.BufferGeometry();
+  const pts = [];
+  for(let x = -ROOM_W/2; x <= ROOM_W/2; x += 30) {
+    pts.push(x, 1, -ROOM_D/2, x, 1, ROOM_D/2);
+  }
+  lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+  const lineMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.04 });
+  roomGroup.add(new THREE.LineSegments(lineGeo, lineMat));
+
+  // Walls — back and left (isometric visible), partial right and front
+  const walls = [
+    // Back wall (full)
+    { w: ROOM_W, h: WALL_H, d: WALL_T, x: 0, y: WALL_H/2, z: -ROOM_D/2, outer: true },
+    // Left wall (full)
+    { w: WALL_T, h: WALL_H, d: ROOM_D, x: -ROOM_W/2, y: WALL_H/2, z: 0, outer: true },
+    // Right wall (partial — shorter for cutaway)
+    { w: WALL_T, h: WALL_H * 0.4, d: ROOM_D, x: ROOM_W/2, y: WALL_H*0.2, z: 0, outer: false },
+    // Front wall (partial)
+    { w: ROOM_W, h: WALL_H * 0.4, d: WALL_T, x: 0, y: WALL_H*0.2, z: ROOM_D/2, outer: false },
+  ];
+
+  walls.forEach(w => {
+    const geo = new THREE.BoxGeometry(w.w, w.h, w.d);
+    const materials = [
+      w.outer ? wallMat : wallInnerMat,
+      w.outer ? wallMat : wallInnerMat,
+      wallInnerMat,
+      wallInnerMat,
+      w.outer ? wallMat : wallInnerMat,
+      w.outer ? wallMat : wallInnerMat,
+    ];
+    const mesh = new THREE.Mesh(geo, materials);
+    mesh.position.set(w.x, w.y, w.z);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    roomGroup.add(mesh);
+  });
+
+  // Interior partition walls for rooms
+  const partitions = [
+    // Bedroom partition (horizontal)
+    { w: 350, d: WALL_T, x: -ROOM_W/2+175, z: -80, h: WALL_H },
+    // Bathroom partition
+    { w: WALL_T, d: 180, x: -ROOM_W/2+350, z: -ROOM_D/2+90, h: WALL_H },
+  ];
+  partitions.forEach(p => {
+    const geo = new THREE.BoxGeometry(p.w, p.h, p.d);
+    const mesh = new THREE.Mesh(geo, wallInnerMat);
+    mesh.position.set(p.x, p.h/2, p.z);
+    mesh.castShadow = true;
+    roomGroup.add(mesh);
+  });
+
+  // Windows (cutouts represented as light blue planes)
+  const windowPositions = [
+    { x: -200, y: 150, z: -ROOM_D/2+1, rY: 0, w: 120, h: 100 },
+    { x: 200, y: 150, z: -ROOM_D/2+1, rY: 0, w: 120, h: 100 },
+    { x: -ROOM_W/2+1, y: 150, z: -150, rY: Math.PI/2, w: 100, h: 100 },
+  ];
+  const windowMat = new THREE.MeshBasicMaterial({ color: 0xd8f0ff, transparent: true, opacity: 0.5 });
+  const frameMat = new THREE.MeshLambertMaterial({ color: 0xf0f0f0 });
+  windowPositions.forEach(wp => {
+    // Glass
+    const glass = new THREE.Mesh(new THREE.PlaneGeometry(wp.w, wp.h), windowMat);
+    glass.position.set(wp.x, wp.y, wp.z);
+    glass.rotation.y = wp.rY;
+    roomGroup.add(glass);
+    // Frame
+    const frameT = 4;
+    const frames = [
+      { w: wp.w+8, h: frameT, x:0, y: wp.h/2 },
+      { w: wp.w+8, h: frameT, x:0, y: -wp.h/2 },
+      { w: frameT, h: wp.h, x: -wp.w/2, y: 0 },
+      { w: frameT, h: wp.h, x: wp.w/2, y: 0 },
+    ];
+    frames.forEach(f => {
+      const fm = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 6), frameMat);
+      fm.position.set(wp.x + (wp.rY ? 0 : f.x), wp.y + f.y, wp.z + (wp.rY ? f.x : 0));
+      fm.rotation.y = wp.rY;
+      roomGroup.add(fm);
+    });
+  });
+
+  // Ground plane outside
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(4000, 4000),
+    new THREE.MeshLambertMaterial({ color: 0xede2d8 })
+  );
+  ground.rotation.x = -Math.PI/2;
+  ground.position.y = -3;
+  ground.receiveShadow = true;
+  roomGroup.add(ground);
+}
+
+buildRoom();
+
+// ─── Furniture system ───
+const placedItems = [];
+let selectedItem = null;
+let hoverItem = null;
+let placingTemplate = null;
+
+function createFurnitureMesh(item) {
+  const group = new THREE.Group();
+  group.userData = { ...item, placed: true };
+
+  const mainColor = new THREE.Color(item.color);
+  const mat = new THREE.MeshLambertMaterial({ color: mainColor });
+  const matDark = new THREE.MeshLambertMaterial({ color: mainColor.clone().multiplyScalar(0.8) });
+  const matLight = new THREE.MeshLambertMaterial({ color: mainColor.clone().lerp(new THREE.Color(0xffffff), 0.3) });
+
+  const w = item.w, d = item.d, h = item.h;
+
+  if(item.id === 'sofa' || item.id === 'sofa2') {
+    // Seat
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.4, d), mat);
+    seat.position.y = h*0.2;
+    seat.castShadow = true;
+    group.add(seat);
+    // Back
+    const back = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.5, 12), matDark);
+    back.position.set(0, h*0.55, -d/2+6);
+    back.castShadow = true;
+    group.add(back);
+    // Armrests
+    [-1,1].forEach(s => {
+      const arm = new THREE.Mesh(new THREE.BoxGeometry(12, h*0.35, d*0.8), matDark);
+      arm.position.set(s*(w/2-6), h*0.38, -d*0.05);
+      arm.castShadow = true;
+      group.add(arm);
+    });
+    // Cushions
+    for(let i=0; i<Math.floor(w/80); i++) {
+      const cx = -w/2 + 55 + i*80;
+      const cushion = new THREE.Mesh(
+        new THREE.BoxGeometry(65, 8, d*0.6),
+        matLight
+      );
+      cushion.position.set(cx, h*0.44, 5);
+      cushion.castShadow = true;
+      group.add(cushion);
+    }
+  }
+  else if(item.id.includes('bed')) {
+    // Frame
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.4, d), matDark);
+    frame.position.y = h*0.2;
+    frame.castShadow = true;
+    group.add(frame);
+    // Mattress
+    const mattress = new THREE.Mesh(new THREE.BoxGeometry(w-8, h*0.3, d-8), matLight);
+    mattress.position.y = h*0.55;
+    mattress.castShadow = true;
+    group.add(mattress);
+    // Headboard
+    const headboard = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.7, 8), mat);
+    headboard.position.set(0, h*0.55, -d/2+4);
+    headboard.castShadow = true;
+    group.add(headboard);
+    // Pillows
+    [-1,1].forEach(s => {
+      const pillow = new THREE.Mesh(
+        new THREE.BoxGeometry(50, 12, 35),
+        new THREE.MeshLambertMaterial({ color: 0xffffff })
+      );
+      pillow.position.set(s*40, h*0.75, -d/2+35);
+      pillow.castShadow = true;
+      group.add(pillow);
+    });
+  }
+  else if(item.id === 'pooltable') {
+    // Legs
+    [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz]) => {
+      const leg = new THREE.Mesh(new THREE.BoxGeometry(12, h*0.75, 12), matDark);
+      leg.position.set(sx*(w/2-20), h*0.375, sz*(d/2-20));
+      leg.castShadow = true;
+      group.add(leg);
+    });
+    // Table surface
+    const top = new THREE.Mesh(new THREE.BoxGeometry(w, 8, d), mat);
+    top.position.y = h*0.78;
+    top.castShadow = true;
+    group.add(top);
+    // Felt
+    const felt = new THREE.Mesh(
+      new THREE.BoxGeometry(w-20, 2, d-20),
+      new THREE.MeshLambertMaterial({ color: 0x1a6a2a })
+    );
+    felt.position.y = h*0.82;
+    group.add(felt);
+    // Bumpers
+    const bumperMat = new THREE.MeshLambertMaterial({ color: 0x4a2a1a });
+    const bumpers = [
+      { w: w-20, d: 10, x: 0, z: -d/2+15 },
+      { w: w-20, d: 10, x: 0, z: d/2-15 },
+      { w: 10, d: d-20, x: -w/2+15, z: 0 },
+      { w: 10, d: d-20, x: w/2-15, z: 0 },
+    ];
+    bumpers.forEach(b => {
+      const bm = new THREE.Mesh(new THREE.BoxGeometry(b.w, 12, b.d), bumperMat);
+      bm.position.set(b.x, h*0.85, b.z);
+      bm.castShadow = true;
+      group.add(bm);
+    });
+  }
+  else if(item.id === 'smartmirror') {
+    // Frame
+    const frame = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color: 0x222222 }));
+    frame.position.y = h/2 + 20;
+    frame.castShadow = true;
+    group.add(frame);
+    // Screen
+    const screen = new THREE.Mesh(
+      new THREE.PlaneGeometry(w-8, h-8),
+      new THREE.MeshBasicMaterial({ color: 0x88bbdd, transparent: true, opacity: 0.5 })
+    );
+    screen.position.set(0, h/2+20, d/2+0.5);
+    group.add(screen);
+    // Glow edge
+    const glow = new THREE.Mesh(
+      new THREE.PlaneGeometry(w+4, h+4),
+      new THREE.MeshBasicMaterial({ color: 0x66aacc, transparent: true, opacity: 0.15 })
+    );
+    glow.position.set(0, h/2+20, d/2+1);
+    group.add(glow);
+  }
+  else if(item.id === 'vestaboard') {
+    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color: 0x1a1a1a }));
+    body.position.y = h/2 + 120;
+    body.castShadow = true;
+    group.add(body);
+    // Letters
+    const letterColors = [0xf0c040, 0xf06040, 0x40a0f0, 0xf0f0f0, 0x40c080];
+    for(let r=0; r<3; r++) {
+      for(let c=0; c<6; c++) {
+        const tile = new THREE.Mesh(
+          new THREE.BoxGeometry(10, 10, 1),
+          new THREE.MeshBasicMaterial({ color: letterColors[(r*6+c) % letterColors.length] })
+        );
+        tile.position.set(-35 + c*14, 130 + 18 - r*14, d/2+0.5);
+        group.add(tile);
+      }
+    }
+  }
+  else if(item.id === 'piano') {
+    // Body
+    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.4, d), mat);
+    body.position.y = h*0.5;
+    body.castShadow = true;
+    group.add(body);
+    // Lid
+    const lid = new THREE.Mesh(new THREE.BoxGeometry(w, 4, d), matDark);
+    lid.position.y = h*0.72;
+    lid.castShadow = true;
+    group.add(lid);
+    // Legs
+    [[-1,-1],[-1,1],[1,1]].forEach(([sx,sz]) => {
+      const leg = new THREE.Mesh(new THREE.BoxGeometry(8, h*0.3, 8), mat);
+      leg.position.set(sx*(w/2-15), h*0.15, sz*(d/2-15));
+      leg.castShadow = true;
+      group.add(leg);
+    });
+    // Keys area
+    const keys = new THREE.Mesh(
+      new THREE.BoxGeometry(w*0.8, 3, 15),
+      new THREE.MeshLambertMaterial({ color: 0xf8f4f0 })
+    );
+    keys.position.set(0, h*0.72, d/2-10);
+    group.add(keys);
+  }
+  else if(item.id.includes('vase') || item.id === 'orchid' || item.id === 'driedflower' || item.id === 'lavender') {
+    // Vase body
+    const vaseH = h * 0.45;
+    const vaseR = Math.min(w, d) * 0.35;
+    const vaseGeo = new THREE.CylinderGeometry(vaseR*0.7, vaseR, vaseH, 12);
+    const vaseMat = new THREE.MeshLambertMaterial({ color: item.id === 'vase_mixed' ? 0xc07050 : 0xe8c0a8 });
+    const vase = new THREE.Mesh(vaseGeo, vaseMat);
+    vase.position.y = vaseH/2;
+    vase.castShadow = true;
+    group.add(vase);
+    // Flowers (clusters of spheres)
+    const flowerColors = {
+      'vase_rose': [0xe84070, 0xd03060, 0xf06080],
+      'vase_peony': [0xf8a0c0, 0xf080a0, 0xf8c0d8],
+      'vase_mixed': [0xf8a0c0, 0x80b0f0, 0xf0b870, 0xe060a0, 0xa0d0a0],
+      'orchid': [0xd070d0, 0xe090e0, 0xc050c0],
+      'driedflower': [0xc8a080, 0xb89070, 0xd8b090],
+      'lavender': [0x9a70c0, 0x8a60b0, 0xaa80d0],
+    };
+    const colors = flowerColors[item.id] || [0xf080a0];
+    for(let i = 0; i < 7; i++) {
+      const angle = (i / 7) * Math.PI * 2 + Math.random() * 0.5;
+      const r = 3 + Math.random() * 8;
+      const fh = vaseH + 5 + Math.random() * (h - vaseH - 8);
+      // Stem
+      const stemGeo = new THREE.CylinderGeometry(0.8, 0.8, fh - vaseH*0.5, 4);
+      const stemMat = new THREE.MeshLambertMaterial({ color: 0x4a8a4a });
+      const stem = new THREE.Mesh(stemGeo, stemMat);
+      stem.position.set(Math.cos(angle)*r, vaseH*0.7 + (fh-vaseH*0.5)/2, Math.sin(angle)*r);
+      group.add(stem);
+      // Bloom
+      const bloomR = 4 + Math.random() * 4;
+      const bloom = new THREE.Mesh(
+        new THREE.SphereGeometry(bloomR, 8, 6),
+        new THREE.MeshLambertMaterial({ color: colors[i % colors.length] })
+      );
+      bloom.position.set(Math.cos(angle)*r, fh, Math.sin(angle)*r);
+      bloom.castShadow = true;
+      group.add(bloom);
+    }
+    // Leaves
+    for(let i = 0; i < 4; i++) {
+      const angle = (i / 4) * Math.PI * 2;
+      const leaf = new THREE.Mesh(
+        new THREE.SphereGeometry(5, 6, 4),
+        new THREE.MeshLambertMaterial({ color: 0x5a9a5a })
+      );
+      leaf.scale.set(1.5, 0.4, 1);
+      leaf.position.set(Math.cos(angle)*8, vaseH*0.8, Math.sin(angle)*8);
+      group.add(leaf);
+    }
+  }
+  else if(item.id === 'monstera' || item.id === 'fiddle' || item.id === 'succulent') {
+    // Pot
+    const potH = Math.min(h * 0.2, 25);
+    const potR = Math.min(w, d) * 0.35;
+    const pot = new THREE.Mesh(
+      new THREE.CylinderGeometry(potR, potR*0.8, potH, 8),
+      new THREE.MeshLambertMaterial({ color: 0x9a7060 })
+    );
+    pot.position.y = potH/2;
+    pot.castShadow = true;
+    group.add(pot);
+    // Foliage
+    const foliageCount = item.id === 'succulent' ? 5 : 12;
+    for(let i = 0; i < foliageCount; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const r = Math.random() * w * 0.3;
+      const y = potH + Math.random() * (h - potH);
+      const leafSize = item.id === 'succulent' ? 6 : 10 + Math.random() * 8;
+      const leaf = new THREE.Mesh(
+        new THREE.SphereGeometry(leafSize, 6, 5),
+        new THREE.MeshLambertMaterial({ color: new THREE.Color(item.color).clone().offsetHSL(0, Math.random()*0.1-0.05, Math.random()*0.1-0.05) })
+      );
+      leaf.scale.set(1.2, 0.5, 1);
+      leaf.position.set(Math.cos(angle)*r, y, Math.sin(angle)*r);
+      leaf.rotation.set(Math.random()*0.5, angle, Math.random()*0.3);
+      leaf.castShadow = true;
+      group.add(leaf);
+    }
+  }
+  else if(item.id === 'hanging') {
+    // Hanger
+    const wire = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.5, 0.5, h*0.4, 4),
+      new THREE.MeshLambertMaterial({ color: 0x888888 })
+    );
+    wire.position.y = h*0.8;
+    group.add(wire);
+    // Pot
+    const pot = new THREE.Mesh(
+      new THREE.CylinderGeometry(w*0.35, w*0.3, 18, 8),
+      new THREE.MeshLambertMaterial({ color: 0xc09070 })
+    );
+    pot.position.y = h*0.58;
+    pot.castShadow = true;
+    group.add(pot);
+    // Trailing foliage
+    for(let i=0; i<10; i++) {
+      const angle = Math.random()*Math.PI*2;
+      const leaf = new THREE.Mesh(
+        new THREE.SphereGeometry(5, 5, 4),
+        new THREE.MeshLambertMaterial({ color: 0x5a9a5a })
+      );
+      leaf.scale.set(1.2, 0.5, 1);
+      leaf.position.set(Math.cos(angle)*(8+Math.random()*6), h*0.5 - Math.random()*20, Math.sin(angle)*(8+Math.random()*6));
+      leaf.castShadow = true;
+      group.add(leaf);
+    }
+  }
+  else if(item.id === 'rug') {
+    const rug = new THREE.Mesh(
+      new THREE.BoxGeometry(w, h, d),
+      mat
+    );
+    rug.position.y = h/2;
+    rug.receiveShadow = true;
+    group.add(rug);
+    // Pattern border
+    const border = new THREE.Mesh(
+      new THREE.BoxGeometry(w-20, h+0.5, d-20),
+      matDark
+    );
+    border.position.y = h/2;
+    group.add(border);
+    const inner = new THREE.Mesh(
+      new THREE.BoxGeometry(w-40, h+1, d-40),
+      matLight
+    );
+    inner.position.y = h/2;
+    group.add(inner);
+  }
+  else if(item.id === 'floorlamp') {
+    // Base
+    const base = new THREE.Mesh(
+      new THREE.CylinderGeometry(12, 14, 4, 12),
+      matDark
+    );
+    base.position.y = 2;
+    base.castShadow = true;
+    group.add(base);
+    // Pole
+    const pole = new THREE.Mesh(
+      new THREE.CylinderGeometry(2, 2, h-30, 8),
+      matDark
+    );
+    pole.position.y = h/2 - 13;
+    group.add(pole);
+    // Shade
+    const shade = new THREE.Mesh(
+      new THREE.CylinderGeometry(8, 16, 30, 12),
+      new THREE.MeshLambertMaterial({ color: 0xf8e8d0, transparent: true, opacity: 0.9 })
+    );
+    shade.position.y = h - 15;
+    shade.castShadow = true;
+    group.add(shade);
+    // Light glow
+    const glow = new THREE.PointLight(0xffeecc, 0.3, 200);
+    glow.position.y = h - 15;
+    group.add(glow);
+  }
+  else {
+    // Generic box furniture
+    const main = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+    main.position.y = h/2;
+    main.castShadow = true;
+    main.receiveShadow = true;
+    group.add(main);
+    // Top highlight
+    if(h > 20) {
+      const topFace = new THREE.Mesh(new THREE.BoxGeometry(w-4, 2, d-4), matLight);
+      topFace.position.y = h - 1;
+      group.add(topFace);
+    }
+  }
+
+  // Selection ring (hidden by default)
+  const ringGeo = new THREE.RingGeometry(Math.max(w, d)/2 + 5, Math.max(w, d)/2 + 10, 32);
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0xe8a0b4, transparent: true, opacity: 0 });
+  const ring = new THREE.Mesh(ringGeo, ringMat);
+  ring.rotation.x = -Math.PI / 2;
+  ring.position.y = 1;
+  ring.userData.isRing = true;
+  group.add(ring);
+  group.userData.ring = ring;
+
+  return group;
+}
+
+// ─── UI: Build panel ───
+const catTabsEl = document.getElementById('cat-tabs');
+const itemGridEl = document.getElementById('item-grid');
+const categories = Object.keys(CATALOG);
+let activeCategory = categories[0];
+
+function renderCatTabs() {
+  catTabsEl.innerHTML = '';
+  categories.forEach(cat => {
+    const btn = document.createElement('div');
+    btn.className = 'cat-tab' + (cat === activeCategory ? ' active' : '');
+    btn.textContent = cat;
+    btn.onclick = () => { activeCategory = cat; renderCatTabs(); renderItems(); };
+    catTabsEl.appendChild(btn);
+  });
+}
+
+function renderItems() {
+  itemGridEl.innerHTML = '';
+  CATALOG[activeCategory].forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'item-card';
+    card.innerHTML = `<span class="icon">${item.icon}</span><span class="name">${item.name}</span>${item.price ? `<span class="price">${item.price}</span>` : ''}`;
+    card.onclick = () => placeItem(item);
+    card.setAttribute('draggable', 'true');
+    card.ondragstart = (e) => {
+      e.dataTransfer.setData('text/plain', JSON.stringify(item));
+    };
+    itemGridEl.appendChild(card);
+  });
+}
+
+function placeItem(item) {
+  const mesh = createFurnitureMesh(item);
+  mesh.position.set(
+    (Math.random() - 0.5) * 200,
+    0,
+    (Math.random() - 0.5) * 200
+  );
+  scene.add(mesh);
+  placedItems.push(mesh);
+  selectItem(mesh);
+  showToast(`Placed ${item.name} — drag to move, Q/E to rotate`);
+  autoSave();
+}
+
+// ─── Wall swatches ───
+function renderSwatches() {
+  const wallEl = document.getElementById('wall-swatches');
+  wallEl.innerHTML = '';
+  WALL_COLORS.forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'swatch';
+    s.style.background = c.hex;
+    s.title = c.name;
+    s.onclick = () => {
+      wallColor.set(c.hex);
+      buildRoom();
+      document.querySelectorAll('#wall-swatches .swatch').forEach(x => x.classList.remove('active'));
+      s.classList.add('active');
+      autoSave();
+    };
+    wallEl.appendChild(s);
+  });
+
+  const floorEl = document.getElementById('floor-swatches');
+  floorEl.innerHTML = '';
+  FLOOR_COLORS.forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'swatch';
+    s.style.background = c.hex;
+    s.title = c.name;
+    s.onclick = () => {
+      floorColor.set(c.hex);
+      buildRoom();
+      document.querySelectorAll('#floor-swatches .swatch').forEach(x => x.classList.remove('active'));
+      s.classList.add('active');
+      autoSave();
+    };
+    floorEl.appendChild(s);
+  });
+
+  // Presets
+  const presetEl = document.getElementById('preset-tabs');
+  presetEl.innerHTML = '';
+  PRESETS.forEach(p => {
+    const btn = document.createElement('div');
+    btn.className = 'cat-tab';
+    btn.textContent = p.name;
+    btn.onclick = () => {
+      wallColor.set(p.wall);
+      floorColor.set(p.floor);
+      buildRoom();
+      showToast(`Applied ${p.name} palette`);
+      autoSave();
+    };
+    presetEl.appendChild(btn);
+  });
+}
+
+// ─── Selection ───
+function selectItem(mesh) {
+  if(selectedItem) deselectItem();
+  selectedItem = mesh;
+  if(mesh.userData.ring) {
+    mesh.userData.ring.material.opacity = 0.6;
+  }
+  document.getElementById('selected-toolbar').classList.add('visible');
+  document.getElementById('controls-hint').style.display = 'none';
+}
+
+function deselectItem() {
+  if(selectedItem && selectedItem.userData.ring) {
+    selectedItem.userData.ring.material.opacity = 0;
+  }
+  selectedItem = null;
+  document.getElementById('selected-toolbar').classList.remove('visible');
+  document.getElementById('controls-hint').style.display = 'flex';
+}
+
+function rotateSelected(dir) {
+  if(!selectedItem) return;
+  selectedItem.rotation.y += dir * Math.PI / 4;
+  autoSave();
+}
+
+function duplicateSelected() {
+  if(!selectedItem) return;
+  const data = selectedItem.userData;
+  const mesh = createFurnitureMesh(data);
+  mesh.position.copy(selectedItem.position);
+  mesh.position.x += 50;
+  mesh.position.z += 50;
+  mesh.rotation.copy(selectedItem.rotation);
+  scene.add(mesh);
+  placedItems.push(mesh);
+  selectItem(mesh);
+  showToast(`Copied ${data.name}`);
+  autoSave();
+}
+
+function deleteSelected() {
+  if(!selectedItem) return;
+  const name = selectedItem.userData.name;
+  scene.remove(selectedItem);
+  const idx = placedItems.indexOf(selectedItem);
+  if(idx >= 0) placedItems.splice(idx, 1);
+  deselectItem();
+  showToast(`Removed ${name}`);
+  autoSave();
+}
+
+// ─── Camera controls ───
+let camAngle = Math.PI / 4;
+let camPitch = 0.6;
+let camDist = 900;
+let camTarget = new THREE.Vector3(0, 60, 0);
+let isPanning = false;
+let panStart = { x: 0, y: 0 };
+let isDragging = false;
+let dragItem = null;
+let dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+let dragOffset = new THREE.Vector3();
+let viewMode = 'iso';
+
+function updateCamera() {
+  if(viewMode === 'iso') {
+    const halfW = camDist * aspect;
+    const halfH = camDist;
+    camera.left = -halfW;
+    camera.right = halfW;
+    camera.top = halfH;
+    camera.bottom = -halfH;
+    camera.position.set(
+      camTarget.x + Math.cos(camAngle) * 800,
+      camTarget.y + camPitch * 800,
+      camTarget.z + Math.sin(camAngle) * 800
+    );
+    camera.lookAt(camTarget);
+    camera.updateProjectionMatrix();
+  } else if(viewMode === 'top') {
+    const halfW = camDist * aspect;
+    const halfH = camDist;
+    camera.left = -halfW;
+    camera.right = halfW;
+    camera.top = halfH;
+    camera.bottom = -halfH;
+    camera.position.set(camTarget.x, 1000, camTarget.z);
+    camera.lookAt(camTarget.x, 0, camTarget.z);
+    camera.updateProjectionMatrix();
+  }
+}
+
+function setView(mode) {
+  viewMode = mode;
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + mode)?.classList.add('active');
+  if(mode === 'iso') { camAngle = Math.PI/4; camPitch = 0.6; camDist = 900; }
+  if(mode === 'top') { camDist = 700; }
+  if(mode === 'walk') {
+    showToast('Walk mode: WASD to move, mouse to look');
+    camDist = 600;
+  }
+  updateCamera();
+}
+
+// ─── Raycasting ───
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function getClickedItem(event) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const meshes = [];
+  placedItems.forEach(g => {
+    g.traverse(c => { if(c.isMesh && !c.userData.isRing) meshes.push(c); });
+  });
+  const hits = raycaster.intersectObjects(meshes);
+  if(hits.length > 0) {
+    let obj = hits[0].object;
+    while(obj.parent && !obj.userData.placed) obj = obj.parent;
+    if(obj.userData.placed) return { item: obj, point: hits[0].point };
+  }
+  return null;
+}
+
+function getFloorPoint(event) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const pt = new THREE.Vector3();
+  raycaster.ray.intersectPlane(dragPlane, pt);
+  return pt;
+}
+
+// ─── Event handlers ───
+const canvasEl = document.getElementById('c');
+
+canvasEl.addEventListener('pointerdown', (e) => {
+  if(e.button === 2) {
+    isPanning = true;
+    panStart = { x: e.clientX, y: e.clientY };
+    e.preventDefault();
+    return;
+  }
+  if(e.button === 0) {
+    const hit = getClickedItem(e);
+    if(hit) {
+      selectItem(hit.item);
+      isDragging = true;
+      dragItem = hit.item;
+      const floorPt = getFloorPoint(e);
+      if(floorPt) {
+        dragOffset.subVectors(dragItem.position, floorPt);
+        dragOffset.y = 0;
+      }
+      canvasEl.style.cursor = 'grabbing';
+    } else {
+      deselectItem();
+    }
+  }
+});
+
+canvasEl.addEventListener('pointermove', (e) => {
+  if(isPanning) {
+    const dx = e.clientX - panStart.x;
+    const dy = e.clientY - panStart.y;
+    const speed = camDist / 400;
+    camTarget.x -= (dx * Math.cos(camAngle) + dy * Math.sin(camAngle)) * speed * 0.5;
+    camTarget.z -= (-dx * Math.sin(camAngle) + dy * Math.cos(camAngle)) * speed * 0.5;
+    panStart = { x: e.clientX, y: e.clientY };
+    updateCamera();
+    return;
+  }
+  if(isDragging && dragItem) {
+    const floorPt = getFloorPoint(e);
+    if(floorPt) {
+      dragItem.position.x = floorPt.x + dragOffset.x;
+      dragItem.position.z = floorPt.z + dragOffset.z;
+      // Clamp to room bounds
+      dragItem.position.x = Math.max(-ROOM_W/2+20, Math.min(ROOM_W/2-20, dragItem.position.x));
+      dragItem.position.z = Math.max(-ROOM_D/2+20, Math.min(ROOM_D/2-20, dragItem.position.z));
+    }
+    return;
+  }
+  // Hover
+  const hit = getClickedItem(e);
+  if(hit && hit.item !== selectedItem) {
+    canvasEl.style.cursor = 'pointer';
+  } else if(!isDragging) {
+    canvasEl.style.cursor = 'default';
+  }
+});
+
+canvasEl.addEventListener('pointerup', () => {
+  if(isPanning) { isPanning = false; return; }
+  if(isDragging) {
+    isDragging = false;
+    dragItem = null;
+    canvasEl.style.cursor = 'default';
+    autoSave();
+  }
+});
+
+canvasEl.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  camDist += e.deltaY * 0.5;
+  camDist = Math.max(200, Math.min(2000, camDist));
+  updateCamera();
+}, { passive: false });
+
+canvasEl.addEventListener('contextmenu', e => e.preventDefault());
+
+// Keyboard
+window.addEventListener('keydown', (e) => {
+  if(e.key === 'q' || e.key === 'Q') rotateSelected(-1);
+  if(e.key === 'e' || e.key === 'E') rotateSelected(1);
+  if(e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
+  if(e.key === 'Escape') deselectItem();
+  // Camera orbit with arrows when no item selected
+  if(!selectedItem) {
+    if(e.key === 'ArrowLeft') { camAngle += 0.1; updateCamera(); }
+    if(e.key === 'ArrowRight') { camAngle -= 0.1; updateCamera(); }
+    if(e.key === 'ArrowUp') { camPitch = Math.min(1.2, camPitch + 0.05); updateCamera(); }
+    if(e.key === 'ArrowDown') { camPitch = Math.max(0.1, camPitch - 0.05); updateCamera(); }
+  }
+});
+
+// ─── Panel toggle ───
+let panelOpen = true;
+function togglePanel() {
+  panelOpen = !panelOpen;
+  document.getElementById('sidepanel').classList.toggle('collapsed', !panelOpen);
+  document.getElementById('canvas-wrap').classList.toggle('full', !panelOpen);
+  document.getElementById('toggle-panel').classList.toggle('shifted', !panelOpen);
+  document.getElementById('toggle-panel').textContent = panelOpen ? '›' : '‹';
+  onResize();
+}
+
+// ─── Toast ───
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── Save / Load ───
+function serializeLayout() {
+  return {
+    version: 2,
+    wallColor: '#' + wallColor.getHexString(),
+    floorColor: '#' + floorColor.getHexString(),
+    items: placedItems.map(m => ({
+      id: m.userData.id,
+      name: m.userData.name,
+      icon: m.userData.icon,
+      w: m.userData.w, d: m.userData.d, h: m.userData.h,
+      color: m.userData.color,
+      price: m.userData.price || '',
+      px: Math.round(m.position.x),
+      py: Math.round(m.position.y),
+      pz: Math.round(m.position.z),
+      ry: Math.round(m.rotation.y * 1000) / 1000,
+    }))
+  };
+}
+
+function loadFromData(data) {
+  // Clear
+  placedItems.forEach(m => scene.remove(m));
+  placedItems.length = 0;
+  deselectItem();
+
+  if(data.wallColor) { wallColor.set(data.wallColor); }
+  if(data.floorColor) { floorColor.set(data.floorColor); }
+  buildRoom();
+
+  (data.items || []).forEach(it => {
+    const mesh = createFurnitureMesh(it);
+    mesh.position.set(it.px || 0, it.py || 0, it.pz || 0);
+    mesh.rotation.y = it.ry || 0;
+    scene.add(mesh);
+    placedItems.push(mesh);
+  });
+}
+
+function autoSave() {
+  try { localStorage.setItem('rajah162_layout', JSON.stringify(serializeLayout())); } catch(e) {}
+}
+
+function saveLayout() {
+  autoSave();
+  showToast('Layout saved!');
+}
+
+function loadLayout() {
+  try {
+    const data = JSON.parse(localStorage.getItem('rajah162_layout'));
+    if(data) { loadFromData(data); showToast('Layout loaded'); }
+    else showToast('No saved layout found');
+  } catch(e) { showToast('Error loading layout'); }
+}
+
+function downloadLayout() {
+  const json = JSON.stringify(serializeLayout(), null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rajah-162-layout.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('Layout downloaded');
+}
+
+function uploadLayout() {
+  document.getElementById('upload-input').click();
+}
+document.getElementById('upload-input').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      loadFromData(data);
+      showToast('Layout loaded from file');
+      autoSave();
+    } catch(err) { showToast('Invalid layout file'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+function resetLayout() {
+  if(!confirm('Reset layout? This removes all placed items.')) return;
+  placedItems.forEach(m => scene.remove(m));
+  placedItems.length = 0;
+  deselectItem();
+  wallColor.set(0xf5c6d0);
+  floorColor.set(0xe0c8a0);
+  buildRoom();
+  autoSave();
+  showToast('Layout reset');
+}
+
+// ─── Resize ───
+function onResize() {
+  const wrap = document.getElementById('canvas-wrap');
+  const w = wrap.clientWidth;
+  const h = wrap.clientHeight;
+  renderer.setSize(w, h);
+  aspect = w / h;
+  updateCamera();
+}
+window.addEventListener('resize', onResize);
+
+// ─── Animate ───
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+
+// ─── Init ───
+renderCatTabs();
+renderItems();
+renderSwatches();
+onResize();
+
+// Load autosaved
+try {
+  const saved = JSON.parse(localStorage.getItem('rajah162_layout'));
+  if(saved && saved.items && saved.items.length > 0) loadFromData(saved);
+} catch(e) {}
+
+updateCamera();
+animate();
+
+showToast('Welcome! Click items to place, drag to move 🌸');
+</script>
 </body>
 </html>
