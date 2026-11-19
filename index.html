@@ -6,2149 +6,1136 @@
 <title>Home Planner — Blk 127A Jalan Rajah #08-162</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Playfair+Display:wght@500;700&display=swap');
+:root{
+  --bg:#faf5ef;--panel:#fff9f3;--panel-shadow:rgba(180,140,120,.12);
+  --accent:#e8a0b4;--accent-dark:#c97a93;--accent-light:#f5d0dc;
+  --text:#4a3728;--text-light:#8a7568;--card-bg:#fff;--card-hover:#fff5f8;
+  --border:#f0e0d6;--success:#7ec8a0;--warning:#f0c060;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--text);overflow:hidden;height:100vh;width:100vw;-webkit-user-select:none;user-select:none}
+@keyframes floatIn{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes petalFloat{0%,100%{transform:translateY(0) rotate(0);opacity:.7}50%{transform:translateY(-6px) rotate(10deg);opacity:1}}
 
-:root {
-  --bg: #faf5ef;
-  --panel: #fff9f3;
-  --panel-shadow: rgba(180,140,120,0.12);
-  --accent: #e8a0b4;
-  --accent-dark: #c97a93;
-  --accent-light: #f5d0dc;
-  --text: #4a3728;
-  --text-light: #8a7568;
-  --card-bg: #fff;
-  --card-hover: #fff5f8;
-  --border: #f0e0d6;
-  --success: #7ec8a0;
-  --warning: #f0c060;
-  --green: #6aaa6a;
-  --green-light: #d8f0d8;
-}
+/* ── Top bar ── */
+#topbar{position:fixed;top:0;left:0;right:0;height:50px;background:linear-gradient(135deg,#fce4ec,#f8bbd0 50%,#f48fb1);display:flex;align-items:center;padding:0 12px;z-index:1000;box-shadow:0 2px 14px rgba(200,100,130,.18)}
+#topbar h1{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#fff;text-shadow:0 1px 3px rgba(150,60,80,.2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb{display:flex;gap:4px;align-items:center}
+.vb{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.4);color:#fff;padding:4px 10px;border-radius:18px;font-family:'Quicksand',sans-serif;font-weight:600;font-size:10px;cursor:pointer;transition:.2s;white-space:nowrap}
+.vb:hover,.vb.active{background:rgba(255,255,255,.55);color:#8b3a5a}
+.tsep{width:1px;height:18px;background:rgba(255,255,255,.3);margin:0 2px}
+.tb-icon{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);color:#fff;width:28px;height:28px;border-radius:50%;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;border:none}
+.tb-icon:hover{background:rgba(255,255,255,.5)}
+.tb-icon:disabled{opacity:.35}
 
-* { margin:0; padding:0; box-sizing:border-box; }
+/* ── Side panel ── */
+#sidepanel{position:fixed;top:50px;right:0;width:310px;height:calc(100vh - 50px);background:var(--panel);border-left:1px solid var(--border);overflow-y:auto;z-index:900;box-shadow:-3px 0 20px var(--panel-shadow);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+#sidepanel.collapsed{transform:translateX(310px)}
+#sidepanel::-webkit-scrollbar{width:5px}
+#sidepanel::-webkit-scrollbar-thumb{background:var(--accent-light);border-radius:3px}
+#panel-deco{text-align:center;padding:8px 0 4px;font-size:16px;letter-spacing:5px;opacity:.7}
+.ps{padding:11px 13px;border-bottom:1px solid var(--border)}
+.ps h2{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--accent-dark);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.ps h2 .em{font-size:14px}
+#search-input{width:100%;padding:7px 11px 7px 32px;border-radius:16px;border:1.5px solid var(--border);background:var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%23c97a93' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 10px center no-repeat;font-family:'Quicksand',sans-serif;font-size:11px;color:var(--text);outline:none;transition:.2s}
+#search-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(232,160,180,.15)}
+.ct{display:flex;flex-wrap:wrap;gap:3px;margin-bottom:7px}
+.ctb{padding:3px 9px;border-radius:13px;font-size:9px;font-weight:600;background:var(--card-bg);border:1px solid var(--border);cursor:pointer;transition:.2s;color:var(--text-light)}
+.ctb:hover{border-color:var(--accent);color:var(--accent-dark)}
+.ctb.active{background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border-color:var(--accent);box-shadow:0 2px 6px rgba(232,160,180,.25)}
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.ic{background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:8px 5px 7px;text-align:center;cursor:pointer;transition:.25s;user-select:none;position:relative;overflow:hidden}
+.ic:hover{border-color:var(--accent);background:var(--card-hover);transform:translateY(-2px);box-shadow:0 6px 16px rgba(200,100,130,.13)}
+.ic:active{transform:scale(.94)}
+.ic .icon{font-size:24px;margin-bottom:2px;display:block}
+.ic .nm{font-size:9px;font-weight:600;color:var(--text);line-height:1.2;display:block}
+.ic .pr{font-size:8px;color:var(--accent-dark);margin-top:1px;display:block;font-weight:500}
+.ic .tg{position:absolute;top:3px;right:3px;font-size:6px;font-weight:700;text-transform:uppercase;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;padding:1px 4px;border-radius:6px;letter-spacing:.3px}
+.sr{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}
+.sw{width:24px;height:24px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.sw:hover{transform:scale(1.25)}
+.sw.active{border-color:var(--accent-dark);box-shadow:0 0 0 2px var(--accent-light)}
 
-body {
-  font-family: 'Quicksand', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-  -webkit-user-select: none;
-  user-select: none;
-}
+/* ── Canvas ── */
+#cw{position:fixed;top:50px;left:0;right:310px;bottom:0;background:linear-gradient(180deg,#f5ebe3,#ede2d8)}
+#cw.full{right:0}
+canvas{display:block;width:100%;height:100%;touch-action:none}
 
-/* ─── Animations ─── */
-@keyframes floatIn { from { opacity:0; transform: translateY(12px) scale(0.95); } to { opacity:1; transform: translateY(0) scale(1); } }
-@keyframes gentlePulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
-@keyframes sparkle { 0%,100% { opacity:0.3; } 50% { opacity:1; } }
-@keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-@keyframes petalFloat {
-  0% { transform: translateY(0) rotate(0deg); opacity:0.7; }
-  50% { transform: translateY(-8px) rotate(15deg); opacity:1; }
-  100% { transform: translateY(0) rotate(0deg); opacity:0.7; }
-}
+/* ── Controls overlay ── */
+#ch{position:fixed;bottom:14px;left:50%;transform:translateX(calc(-50% - 155px));background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:18px;padding:6px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 3px 18px rgba(200,100,130,.12);font-size:10px;color:var(--text-light);z-index:800;border:1px solid rgba(232,160,180,.15)}
+#ch kbd{background:var(--accent-light);color:var(--accent-dark);padding:1px 5px;border-radius:4px;font-size:9px;font-weight:700;font-family:'Quicksand',sans-serif}
 
-/* ─── Top bar ─── */
-#topbar {
-  position: fixed; top:0; left:0; right:0;
-  height: 52px;
-  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
-  display: flex; align-items: center;
-  padding: 0 14px;
-  z-index: 1000;
-  box-shadow: 0 2px 16px rgba(200,100,130,0.18);
-}
-#topbar::after {
-  content: ''; position: absolute; bottom: -6px; left: 0; right: 0; height: 6px;
-  background: linear-gradient(180deg, rgba(200,100,130,0.08), transparent);
-}
-#topbar h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 15px; font-weight: 700;
-  color: #fff;
-  text-shadow: 0 1px 3px rgba(150,60,80,0.2);
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.topbar-btns { display:flex; gap:5px; align-items:center; }
-#topbar .view-btn {
-  background: rgba(255,255,255,0.25);
-  border: 1px solid rgba(255,255,255,0.4);
-  color: #fff;
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 600;
-  font-size: 11px;
-  cursor: pointer;
-  transition: all 0.25s;
-  white-space: nowrap;
-}
-#topbar .view-btn:hover, #topbar .view-btn.active {
-  background: rgba(255,255,255,0.55);
-  color: #8b3a5a;
-  transform: translateY(-1px);
-}
-.topbar-sep {
-  width: 1px; height: 20px; background: rgba(255,255,255,0.3); margin: 0 2px;
-}
-#undo-btn, #redo-btn {
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.35);
-  color: #fff;
-  width: 30px; height: 30px;
-  border-radius: 50%;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-}
-#undo-btn:hover, #redo-btn:hover { background: rgba(255,255,255,0.5); }
-#undo-btn:disabled, #redo-btn:disabled { opacity: 0.35; cursor: default; }
+/* ── Toast ── */
+#toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(255,255,255,.96);backdrop-filter:blur(10px);padding:8px 20px;border-radius:12px;font-size:11px;font-weight:600;color:var(--accent-dark);box-shadow:0 3px 20px rgba(200,100,130,.16);border:1px solid rgba(232,160,180,.2);opacity:0;pointer-events:none;transition:.3s;z-index:2000}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ─── Snap grid toggle ─── */
-#snap-toggle {
-  background: rgba(255,255,255,0.2);
-  border: 1px solid rgba(255,255,255,0.35);
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 16px;
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 600;
-  font-size: 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-#snap-toggle.active {
-  background: rgba(255,255,255,0.55);
-  color: #8b3a5a;
-}
+/* ── Selected toolbar ── */
+#stb{position:fixed;bottom:14px;left:50%;transform:translateX(calc(-50% - 155px));background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-radius:14px;padding:6px 9px;display:none;gap:4px;align-items:center;box-shadow:0 3px 20px rgba(200,100,130,.13);border:1px solid rgba(232,160,180,.2);z-index:850}
+#stb.visible{display:flex}
+#stb button{padding:4px 8px;border-radius:9px;border:1.5px solid var(--border);background:var(--card-bg);font-family:'Quicksand',sans-serif;font-weight:600;font-size:9px;cursor:pointer;color:var(--text);transition:.2s;white-space:nowrap}
+#stb button:hover{background:var(--accent-light);border-color:var(--accent)}
+#stb .db:hover{background:#fdd;border-color:#e88;color:#c44}
+#icp{width:24px;height:24px;border:2px solid var(--border);border-radius:50%;cursor:pointer;padding:0;background:none;-webkit-appearance:none;overflow:hidden}
+#icp::-webkit-color-swatch-wrapper{padding:0}
+#icp::-webkit-color-swatch{border:none;border-radius:50%}
 
-/* ─── Side panel ─── */
-#sidepanel {
-  position: fixed; top: 52px; right: 0;
-  width: 320px;
-  height: calc(100vh - 52px);
-  background: var(--panel);
-  border-left: 1px solid var(--border);
-  overflow-y: auto;
-  z-index: 900;
-  box-shadow: -4px 0 24px var(--panel-shadow);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#sidepanel.collapsed { transform: translateX(320px); }
-#sidepanel::-webkit-scrollbar { width: 5px; }
-#sidepanel::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 3px; }
+/* ── Toggle ── */
+#tp{position:fixed;top:58px;right:314px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:#fff;border:none;cursor:pointer;z-index:950;font-size:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(200,100,130,.25);transition:.35s}
+#tp.shifted{right:4px}
 
-/* Cute flower decoration at top of panel */
-#panel-deco {
-  text-align: center;
-  padding: 10px 0 6px;
-  font-size: 18px;
-  letter-spacing: 6px;
-  opacity: 0.7;
-  animation: petalFloat 4s ease-in-out infinite;
-}
+/* ── Item counter ── */
+#ic{position:fixed;top:58px;left:10px;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-radius:12px;padding:5px 12px;font-size:10px;font-weight:600;color:var(--text-light);box-shadow:0 2px 10px rgba(200,100,130,.1);border:1px solid rgba(232,160,180,.15);z-index:800;display:flex;align-items:center;gap:5px}
+#ic .ct{color:var(--accent-dark);font-weight:700;display:inline}
 
-.panel-section {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border);
-  animation: slideUp 0.3s ease-out;
-}
-.panel-section h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 13px; font-weight: 700;
-  color: var(--accent-dark);
-  margin-bottom: 8px;
-  display: flex; align-items: center; gap: 7px;
-}
-.panel-section h2 .emoji { font-size: 15px; }
+/* ── Room label ── */
+#rl{position:fixed;top:58px;left:50%;transform:translateX(calc(-50% - 155px));background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border-radius:10px;padding:4px 12px;font-size:10px;font-weight:600;color:var(--accent-dark);z-index:790;display:none;box-shadow:0 2px 10px rgba(200,100,130,.1);border:1px solid rgba(232,160,180,.12)}
 
-/* ─── Search ─── */
-#search-wrap {
-  padding: 10px 14px 6px;
-  border-bottom: 1px solid var(--border);
-}
-#search-input {
-  width: 100%;
-  padding: 8px 12px 8px 34px;
-  border-radius: 18px;
-  border: 1.5px solid var(--border);
-  background: var(--card-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23c97a93' stroke-width='2.5' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 11px center no-repeat;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 12px;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-#search-input::placeholder { color: var(--text-light); }
-#search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,160,180,0.15); }
+/* ── Welcome ── */
+#wo{position:fixed;inset:0;background:rgba(250,245,239,.94);backdrop-filter:blur(20px);z-index:5000;display:flex;align-items:center;justify-content:center;opacity:1;transition:.6s}
+#wo.hidden{opacity:0;pointer-events:none}
+.wc{background:#fff;border-radius:26px;padding:36px 34px 28px;max-width:420px;text-align:center;box-shadow:0 14px 50px rgba(200,100,130,.2);border:1.5px solid rgba(232,160,180,.15);animation:floatIn .6s ease-out}
+.wc .fr{font-size:28px;margin-bottom:12px;letter-spacing:5px}
+.wc .fr span{display:inline-block;animation:petalFloat 3s ease-in-out infinite}
+.wc .fr span:nth-child(2){animation-delay:.3s}
+.wc .fr span:nth-child(3){animation-delay:.6s}
+.wc .fr span:nth-child(4){animation-delay:.9s}
+.wc .fr span:nth-child(5){animation-delay:1.2s}
+.wc h2{font-family:'Playfair Display',serif;font-size:19px;color:var(--accent-dark);margin-bottom:5px}
+.wc p{font-size:12px;color:var(--text-light);line-height:1.7;margin-bottom:14px}
+.wc .sb{background:linear-gradient(135deg,#f8bbd0,#f48fb1);color:#fff;border:none;padding:10px 30px;border-radius:20px;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 18px rgba(244,143,177,.35);transition:.25s}
+.wc .sb:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(244,143,177,.45)}
+.wc .cg{display:grid;grid-template-columns:1fr 1fr;gap:5px;text-align:left;margin:12px 0 16px;font-size:10px;color:var(--text-light)}
+.wc .cg div{background:#fef6f8;padding:6px 9px;border-radius:9px}
+.wc .cg kbd{background:var(--accent-light);color:var(--accent-dark);padding:1px 4px;border-radius:4px;font-size:9px;font-weight:700;font-family:'Quicksand',sans-serif}
 
-/* ─── Category tabs ─── */
-.cat-tabs {
-  display: flex; flex-wrap: wrap; gap: 4px;
-  margin-bottom: 8px;
-}
-.cat-tab {
-  padding: 4px 10px;
-  border-radius: 14px;
-  font-size: 10px; font-weight: 600;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text-light);
-}
-.cat-tab:hover { border-color: var(--accent); color: var(--accent-dark); transform: translateY(-1px); }
-.cat-tab.active {
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: #fff;
-  border-color: var(--accent);
-  box-shadow: 0 2px 8px rgba(232,160,180,0.25);
-}
+/* ── Walk mode crosshair ── */
+#crosshair{position:fixed;top:50%;left:50%;transform:translate(calc(-50% - 155px),-50%);width:20px;height:20px;pointer-events:none;z-index:799;display:none}
+#crosshair::before,#crosshair::after{content:'';position:absolute;background:rgba(232,160,180,.6)}
+#crosshair::before{width:2px;height:20px;left:9px;top:0}
+#crosshair::after{width:20px;height:2px;left:0;top:9px}
 
-/* ─── Item cards ─── */
-.item-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-.item-card {
-  background: var(--card-bg);
-  border: 1.5px solid var(--border);
-  border-radius: 14px;
-  padding: 10px 6px 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  user-select: none;
-  position: relative;
-  overflow: hidden;
-}
-.item-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 0%, rgba(248,187,208,0.15), transparent 70%);
-  opacity: 0; transition: opacity 0.3s;
-}
-.item-card:hover::before { opacity: 1; }
-.item-card:hover {
-  border-color: var(--accent);
-  background: var(--card-hover);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(200,100,130,0.14);
-}
-.item-card:active { transform: scale(0.94); }
-.item-card .icon { font-size: 28px; margin-bottom: 3px; display: block; }
-.item-card .name { font-size: 10px; font-weight: 600; color: var(--text); line-height: 1.3; display: block; }
-.item-card .price { font-size: 9px; color: var(--accent-dark); margin-top: 2px; display: block; font-weight: 500; }
-.item-card .tag {
-  position: absolute; top: 4px; right: 4px;
-  font-size: 7px; font-weight: 700; text-transform: uppercase;
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: #fff;
-  padding: 2px 5px; border-radius: 7px;
-  letter-spacing: 0.4px;
-}
-.item-card .tag.green { background: linear-gradient(135deg, var(--green), #4a8a4a); }
-.item-card .tag.maker { background: linear-gradient(135deg, #6a6aaa, #4a4a8a); }
-.item-card .fav-btn {
-  position: absolute; top: 4px; left: 4px;
-  font-size: 12px; cursor: pointer;
-  opacity: 0.3; transition: all 0.2s;
-  background: none; border: none; padding: 2px;
-}
-.item-card:hover .fav-btn { opacity: 0.6; }
-.item-card .fav-btn.active { opacity: 1; }
-
-/* ─── Color swatches ─── */
-.swatch-row {
-  display: flex; gap: 6px; flex-wrap: wrap;
-  margin-top: 6px;
-}
-.swatch {
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2.5px solid transparent;
-  transition: all 0.2s;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-.swatch:hover { transform: scale(1.25); }
-.swatch.active { border-color: var(--accent-dark); box-shadow: 0 0 0 3px var(--accent-light); }
-
-/* ─── Canvas ─── */
-#canvas-wrap {
-  position: fixed;
-  top: 52px; left: 0;
-  right: 320px;
-  bottom: 0;
-  background: linear-gradient(180deg, #f5ebe3 0%, #ede2d8 100%);
-}
-#canvas-wrap.full { right: 0; }
-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
-
-/* ─── Item counter ─── */
-#item-counter {
-  position: fixed;
-  top: 60px; left: 12px;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(10px);
-  border-radius: 14px;
-  padding: 7px 14px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-light);
-  box-shadow: 0 2px 12px rgba(200,100,130,0.1);
-  border: 1px solid rgba(232,160,180,0.15);
-  z-index: 800;
-  display: flex; align-items: center; gap: 6px;
-  transition: all 0.3s;
-}
-#item-counter .count { color: var(--accent-dark); font-weight: 700; }
-
-/* ─── Controls overlay (cute pill) ─── */
-#controls-hint {
-  position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(calc(-50% - 160px));
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 8px 18px;
-  display: flex; gap: 12px; align-items: center;
-  box-shadow: 0 4px 24px rgba(200,100,130,0.12);
-  font-size: 11px;
-  color: var(--text-light);
-  z-index: 800;
-  border: 1px solid rgba(232,160,180,0.15);
-  animation: slideUp 0.5s ease-out;
-}
-#controls-hint kbd {
-  background: var(--accent-light);
-  color: var(--accent-dark);
-  padding: 2px 6px;
-  border-radius: 5px;
-  font-size: 10px;
-  font-weight: 700;
-  font-family: 'Quicksand', sans-serif;
-}
-
-/* ─── Toast ─── */
-#toast {
-  position: fixed;
-  top: 64px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-20px);
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(10px);
-  padding: 9px 22px;
-  border-radius: 14px;
-  font-size: 12px; font-weight: 600;
-  color: var(--accent-dark);
-  box-shadow: 0 4px 24px rgba(200,100,130,0.16);
-  border: 1px solid rgba(232,160,180,0.2);
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.3s ease;
-  z-index: 2000;
-}
-#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* ─── Selected item toolbar ─── */
-#selected-toolbar {
-  position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(calc(-50% - 160px));
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 7px 10px;
-  display: none; gap: 5px; align-items: center;
-  box-shadow: 0 4px 24px rgba(200,100,130,0.13);
-  border: 1px solid rgba(232,160,180,0.2);
-  z-index: 850;
-  animation: slideUp 0.25s ease-out;
-}
-#selected-toolbar.visible { display: flex; }
-#selected-toolbar button {
-  padding: 5px 10px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  background: var(--card-bg);
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 600;
-  font-size: 10px;
-  cursor: pointer;
-  color: var(--text);
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-#selected-toolbar button:hover {
-  background: var(--accent-light);
-  border-color: var(--accent);
-  transform: translateY(-1px);
-}
-#selected-toolbar .delete-btn:hover {
-  background: #fdd; border-color: #e88; color: #c44;
-}
-#color-picker-wrap {
-  display: flex; align-items: center; gap: 3px;
-}
-#item-color-picker {
-  width: 26px; height: 26px;
-  border: 2px solid var(--border);
-  border-radius: 50%;
-  cursor: pointer;
-  padding: 0;
-  background: none;
-  -webkit-appearance: none;
-  overflow: hidden;
-}
-#item-color-picker::-webkit-color-swatch-wrapper { padding: 0; }
-#item-color-picker::-webkit-color-swatch { border: none; border-radius: 50%; }
-
-/* ─── Toggle panel button ─── */
-#toggle-panel {
-  position: fixed;
-  top: 60px; right: 324px;
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  z-index: 950;
-  font-size: 13px;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 10px rgba(200,100,130,0.25);
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-#toggle-panel:hover { transform: scale(1.1); }
-#toggle-panel.shifted { right: 4px; }
-
-/* ─── Welcome overlay ─── */
-#welcome-overlay {
-  position: fixed; inset: 0;
-  background: rgba(250,245,239,0.94);
-  backdrop-filter: blur(20px);
-  z-index: 5000;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 1; transition: opacity 0.6s;
-}
-#welcome-overlay.hidden { opacity: 0; pointer-events: none; }
-.welcome-card {
-  background: #fff;
-  border-radius: 28px;
-  padding: 40px 38px 32px;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 16px 60px rgba(200,100,130,0.2);
-  border: 1.5px solid rgba(232,160,180,0.15);
-  animation: floatIn 0.6s ease-out;
-}
-.welcome-card .flower-row {
-  font-size: 32px; margin-bottom: 14px; letter-spacing: 6px;
-}
-.welcome-card .flower-row span {
-  display: inline-block;
-  animation: petalFloat 3s ease-in-out infinite;
-}
-.welcome-card .flower-row span:nth-child(2) { animation-delay: 0.3s; }
-.welcome-card .flower-row span:nth-child(3) { animation-delay: 0.6s; }
-.welcome-card .flower-row span:nth-child(4) { animation-delay: 0.9s; }
-.welcome-card .flower-row span:nth-child(5) { animation-delay: 1.2s; }
-.welcome-card h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px; color: var(--accent-dark);
-  margin-bottom: 6px;
-}
-.welcome-card p { font-size: 13px; color: var(--text-light); line-height: 1.7; margin-bottom: 16px; }
-.welcome-card .start-btn {
-  background: linear-gradient(135deg, #f8bbd0, #f48fb1);
-  color: #fff; border: none;
-  padding: 11px 32px; border-radius: 22px;
-  font-family: 'Quicksand', sans-serif;
-  font-size: 14px; font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(244,143,177,0.35);
-  transition: all 0.25s;
-}
-.welcome-card .start-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 6px 28px rgba(244,143,177,0.45); }
-.welcome-card .controls-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
-  text-align: left; margin: 14px 0 18px;
-  font-size: 11px; color: var(--text-light);
-}
-.welcome-card .controls-grid div {
-  background: #fef6f8; padding: 7px 10px; border-radius: 10px;
-  transition: background 0.2s;
-}
-.welcome-card .controls-grid div:hover { background: #fdeef2; }
-.welcome-card .controls-grid kbd {
-  background: var(--accent-light); color: var(--accent-dark);
-  padding: 1px 5px; border-radius: 4px;
-  font-size: 10px; font-weight: 700; font-family: 'Quicksand', sans-serif;
-}
-
-/* ─── Help button ─── */
-#help-btn {
-  position: fixed;
-  bottom: 16px; right: 328px;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(232,160,180,0.2);
-  color: var(--accent-dark);
-  font-size: 14px; font-weight: 700;
-  cursor: pointer;
-  z-index: 800;
-  box-shadow: 0 2px 12px rgba(200,100,130,0.1);
-  transition: all 0.2s;
-  display: flex; align-items: center; justify-content: center;
-}
-#help-btn:hover { transform: scale(1.1); background: var(--accent-light); }
-#help-btn.shifted { right: 8px; }
-
-/* ─── Responsive ─── */
-@media (max-width: 768px) {
-  #sidepanel { width: 280px; }
-  #canvas-wrap { right: 0; }
-  #controls-hint, #selected-toolbar { transform: translateX(-50%); }
-  #item-counter { display: none; }
-  #help-btn { right: 8px; }
-  #toggle-panel { right: 4px; }
-  .topbar-btns .view-btn { padding: 4px 8px; font-size: 10px; }
-}
-@media (max-width: 480px) {
-  #topbar h1 { font-size: 12px; }
-  #sidepanel { width: 100vw; }
-  #sidepanel.collapsed { transform: translateX(100vw); }
-}
+/* ── Responsive ── */
+@media(max-width:768px){#sidepanel{width:280px}#cw{right:0}#ch,#stb{transform:translateX(-50%)}#ic{display:none}#tp{right:4px}}
+@media(max-width:480px){#topbar h1{font-size:11px}#sidepanel{width:100vw}#sidepanel.collapsed{transform:translateX(100vw)}}
 </style>
 </head>
 <body>
 
-<!-- Welcome overlay -->
-<div id="welcome-overlay">
-  <div class="welcome-card">
-    <div class="flower-row"><span>🌸</span> <span>🌿</span> <span>🏡</span> <span>🌿</span> <span>🌸</span></div>
-    <h2>Welcome to Your Home Planner</h2>
-    <p>Design your dream home with smart tech, artisan decor, flowers & more. Place items, drag to arrange, recolour anything — make it yours!</p>
-    <div class="controls-grid">
-      <div><kbd>Click</kbd> item → place it</div>
-      <div><kbd>Drag</kbd> → move furniture</div>
-      <div><kbd>Q</kbd> <kbd>E</kbd> → rotate</div>
-      <div><kbd>Del</kbd> → remove item</div>
-      <div><kbd>Scroll</kbd> → zoom in/out</div>
-      <div><kbd>Right-drag</kbd> → pan view</div>
-      <div><kbd>Ctrl+Z</kbd> → undo</div>
-      <div>🎨 Recolour anything!</div>
-    </div>
-    <button class="start-btn" onclick="dismissWelcome()">Start Designing 🌷</button>
+<!-- Welcome -->
+<div id="wo">
+<div class="wc">
+  <div class="fr"><span>🌸</span> <span>🌿</span> <span>🏡</span> <span>🌿</span> <span>🌸</span></div>
+  <h2>Blk 127A Jalan Rajah #08-162</h2>
+  <p>Your HDB 4-room flat, to scale. Place furniture, walk through rooms, open doors — design your dream home with smart tech & artisan decor.</p>
+  <div class="cg">
+    <div><kbd>WASD</kbd> Walk around</div>
+    <div><kbd>Mouse</kbd> Look around</div>
+    <div><kbd>Click</kbd> item → place</div>
+    <div><kbd>E</kbd> / click → open doors</div>
+    <div><kbd>Q</kbd> <kbd>E</kbd> Rotate furniture</div>
+    <div><kbd>Del</kbd> Remove item</div>
+    <div><kbd>Ctrl+Z</kbd> Undo</div>
+    <div>🎨 Recolour anything</div>
   </div>
+  <button class="sb" onclick="dismissWelcome()">Start Designing 🌷</button>
+</div>
 </div>
 
-<!-- Top bar -->
+<!-- Topbar -->
 <div id="topbar">
-  <h1>🏠 Home Planner — Blk 127A #08-162</h1>
-  <div class="topbar-btns">
-    <button id="undo-btn" onclick="undo()" disabled title="Undo (Ctrl+Z)">↩</button>
-    <button id="redo-btn" onclick="redo()" disabled title="Redo (Ctrl+Y)">↪</button>
-    <div class="topbar-sep"></div>
-    <button id="snap-toggle" onclick="toggleSnap()" title="Snap to grid">⊞ Snap</button>
-    <div class="topbar-sep"></div>
-    <button class="view-btn active" onclick="setView('iso')" id="btn-iso">Isometric</button>
-    <button class="view-btn" onclick="setView('top')" id="btn-top">Floor Plan</button>
-    <button class="view-btn" onclick="setView('walk')" id="btn-walk">Walk</button>
-    <button class="view-btn" onclick="togglePanel()">☰</button>
+  <h1>🏠 Blk 127A Jalan Rajah #08-162</h1>
+  <div class="tb">
+    <button class="tb-icon" id="ubtn" onclick="undo()" disabled title="Undo">↩</button>
+    <button class="tb-icon" id="rbtn" onclick="redo()" disabled title="Redo">↪</button>
+    <div class="tsep"></div>
+    <button class="vb active" onclick="setView('orbit')" id="btn-orbit">Orbit</button>
+    <button class="vb" onclick="setView('top')" id="btn-top">Plan</button>
+    <button class="vb" onclick="setView('walk')" id="btn-walk">Walk</button>
+    <div class="tsep"></div>
+    <button class="vb" id="snap-btn" onclick="toggleSnap()">⊞ Snap</button>
+    <button class="vb" id="doors-btn" onclick="toggleAllDoors()">🚪 Doors</button>
+    <button class="vb" id="labels-btn" onclick="toggleLabels()">🏷 Labels</button>
+    <button class="vb" onclick="togglePanel()">☰</button>
   </div>
 </div>
 
 <!-- Canvas -->
-<div id="canvas-wrap"><canvas id="c"></canvas></div>
-
-<!-- Item counter -->
-<div id="item-counter">
-  <span>🪴</span>
-  <span><span class="count" id="counter-num">0</span> items placed</span>
-</div>
-
-<!-- Toggle panel -->
-<button id="toggle-panel" onclick="togglePanel()">›</button>
-
-<!-- Help button -->
-<button id="help-btn" onclick="showHelp()">?</button>
+<div id="cw"><canvas id="c"></canvas></div>
+<div id="ic"><span>🪴</span> <span class="ct" id="cn">0</span> items</div>
+<div id="rl"></div>
+<div id="crosshair"></div>
+<button id="tp" onclick="togglePanel()">›</button>
 
 <!-- Side panel -->
 <div id="sidepanel">
-
-  <!-- Cute decoration -->
   <div id="panel-deco">🌸🌿✨🌿🌸</div>
-
-  <!-- Search -->
-  <div id="search-wrap">
-    <input type="text" id="search-input" placeholder="Search… mirror, coffee, garden, smart" oninput="onSearch(this.value)">
+  <div class="ps"><input type="text" id="search-input" placeholder="Search… sofa, mirror, 3D printer" oninput="onSearch(this.value)"></div>
+  <div class="ps">
+    <h2><span class="em">🪑</span> Furniture & Decor</h2>
+    <div class="ct" id="cat-tabs"></div>
+    <div class="ig" id="item-grid"></div>
   </div>
-
-  <!-- Furniture catalog -->
-  <div class="panel-section">
-    <h2><span class="emoji">🪑</span> Furniture & Decor</h2>
-    <div class="cat-tabs" id="cat-tabs"></div>
-    <div class="item-grid" id="item-grid"></div>
+  <div class="ps">
+    <h2><span class="em">🎨</span> Wall Colour</h2>
+    <div class="sr" id="wall-sw"></div>
   </div>
-
-  <!-- Wall color -->
-  <div class="panel-section">
-    <h2><span class="emoji">🎨</span> Wall Colour</h2>
-    <div class="swatch-row" id="wall-swatches"></div>
+  <div class="ps">
+    <h2><span class="em">🪵</span> Floor Style</h2>
+    <div class="sr" id="floor-sw"></div>
   </div>
-
-  <!-- Floor style -->
-  <div class="panel-section">
-    <h2><span class="emoji">🪵</span> Floor Style</h2>
-    <div class="swatch-row" id="floor-swatches"></div>
+  <div class="ps">
+    <h2><span class="em">✨</span> Style Presets</h2>
+    <div class="ct" id="preset-tabs"></div>
   </div>
-
-  <!-- Palette presets -->
-  <div class="panel-section">
-    <h2><span class="emoji">✨</span> Style Presets</h2>
-    <div class="cat-tabs" id="preset-tabs"></div>
-  </div>
-
-  <!-- Layout -->
-  <div class="panel-section">
-    <h2><span class="emoji">💾</span> Layout</h2>
-    <div style="display:flex;flex-wrap:wrap;gap:5px;">
-      <button class="cat-tab" onclick="saveLayout()">💾 Save</button>
-      <button class="cat-tab" onclick="loadLayout()">📂 Load</button>
-      <button class="cat-tab" onclick="downloadLayout()">⬇ Download</button>
-      <button class="cat-tab" onclick="uploadLayout()">📁 Open file</button>
-      <button class="cat-tab" onclick="resetLayout()">🗑 Reset</button>
+  <div class="ps">
+    <h2><span class="em">💾</span> Layout</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:4px">
+      <button class="ctb" onclick="saveLayout()">💾 Save</button>
+      <button class="ctb" onclick="loadLayout()">📂 Load</button>
+      <button class="ctb" onclick="downloadLayout()">⬇ Download</button>
+      <button class="ctb" onclick="uploadLayout()">📁 Open</button>
+      <button class="ctb" onclick="resetLayout()">🗑 Reset</button>
     </div>
-    <input type="file" id="upload-input" accept=".json" style="display:none">
+    <input type="file" id="ufi" accept=".json" style="display:none">
   </div>
-
-  <!-- Controls reference -->
-  <div class="panel-section" style="border-bottom:none;">
-    <h2><span class="emoji">🎮</span> Controls</h2>
-    <div style="font-size:11px;color:var(--text-light);line-height:1.9;">
-      <b>Click</b> item in panel → place it<br>
-      <b>Click</b> placed item → select it<br>
-      <b>Drag</b> selected → move it<br>
-      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 5px;border-radius:4px;font-size:10px;">Q</kbd> /
-      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 5px;border-radius:4px;font-size:10px;">E</kbd> Rotate &nbsp;
-      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 5px;border-radius:4px;font-size:10px;">Del</kbd> Remove<br>
-      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 5px;border-radius:4px;font-size:10px;">Ctrl+Z</kbd> Undo &nbsp;
-      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 5px;border-radius:4px;font-size:10px;">Ctrl+Y</kbd> Redo<br>
-      <b>Scroll</b> → zoom &nbsp; <b>Right-drag</b> → pan<br>
-      <b>Touch</b>: pinch zoom, two-finger pan<br>
-      🎨 Use colour picker to recolour
+  <div class="ps" style="border-bottom:none">
+    <h2><span class="em">🎮</span> Controls</h2>
+    <div style="font-size:10px;color:var(--text-light);line-height:1.8">
+      <b>Orbit:</b> Left-drag rotate, right-drag pan, scroll zoom<br>
+      <b>Walk:</b> <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 4px;border-radius:3px;font-size:9px">WASD</kbd> move,
+      mouse look, <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 4px;border-radius:3px;font-size:9px">Space</kbd> jump,
+      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 4px;border-radius:3px;font-size:9px">E</kbd> open doors<br>
+      <b>Items:</b> Click to place, drag to move, <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 4px;border-radius:3px;font-size:9px">Q</kbd>/<kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 4px;border-radius:3px;font-size:9px">E</kbd> rotate, <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 4px;border-radius:3px;font-size:9px">Del</kbd> remove<br>
+      <kbd style="background:var(--accent-light);color:var(--accent-dark);padding:1px 4px;border-radius:3px;font-size:9px">Ctrl+Z</kbd> undo · 🎨 colour picker
     </div>
   </div>
 </div>
 
 <!-- Controls hint -->
-<div id="controls-hint">
-  <span><kbd>Click</kbd> item to place</span>
+<div id="ch">
+  <span><kbd>Click</kbd> place</span>
   <span><kbd>Q</kbd><kbd>E</kbd> rotate</span>
   <span><kbd>Del</kbd> delete</span>
   <span><kbd>Scroll</kbd> zoom</span>
 </div>
 
-<!-- Selected item toolbar -->
-<div id="selected-toolbar">
-  <button onclick="rotateSelected(-1)">↺</button>
-  <button onclick="rotateSelected(1)">↻</button>
-  <div id="color-picker-wrap">
-    <input type="color" id="item-color-picker" value="#e8a0b4" title="Recolour item" onchange="recolorSelected(this.value)">
-  </div>
-  <button onclick="duplicateSelected()">⎘ Copy</button>
-  <button class="delete-btn" onclick="deleteSelected()">✕</button>
+<!-- Selected toolbar -->
+<div id="stb">
+  <button onclick="rotSel(-1)">↺</button>
+  <button onclick="rotSel(1)">↻</button>
+  <input type="color" id="icp" value="#e8a0b4" title="Recolour" onchange="recolSel(this.value)">
+  <button onclick="dupSel()">⎘ Copy</button>
+  <button class="db" onclick="delSel()">✕</button>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
 <script src="vendor/three.min.js"></script>
 <script>
-// ─── Welcome ───
-function dismissWelcome() {
-  document.getElementById('welcome-overlay').classList.add('hidden');
-  localStorage.setItem('rajah162_welcomed','1');
-}
-if(localStorage.getItem('rajah162_welcomed')) {
-  document.getElementById('welcome-overlay').classList.add('hidden');
-}
-function showHelp() {
-  document.getElementById('welcome-overlay').classList.remove('hidden');
-}
+/* ═══════════════════════════════════════════════
+   HDB 4-Room Flat — Blk 127A Jalan Rajah #08-162
+   All dimensions in centimetres, 1:1 scale
+   ═══════════════════════════════════════════════ */
 
-// ─── Undo / Redo ───
-const undoStack = [];
-const redoStack = [];
-const MAX_UNDO = 40;
+// ── Welcome ──
+function dismissWelcome(){document.getElementById('wo').classList.add('hidden');localStorage.setItem('r162w','1')}
+if(localStorage.getItem('r162w'))document.getElementById('wo').classList.add('hidden');
 
-function pushUndo() {
-  undoStack.push(JSON.stringify(serializeLayout()));
-  if(undoStack.length > MAX_UNDO) undoStack.shift();
-  redoStack.length = 0;
-  updateUndoButtons();
-}
-function undo() {
-  if(undoStack.length === 0) return;
-  redoStack.push(JSON.stringify(serializeLayout()));
-  const data = JSON.parse(undoStack.pop());
-  loadFromData(data, true);
-  updateUndoButtons();
-}
-function redo() {
-  if(redoStack.length === 0) return;
-  undoStack.push(JSON.stringify(serializeLayout()));
-  const data = JSON.parse(redoStack.pop());
-  loadFromData(data, true);
-  updateUndoButtons();
-}
-function updateUndoButtons() {
-  document.getElementById('undo-btn').disabled = undoStack.length === 0;
-  document.getElementById('redo-btn').disabled = redoStack.length === 0;
-}
+// ── Undo/Redo ──
+const undoStack=[],redoStack=[];
+function pushUndo(){undoStack.push(JSON.stringify(serialize()));if(undoStack.length>40)undoStack.shift();redoStack.length=0;updUndoBtn()}
+function undo(){if(!undoStack.length)return;redoStack.push(JSON.stringify(serialize()));loadData(JSON.parse(undoStack.pop()),true);updUndoBtn()}
+function redo(){if(!redoStack.length)return;undoStack.push(JSON.stringify(serialize()));loadData(JSON.parse(redoStack.pop()),true);updUndoBtn()}
+function updUndoBtn(){document.getElementById('ubtn').disabled=!undoStack.length;document.getElementById('rbtn').disabled=!redoStack.length}
 
-// ─── Snap grid ───
-let snapEnabled = false;
-const SNAP_SIZE = 30;
-function toggleSnap() {
-  snapEnabled = !snapEnabled;
-  document.getElementById('snap-toggle').classList.toggle('active', snapEnabled);
-  showToast(snapEnabled ? 'Snap to grid ON ⊞' : 'Snap to grid OFF');
-}
-function snapValue(v) {
-  return snapEnabled ? Math.round(v / SNAP_SIZE) * SNAP_SIZE : v;
-}
+// ── Snap ──
+let snapOn=false;const SNAP=20;
+function toggleSnap(){snapOn=!snapOn;document.getElementById('snap-btn').classList.toggle('active',snapOn);toast(snapOn?'Snap ON ⊞':'Snap OFF')}
+function snap(v){return snapOn?Math.round(v/SNAP)*SNAP:v}
 
-// ─── Catalog ───
-const CATALOG = {
-  "⭐ Favourites": [],
-  "🛋️ Living": [
-    { id:"sofa", name:"L-Sofa", icon:"🛋️", w:220, d:90, h:80, color:0x8b4060 },
-    { id:"sofa2", name:"2-Seater Sofa", icon:"🛋️", w:160, d:80, h:75, color:0x9b5070 },
-    { id:"armchair", name:"Armchair", icon:"💺", w:80, d:80, h:85, color:0x8b4060 },
-    { id:"coffeetable", name:"Coffee Table", icon:"☕", w:120, d:60, h:42, color:0xc8a882 },
-    { id:"tvunit", name:"TV Console", icon:"📺", w:180, d:45, h:55, color:0xd4b896 },
-    { id:"bookshelf", name:"Bookshelf", icon:"📚", w:90, d:35, h:200, color:0xc8a882 },
-    { id:"rug", name:"Area Rug", icon:"🟫", w:200, d:150, h:2, color:0xc07060 },
-    { id:"pooltable", name:"Pool Table Dining", icon:"🎱", w:240, d:130, h:80, color:0x2a5a3a, price:"Convertible", tag:"LUXURY" },
-    { id:"piano", name:"Grand Piano", icon:"🎹", w:150, d:155, h:100, color:0x1a1a1a },
-    { id:"ottoman", name:"Ottoman", icon:"🟤", w:60, d:60, h:40, color:0xc8a080 },
-    { id:"sidetable", name:"Side Table", icon:"🔘", w:45, d:45, h:55, color:0xd4b896 },
-    { id:"throwpillow", name:"Throw Pillows", icon:"🟣", w:45, d:45, h:15, color:0xe0a0c0 },
-    { id:"beanbag", name:"Bean Bag", icon:"🫘", w:80, d:80, h:60, color:0xf0b0c8 },
-    { id:"hammock", name:"Indoor Hammock", icon:"🪢", w:200, d:60, h:120, color:0xf5e6d0 },
-    { id:"recordplayer", name:"Record Player", icon:"🎵", w:45, d:35, h:30, color:0x8a6a50, price:"Vinyl" },
-    { id:"standing_desk", name:"Standing Desk", icon:"🖥️", w:140, d:70, h:110, color:0xd4b896, price:"Motorised", tag:"SMART" },
-    { id:"meditation", name:"Meditation Cushion", icon:"🧘", w:50, d:50, h:12, color:0xd8c0e0 },
-    { id:"fireplace", name:"Electric Fireplace", icon:"🔥", w:100, d:30, h:80, color:0x4a3a2a, price:"LED flame" },
-  ],
-  "🍳 Kitchen": [
-    { id:"counter", name:"Kitchen Counter", icon:"🍳", w:240, d:65, h:90, color:0xf0e6d8 },
-    { id:"island", name:"Kitchen Island", icon:"🏝️", w:150, d:80, h:90, color:0xe8dcd0 },
-    { id:"fridge", name:"Smart Fridge", icon:"🧊", w:70, d:70, h:180, color:0xe0e0e0, tag:"SMART" },
-    { id:"dineset", name:"Dining Set", icon:"🍽️", w:140, d:80, h:75, color:0xc8a882 },
-    { id:"barcart", name:"Bar Cart", icon:"🍷", w:70, d:40, h:85, color:0xd4a860 },
-    { id:"winecooler", name:"Wine Cooler", icon:"🍾", w:60, d:60, h:85, color:0x444444 },
-    { id:"espresso", name:"Espresso Machine", icon:"☕", w:35, d:40, h:40, color:0x888888, tag:"MAKER" },
-    { id:"coffeemaker", name:"Pour-Over Station", icon:"☕", w:40, d:30, h:45, color:0xc09060, tag:"MAKER" },
-    { id:"toaster_oven", name:"Smart Toaster Oven", icon:"🍞", w:45, d:35, h:28, color:0xd0d0d0 },
-    { id:"knife_block", name:"Knife Block", icon:"🔪", w:15, d:12, h:35, color:0x6a4a30 },
-    { id:"matcha", name:"Matcha Station", icon:"🍵", w:35, d:25, h:30, color:0x6a9a6a, tag:"MAKER" },
-    { id:"ice_maker", name:"Nugget Ice Maker", icon:"🧊", w:30, d:35, h:35, color:0xd0d0d0 },
-    { id:"pizza_oven", name:"Countertop Pizza Oven", icon:"🍕", w:50, d:40, h:30, color:0xc04030 },
-    { id:"rice_cooker", name:"Smart Rice Cooker", icon:"🍚", w:28, d:28, h:25, color:0xf0f0f0, tag:"SMART" },
-  ],
-  "🛏️ Bedroom": [
-    { id:"queenbed", name:"Queen Bed", icon:"🛏️", w:160, d:200, h:50, color:0xf0d0d8 },
-    { id:"kingbed", name:"King Bed", icon:"🛏️", w:190, d:210, h:50, color:0xe0c0c8 },
-    { id:"nightstand", name:"Nightstand", icon:"🪔", w:45, d:40, h:55, color:0xc8a882 },
-    { id:"dresser", name:"Dresser", icon:"🪞", w:120, d:50, h:80, color:0xd4b896 },
-    { id:"wardrobe", name:"Wardrobe", icon:"👗", w:180, d:60, h:220, color:0xe8dcd0 },
-    { id:"vanity", name:"Vanity Table", icon:"💄", w:100, d:50, h:75, color:0xf8e8f0 },
-    { id:"shoe_cabinet", name:"Shoe Cabinet", icon:"👟", w:90, d:35, h:110, color:0xc8a878 },
-    { id:"clothes_rack", name:"Clothes Rack", icon:"🧥", w:100, d:40, h:170, color:0xd4a860 },
-    { id:"diffuser", name:"Aroma Diffuser", icon:"🫧", w:15, d:15, h:22, color:0xf0e8d8, price:"Ultrasonic" },
-    { id:"weighted_blanket", name:"Weighted Blanket", icon:"🛌", w:140, d:180, h:4, color:0xe0c8d0 },
-    { id:"full_mirror", name:"Full-Length Mirror", icon:"🪞", w:55, d:6, h:170, color:0xc8d8e0, price:"Framed" },
-  ],
-  "🚿 Bath": [
-    { id:"shower", name:"Shower Encl.", icon:"🚿", w:90, d:90, h:200, color:0xc8e0e8 },
-    { id:"bathtub", name:"Bathtub", icon:"🛁", w:170, d:75, h:60, color:0xf8f8f8 },
-    { id:"toilet", name:"Smart Toilet", icon:"🚽", w:40, d:65, h:75, color:0xf8f8f8, price:"Bidet + heated", tag:"SMART" },
-    { id:"basin", name:"Basin", icon:"🪥", w:60, d:45, h:85, color:0xf0f0f0 },
-    { id:"rain_shower", name:"Rain Shower Head", icon:"🌧️", w:30, d:30, h:210, color:0xc0c0c0 },
-    { id:"towel_warmer", name:"Towel Warmer", icon:"🧖", w:50, d:15, h:90, color:0xd4a860, tag:"LUXURY" },
-    { id:"vanity_mirror", name:"LED Vanity Mirror", icon:"🪞", w:70, d:6, h:70, color:0xd0e0e8, price:"Dimmable", tag:"SMART" },
-    { id:"soap_disp", name:"Auto Soap Dispenser", icon:"🧴", w:8, d:8, h:20, color:0xf0f0f0 },
-  ],
-  "🪞 Smart Home": [
-    { id:"smartmirror", name:"Lululemon Mirror", icon:"🪞", w:56, d:8, h:132, color:0x222222, price:"Smart fitness", tag:"SMART" },
-    { id:"vestaboard", name:"Vestaboard", icon:"📋", w:90, d:6, h:50, color:0x1a1a1a, price:"Smart display", tag:"SMART" },
-    { id:"smartspeaker", name:"Smart Speaker", icon:"🔊", w:20, d:20, h:30, color:0x303030, price:"Voice control" },
-    { id:"robotvac", name:"Robot Vacuum", icon:"🤖", w:35, d:35, h:10, color:0xe0e0e0 },
-    { id:"airpurifier", name:"Air Purifier", icon:"💨", w:30, d:30, h:60, color:0xf0f0f0 },
-    { id:"smartlight", name:"Smart Light Strip", icon:"💡", w:200, d:4, h:4, color:0xffaacc, price:"RGB" },
-    { id:"projector", name:"4K Projector", icon:"🎬", w:30, d:25, h:12, color:0x333333, price:"4K laser" },
-    { id:"smartblind", name:"Smart Blinds", icon:"🪟", w:120, d:6, h:150, color:0xf0e8d8, price:"Automated", tag:"SMART" },
-    { id:"hub_display", name:"Smart Hub Display", icon:"📱", w:25, d:12, h:18, color:0x222222, price:"Touchscreen" },
-    { id:"doorbell_cam", name:"Smart Doorbell", icon:"🔔", w:8, d:5, h:14, color:0x1a1a1a },
-    { id:"thermostat", name:"Smart Thermostat", icon:"🌡️", w:10, d:5, h:10, color:0xf0f0f0, price:"Nest-style" },
-    { id:"smart_lock", name:"Smart Lock", icon:"🔐", w:8, d:8, h:25, color:0x333333 },
-    { id:"wifi_router", name:"Mesh WiFi Node", icon:"📶", w:12, d:12, h:18, color:0xf0f0f0 },
-    { id:"smart_curtain", name:"Smart Curtains", icon:"🪟", w:150, d:8, h:230, color:0xf0e0d0, price:"Voice-ctrl", tag:"SMART" },
-    { id:"smart_scale", name:"Smart Body Scale", icon:"⚖️", w:32, d:32, h:3, color:0xf0f0f0 },
-    { id:"ev_charger", name:"EV Charger", icon:"⚡", w:15, d:10, h:50, color:0x444444, price:"Wall-mount" },
-    { id:"security_cam", name:"Security Camera", icon:"📷", w:8, d:8, h:10, color:0xf0f0f0, price:"360°" },
-  ],
-  "⚙️ Makers Lab": [
-    { id:"printer3d", name:"3D Printer", icon:"🖨️", w:50, d:50, h:55, color:0x2a2a2a, price:"FDM", tag:"MAKER" },
-    { id:"printer3d_resin", name:"Resin 3D Printer", icon:"🖨️", w:30, d:30, h:50, color:0x4040a0, price:"SLA", tag:"MAKER" },
-    { id:"lasercutter", name:"Laser Cutter", icon:"⚡", w:80, d:60, h:25, color:0x3a3a5a, price:"Desktop CO₂", tag:"MAKER" },
-    { id:"cnc", name:"CNC Router", icon:"🔧", w:70, d:60, h:40, color:0x555555, tag:"MAKER" },
-    { id:"sewing", name:"Sewing Machine", icon:"🧵", w:40, d:25, h:30, color:0xf0d0d8 },
-    { id:"soldering", name:"Soldering Station", icon:"🔌", w:25, d:20, h:15, color:0x666666 },
-    { id:"workbench", name:"Workbench", icon:"🔨", w:150, d:70, h:90, color:0xa08060 },
-    { id:"pegboard", name:"Pegboard Wall", icon:"📌", w:120, d:6, h:90, color:0xe8dcd0, tag:"MAKER" },
-    { id:"filament_shelf", name:"Filament Shelf", icon:"🧶", w:60, d:30, h:120, color:0xd4b896 },
-    { id:"sublimation", name:"Heat Press", icon:"🔥", w:45, d:45, h:40, color:0x333333, price:"Sublimation", tag:"MAKER" },
-    { id:"vinyl_cutter", name:"Vinyl Cutter", icon:"✂️", w:60, d:35, h:25, color:0x4a4a6a, tag:"MAKER" },
-  ],
-  "🌿 Hydroponics": [
-    { id:"vertical_garden", name:"Vertical Garden", icon:"🌿", w:90, d:25, h:180, color:0x3a8a3a, price:"Wall-mounted", tag:"GREEN" },
-    { id:"hydro_tower", name:"Hydro Tower", icon:"🌱", w:40, d:40, h:160, color:0x4a9a5a, price:"12 pods", tag:"GREEN" },
-    { id:"herb_garden", name:"Smart Herb Garden", icon:"🌿", w:50, d:20, h:35, color:0x5aaa5a, price:"LED grow" },
-    { id:"aquaponics", name:"Aquaponics Tank", icon:"🐟", w:80, d:40, h:70, color:0x80c0e0, price:"Fish + plants", tag:"GREEN" },
-    { id:"grow_shelf", name:"Grow Light Shelf", icon:"💡", w:80, d:40, h:150, color:0xd4b896, price:"Full spectrum" },
-    { id:"compost", name:"Smart Composter", icon:"♻️", w:35, d:35, h:45, color:0x6a8a4a },
-    { id:"mushroom_log", name:"Mushroom Log", icon:"🍄", w:25, d:25, h:40, color:0x8a7060 },
-    { id:"microgreens", name:"Microgreens Tray", icon:"🌾", w:50, d:30, h:12, color:0x4a8a3a },
-    { id:"terrarium", name:"Glass Terrarium", icon:"🌎", w:30, d:30, h:40, color:0x60a080, price:"Closed system" },
-    { id:"moss_wall", name:"Moss Wall Art", icon:"🟩", w:80, d:6, h:60, color:0x4a8a3a, price:"Preserved" },
-  ],
-  "🌸 Flowers": [
-    { id:"vase_rose", name:"Rose Bouquet", icon:"🌹", w:25, d:25, h:40, color:0xe84070 },
-    { id:"vase_peony", name:"Peony Vase", icon:"🌸", w:30, d:30, h:45, color:0xf8a0c0 },
-    { id:"vase_mixed", name:"Mixed Bouquet", icon:"💐", w:30, d:30, h:50, color:0xf0b870 },
-    { id:"orchid", name:"Orchid Pot", icon:"🪻", w:20, d:20, h:55, color:0xd070d0 },
-    { id:"succulent", name:"Succulent Set", icon:"🪴", w:25, d:25, h:15, color:0x60a060 },
-    { id:"monstera", name:"Monstera", icon:"🌿", w:50, d:50, h:120, color:0x3a8a3a },
-    { id:"fiddle", name:"Fiddle Leaf Fig", icon:"🌳", w:45, d:45, h:150, color:0x4a9a4a },
-    { id:"driedflower", name:"Dried Flowers", icon:"🥀", w:20, d:20, h:45, color:0xc8a080 },
-    { id:"lavender", name:"Lavender Pot", icon:"💜", w:22, d:22, h:35, color:0x9a70c0 },
-    { id:"hanging", name:"Hanging Planter", icon:"🌱", w:25, d:25, h:60, color:0x5a9a5a },
-    { id:"bonsai", name:"Bonsai Tree", icon:"🌳", w:30, d:30, h:35, color:0x4a7a3a },
-    { id:"cherry_branch", name:"Cherry Blossom", icon:"🌸", w:25, d:25, h:70, color:0xf8a8c0 },
-    { id:"eucalyptus", name:"Eucalyptus Vase", icon:"🌿", w:22, d:22, h:50, color:0x7aaa8a },
-    { id:"sunflower", name:"Sunflower Pot", icon:"🌻", w:22, d:22, h:55, color:0xf0c030 },
-    { id:"tulip", name:"Tulip Vase", icon:"🌷", w:20, d:20, h:40, color:0xf06080 },
-    { id:"hydrangea", name:"Hydrangea", icon:"💠", w:28, d:28, h:45, color:0x8090d0 },
-  ],
-  "🖼️ Wall Art": [
-    { id:"abstract", name:"Abstract Art", icon:"🖼️", w:80, d:4, h:60, color:0xf06080 },
-    { id:"landscape", name:"Landscape", icon:"🏞️", w:100, d:4, h:60, color:0x80b0d0 },
-    { id:"photo_frame", name:"Photo Frame", icon:"📸", w:30, d:4, h:40, color:0xd4b896 },
-    { id:"wall_clock", name:"Wall Clock", icon:"🕐", w:30, d:5, h:30, color:0xd4a860 },
-    { id:"neon_sign", name:"Neon Sign", icon:"✨", w:60, d:4, h:30, color:0xff70a0, price:"Custom" },
-    { id:"wallmirror", name:"Round Mirror", icon:"🔮", w:60, d:4, h:60, color:0xc8d8e0 },
-    { id:"gallery_wall", name:"Gallery Wall Set", icon:"🖼️", w:150, d:4, h:100, color:0xd4b896 },
-    { id:"macrame", name:"Macramé Hanging", icon:"🧶", w:40, d:4, h:80, color:0xf0e0d0 },
-    { id:"floating_shelf", name:"Floating Shelf", icon:"📖", w:80, d:20, h:4, color:0xc8a878 },
-    { id:"tapestry", name:"Wall Tapestry", icon:"🎨", w:100, d:3, h:80, color:0xd0a880 },
-    { id:"flower_painting", name:"Flower Painting", icon:"🌸", w:60, d:4, h:80, color:0xf0a0b0 },
-  ],
-  "💡 Lighting": [
-    { id:"floorlamp", name:"Floor Lamp", icon:"🪔", w:30, d:30, h:160, color:0xd4a860 },
-    { id:"tablelamp", name:"Table Lamp", icon:"💡", w:25, d:25, h:45, color:0xf0d8c0 },
-    { id:"pendant", name:"Pendant Light", icon:"💫", w:40, d:40, h:30, color:0xf0d8c0, price:"Ceiling" },
-    { id:"candle_set", name:"Candle Set", icon:"🕯️", w:20, d:20, h:20, color:0xf8e8d0 },
-    { id:"fairy_lights", name:"Fairy Lights", icon:"✨", w:150, d:4, h:4, color:0xfff0c0 },
-    { id:"sculpture", name:"Light Sculpture", icon:"🗿", w:20, d:20, h:40, color:0xf0e0d0, price:"Ceramic" },
-    { id:"lava_lamp", name:"Lava Lamp", icon:"🫧", w:12, d:12, h:40, color:0xff60a0 },
-    { id:"ring_light", name:"Ring Light", icon:"⭕", w:35, d:10, h:45, color:0xf0f0f0 },
-    { id:"moon_lamp", name:"Moon Lamp", icon:"🌙", w:18, d:18, h:18, color:0xf8e8c0, price:"3D printed" },
-    { id:"paper_lantern", name:"Paper Lantern", icon:"🏮", w:30, d:30, h:35, color:0xf8d0c0 },
-  ],
+// ── Labels ──
+let labelsOn=true;
+function toggleLabels(){labelsOn=!labelsOn;document.getElementById('labels-btn').classList.toggle('active',labelsOn);roomLabels.forEach(l=>l.visible=labelsOn);toast(labelsOn?'Labels ON':'Labels OFF')}
+
+/* ═══════════════════════════════════
+   CATALOG — all placeable items
+   ═══════════════════════════════════ */
+const CATALOG={
+"🛋️ Living":[
+  {id:"sofa",name:"L-Sofa",icon:"🛋️",w:220,d:90,h:80,color:0x8b4060},
+  {id:"sofa2",name:"2-Seater Sofa",icon:"🛋️",w:160,d:80,h:75,color:0x9b5070},
+  {id:"armchair",name:"Armchair",icon:"💺",w:80,d:80,h:85,color:0x8b4060},
+  {id:"coffeetable",name:"Coffee Table",icon:"☕",w:120,d:60,h:42,color:0xc8a882},
+  {id:"tvunit",name:"TV Console",icon:"📺",w:180,d:45,h:55,color:0xd4b896},
+  {id:"bookshelf",name:"Bookshelf",icon:"📚",w:90,d:35,h:200,color:0xc8a882},
+  {id:"rug",name:"Area Rug",icon:"🟫",w:200,d:150,h:2,color:0xc07060},
+  {id:"pooltable",name:"Pool Table Dining",icon:"🎱",w:240,d:130,h:80,color:0x2a5a3a,price:"Convertible",tag:"LUXURY"},
+  {id:"piano",name:"Grand Piano",icon:"🎹",w:150,d:155,h:100,color:0x1a1a1a},
+  {id:"ottoman",name:"Ottoman",icon:"🟤",w:60,d:60,h:40,color:0xc8a080},
+  {id:"sidetable",name:"Side Table",icon:"🔘",w:45,d:45,h:55,color:0xd4b896},
+  {id:"beanbag",name:"Bean Bag",icon:"🫘",w:80,d:80,h:60,color:0xf0b0c8},
+  {id:"recordplayer",name:"Record Player",icon:"🎵",w:45,d:35,h:30,color:0x8a6a50},
+  {id:"standing_desk",name:"Standing Desk",icon:"🖥️",w:140,d:70,h:110,color:0xd4b896,tag:"SMART"},
+  {id:"fireplace",name:"Electric Fireplace",icon:"🔥",w:100,d:30,h:80,color:0x4a3a2a},
+],
+"🍳 Kitchen":[
+  {id:"counter",name:"Kitchen Counter",icon:"🍳",w:240,d:65,h:90,color:0xf0e6d8},
+  {id:"island",name:"Kitchen Island",icon:"🏝️",w:150,d:80,h:90,color:0xe8dcd0},
+  {id:"fridge",name:"Smart Fridge",icon:"🧊",w:70,d:70,h:180,color:0xe0e0e0,tag:"SMART"},
+  {id:"dineset",name:"Dining Set",icon:"🍽️",w:140,d:80,h:75,color:0xc8a882},
+  {id:"barcart",name:"Bar Cart",icon:"🍷",w:70,d:40,h:85,color:0xd4a860},
+  {id:"espresso",name:"Espresso Machine",icon:"☕",w:35,d:40,h:40,color:0x888888,tag:"MAKER"},
+  {id:"coffeemaker",name:"Pour-Over Station",icon:"☕",w:40,d:30,h:45,color:0xc09060},
+],
+"🛏️ Bedroom":[
+  {id:"queenbed",name:"Queen Bed",icon:"🛏️",w:160,d:200,h:50,color:0xf0d0d8},
+  {id:"kingbed",name:"King Bed",icon:"🛏️",w:190,d:210,h:50,color:0xe0c0c8},
+  {id:"nightstand",name:"Nightstand",icon:"🪔",w:45,d:40,h:55,color:0xc8a882},
+  {id:"dresser",name:"Dresser",icon:"🪞",w:120,d:50,h:80,color:0xd4b896},
+  {id:"wardrobe",name:"Wardrobe",icon:"👗",w:180,d:60,h:220,color:0xe8dcd0},
+  {id:"vanity",name:"Vanity Table",icon:"💄",w:100,d:50,h:75,color:0xf8e8f0},
+  {id:"shoe_cabinet",name:"Shoe Cabinet",icon:"👟",w:90,d:35,h:110,color:0xc8a878},
+  {id:"clothes_rack",name:"Clothes Rack",icon:"🧥",w:100,d:40,h:170,color:0xd4a860},
+],
+"🚿 Bath":[
+  {id:"shower",name:"Shower Encl.",icon:"🚿",w:90,d:90,h:200,color:0xc8e0e8},
+  {id:"bathtub",name:"Bathtub",icon:"🛁",w:170,d:75,h:60,color:0xf8f8f8},
+  {id:"toilet",name:"Smart Toilet",icon:"🚽",w:40,d:65,h:75,color:0xf8f8f8,tag:"SMART"},
+  {id:"basin",name:"Basin",icon:"🪥",w:60,d:45,h:85,color:0xf0f0f0},
+  {id:"towel_warmer",name:"Towel Warmer",icon:"🧖",w:50,d:15,h:90,color:0xd4a860},
+],
+"🪞 Smart Home":[
+  {id:"smartmirror",name:"Lululemon Mirror",icon:"🪞",w:56,d:8,h:132,color:0x222222,tag:"SMART"},
+  {id:"vestaboard",name:"Vestaboard",icon:"📋",w:90,d:6,h:50,color:0x1a1a1a,tag:"SMART"},
+  {id:"smartspeaker",name:"Smart Speaker",icon:"🔊",w:20,d:20,h:30,color:0x303030},
+  {id:"robotvac",name:"Robot Vacuum",icon:"🤖",w:35,d:35,h:10,color:0xe0e0e0},
+  {id:"airpurifier",name:"Air Purifier",icon:"💨",w:30,d:30,h:60,color:0xf0f0f0},
+  {id:"projector",name:"4K Projector",icon:"🎬",w:30,d:25,h:12,color:0x333333},
+  {id:"smartblind",name:"Smart Blinds",icon:"🪟",w:120,d:6,h:150,color:0xf0e8d8,tag:"SMART"},
+  {id:"thermostat",name:"Smart Thermostat",icon:"🌡️",w:10,d:5,h:10,color:0xf0f0f0},
+  {id:"smart_lock",name:"Smart Lock",icon:"🔐",w:8,d:8,h:25,color:0x333333},
+],
+"⚙️ Makers Lab":[
+  {id:"printer3d",name:"3D Printer",icon:"🖨️",w:50,d:50,h:55,color:0x2a2a2a,tag:"MAKER"},
+  {id:"printer3d_resin",name:"Resin 3D Printer",icon:"🖨️",w:30,d:30,h:50,color:0x4040a0,tag:"MAKER"},
+  {id:"lasercutter",name:"Laser Cutter",icon:"⚡",w:80,d:60,h:25,color:0x3a3a5a,tag:"MAKER"},
+  {id:"cnc",name:"CNC Router",icon:"🔧",w:70,d:60,h:40,color:0x555555,tag:"MAKER"},
+  {id:"sewing",name:"Sewing Machine",icon:"🧵",w:40,d:25,h:30,color:0xf0d0d8},
+  {id:"workbench",name:"Workbench",icon:"🔨",w:150,d:70,h:90,color:0xa08060},
+  {id:"pegboard",name:"Pegboard Wall",icon:"📌",w:120,d:6,h:90,color:0xe8dcd0},
+],
+"🌿 Garden":[
+  {id:"vertical_garden",name:"Vertical Garden",icon:"🌿",w:90,d:25,h:180,color:0x3a8a3a,tag:"GREEN"},
+  {id:"hydro_tower",name:"Hydro Tower",icon:"🌱",w:40,d:40,h:160,color:0x4a9a5a,tag:"GREEN"},
+  {id:"herb_garden",name:"Smart Herb Garden",icon:"🌿",w:50,d:20,h:35,color:0x5aaa5a},
+  {id:"aquaponics",name:"Aquaponics Tank",icon:"🐟",w:80,d:40,h:70,color:0x80c0e0,tag:"GREEN"},
+  {id:"compost",name:"Smart Composter",icon:"♻️",w:35,d:35,h:45,color:0x6a8a4a},
+],
+"🌸 Flowers":[
+  {id:"vase_rose",name:"Rose Bouquet",icon:"🌹",w:25,d:25,h:40,color:0xe84070},
+  {id:"vase_peony",name:"Peony Vase",icon:"🌸",w:30,d:30,h:45,color:0xf8a0c0},
+  {id:"vase_mixed",name:"Mixed Bouquet",icon:"💐",w:30,d:30,h:50,color:0xf0b870},
+  {id:"orchid",name:"Orchid Pot",icon:"🪻",w:20,d:20,h:55,color:0xd070d0},
+  {id:"monstera",name:"Monstera",icon:"🌿",w:50,d:50,h:120,color:0x3a8a3a},
+  {id:"fiddle",name:"Fiddle Leaf Fig",icon:"🌳",w:45,d:45,h:150,color:0x4a9a4a},
+  {id:"bonsai",name:"Bonsai Tree",icon:"🌳",w:30,d:30,h:35,color:0x4a7a3a},
+  {id:"cherry_branch",name:"Cherry Blossom",icon:"🌸",w:25,d:25,h:70,color:0xf8a8c0},
+],
+"🖼️ Decor":[
+  {id:"abstract",name:"Abstract Art",icon:"🖼️",w:80,d:4,h:60,color:0xf06080},
+  {id:"wallmirror",name:"Round Mirror",icon:"🔮",w:60,d:4,h:60,color:0xc8d8e0},
+  {id:"wall_clock",name:"Wall Clock",icon:"🕐",w:30,d:5,h:30,color:0xd4a860},
+  {id:"neon_sign",name:"Neon Sign",icon:"✨",w:60,d:4,h:30,color:0xff70a0},
+  {id:"macrame",name:"Macramé",icon:"🧶",w:40,d:4,h:80,color:0xf0e0d0},
+  {id:"floorlamp",name:"Floor Lamp",icon:"🪔",w:30,d:30,h:160,color:0xd4a860},
+  {id:"tablelamp",name:"Table Lamp",icon:"💡",w:25,d:25,h:45,color:0xf0d8c0},
+  {id:"candle_set",name:"Candle Set",icon:"🕯️",w:20,d:20,h:20,color:0xf8e8d0},
+  {id:"fairy_lights",name:"Fairy Lights",icon:"✨",w:150,d:4,h:4,color:0xfff0c0},
+],
 };
 
-// ─── Favourites ───
-let favourites = [];
-try { favourites = JSON.parse(localStorage.getItem('rajah162_favs')) || []; } catch(e) { favourites = []; }
-
-function toggleFav(itemId, event) {
-  if(event) { event.stopPropagation(); event.preventDefault(); }
-  const idx = favourites.indexOf(itemId);
-  if(idx >= 0) favourites.splice(idx, 1);
-  else favourites.push(itemId);
-  localStorage.setItem('rajah162_favs', JSON.stringify(favourites));
-  buildFavourites();
-  renderItems();
-}
-function buildFavourites() {
-  CATALOG["⭐ Favourites"] = [];
-  Object.entries(CATALOG).forEach(([cat, items]) => {
-    if(cat === "⭐ Favourites") return;
-    items.forEach(it => {
-      if(favourites.includes(it.id)) CATALOG["⭐ Favourites"].push(it);
-    });
-  });
-}
-buildFavourites();
-
-// ─── Wall & floor palettes ───
-const WALL_COLORS = [
-  { name:"Blush Pink", hex:"#f5c6d0" },
-  { name:"Rose", hex:"#e8a0b4" },
-  { name:"Cream", hex:"#f5ead6" },
-  { name:"Warm White", hex:"#f8f4ee" },
-  { name:"Sage", hex:"#c8d8c0" },
-  { name:"Lavender", hex:"#d8c8e0" },
-  { name:"Sky", hex:"#c0d8e8" },
-  { name:"Terracotta", hex:"#d4a080" },
-  { name:"Grey", hex:"#d8d4d0" },
-  { name:"Charcoal", hex:"#5a5650" },
-  { name:"Mint", hex:"#c8e8d0" },
-  { name:"Peach", hex:"#f8d8c0" },
+const WALL_COLORS=[
+  {n:"Blush Pink",h:"#f5c6d0"},{n:"Rose",h:"#e8a0b4"},{n:"Cream",h:"#f5ead6"},
+  {n:"Warm White",h:"#f8f4ee"},{n:"Sage",h:"#c8d8c0"},{n:"Lavender",h:"#d8c8e0"},
+  {n:"Sky",h:"#c0d8e8"},{n:"Terracotta",h:"#d4a080"},{n:"Grey",h:"#d8d4d0"},
+  {n:"Charcoal",h:"#5a5650"},{n:"Mint",h:"#c8e8d0"},{n:"Peach",h:"#f8d8c0"},
+];
+const FLOOR_COLORS=[
+  {n:"Light Oak",h:"#e0c8a0"},{n:"Honey",h:"#d4aa70"},{n:"Walnut",h:"#9a7050"},
+  {n:"White Wash",h:"#ece4d8"},{n:"Herringbone",h:"#c8a878"},{n:"Grey Stone",h:"#b8b0a8"},
+  {n:"Marble",h:"#e8e4e0"},{n:"Concrete",h:"#c0bab4"},{n:"Dark Ebony",h:"#4a3a2a"},
+];
+const PRESETS=[
+  {n:"Warm Minimal",w:"#f8f4ee",f:"#e0c8a0"},{n:"Japandi",w:"#f5ead6",f:"#c8a878"},
+  {n:"Pink Dream",w:"#f5c6d0",f:"#ece4d8"},{n:"Sage & Stone",w:"#c8d8c0",f:"#b8b0a8"},
+  {n:"Moody",w:"#5a5650",f:"#9a7050"},{n:"Lavender Haze",w:"#d8c8e0",f:"#e8e4e0"},
+  {n:"Coastal",w:"#c0d8e8",f:"#ece4d8"},
 ];
 
-const FLOOR_COLORS = [
-  { name:"Light Oak", hex:"#e0c8a0" },
-  { name:"Honey", hex:"#d4aa70" },
-  { name:"Walnut", hex:"#9a7050" },
-  { name:"White Wash", hex:"#ece4d8" },
-  { name:"Herringbone", hex:"#c8a878" },
-  { name:"Grey Stone", hex:"#b8b0a8" },
-  { name:"Marble", hex:"#e8e4e0" },
-  { name:"Concrete", hex:"#c0bab4" },
-  { name:"Dark Ebony", hex:"#4a3a2a" },
-  { name:"Bamboo", hex:"#d8c090" },
-];
+/* ═══════════════════════════════════
+   THREE.JS SETUP
+   ═══════════════════════════════════ */
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0xf5ebe3);
+scene.fog=new THREE.Fog(0xf5ebe3,3000,6000);
 
-const PRESETS = [
-  { name:"Warm Minimal", wall:"#f8f4ee", floor:"#e0c8a0" },
-  { name:"Japandi", wall:"#f5ead6", floor:"#c8a878" },
-  { name:"Pink Dream", wall:"#f5c6d0", floor:"#ece4d8" },
-  { name:"Sage & Stone", wall:"#c8d8c0", floor:"#b8b0a8" },
-  { name:"Moody", wall:"#5a5650", floor:"#9a7050" },
-  { name:"Lavender Haze", wall:"#d8c8e0", floor:"#e8e4e0" },
-  { name:"Coastal", wall:"#c0d8e8", floor:"#ece4d8" },
-  { name:"Terracotta Garden", wall:"#f5ead6", floor:"#d4a080" },
-];
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true});
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 
-// ─── Three.js setup ───
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xf5ebe3);
-scene.fog = new THREE.Fog(0xf5ebe3, 2000, 4000);
+let aspect=1;
 
-const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('c'), antialias: true });
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// Perspective camera for walk mode, ortho for orbit/top
+const perspCam=new THREE.PerspectiveCamera(70,1,.5,5000);
+perspCam.position.set(0,160,0);
+const orthoCam=new THREE.OrthographicCamera(-600,600,600,-600,-2000,5000);
+let camera=orthoCam;
 
-const frustum = 600;
-let aspect = 1;
-const camera = new THREE.OrthographicCamera(-frustum*aspect, frustum*aspect, frustum, -frustum, -2000, 4000);
-camera.position.set(800, 800, 800);
-camera.lookAt(0, 0, 0);
-
-const ambient = new THREE.AmbientLight(0xffeedd, 0.6);
-scene.add(ambient);
-const dirLight = new THREE.DirectionalLight(0xfff5ee, 0.8);
-dirLight.position.set(500, 1000, 500);
-dirLight.castShadow = true;
-dirLight.shadow.mapSize.set(2048, 2048);
-dirLight.shadow.camera.left = -800;
-dirLight.shadow.camera.right = 800;
-dirLight.shadow.camera.top = 800;
-dirLight.shadow.camera.bottom = -800;
+const ambient=new THREE.AmbientLight(0xffeedd,.55);scene.add(ambient);
+const dirLight=new THREE.DirectionalLight(0xfff5ee,.75);
+dirLight.position.set(500,1200,400);dirLight.castShadow=true;
+dirLight.shadow.mapSize.set(2048,2048);
+const sc=dirLight.shadow.camera;sc.left=-1200;sc.right=1200;sc.top=1200;sc.bottom=-1200;sc.near=1;sc.far=3000;
 scene.add(dirLight);
-const fillLight = new THREE.DirectionalLight(0xeeddff, 0.3);
-fillLight.position.set(-400, 600, -300);
-scene.add(fillLight);
+scene.add(new THREE.DirectionalLight(0xeeddff,.25).translateX(-400).translateY(600).translateZ(-300));
 
-// ─── Room geometry ───
-const ROOM_W = 900;
-const ROOM_D = 700;
-const WALL_H = 270;
-const WALL_T = 12;
+/* ═══════════════════════════════════
+   HDB 4-ROOM FLAT GEOMETRY
+   Accurate layout based on HDB brochure plan.
+   Origin (0,0,0) = centre of the flat.
+   ═══════════════════════════════════ */
+const WT=12; // wall thickness
+const CH=270; // ceiling height
+let wallColor=new THREE.Color(0xf5c6d0);
+let floorColor=new THREE.Color(0xe0c8a0);
+const wallMat=new THREE.MeshLambertMaterial({color:wallColor});
+const wallInner=new THREE.MeshLambertMaterial({color:0xf8e8ec});
+const floorMat=new THREE.MeshLambertMaterial({color:floorColor});
+const ceilMat=new THREE.MeshLambertMaterial({color:0xf8f4f0});
+const tileMat=new THREE.MeshLambertMaterial({color:0xd8d4d0});
+const doorFrameMat=new THREE.MeshLambertMaterial({color:0xc8a878});
+const doorMat=new THREE.MeshLambertMaterial({color:0x8b6040});
+const windowMat=new THREE.MeshBasicMaterial({color:0xd8f0ff,transparent:true,opacity:.45});
+const frameMat=new THREE.MeshLambertMaterial({color:0xf0f0f0});
 
-let wallColor = new THREE.Color(0xf5c6d0);
-let floorColor = new THREE.Color(0xe0c8a0);
-const wallMat = new THREE.MeshLambertMaterial({ color: wallColor });
-const wallInnerMat = new THREE.MeshLambertMaterial({ color: 0xf8e8ec });
-const floorMat = new THREE.MeshLambertMaterial({ color: floorColor });
+const roomGroup=new THREE.Group();scene.add(roomGroup);
+const doorGroup=new THREE.Group();scene.add(doorGroup);
+const roomLabels=[];
 
-const roomGroup = new THREE.Group();
-scene.add(roomGroup);
+/*  Flat layout (approx cm, plan view — Y is up in 3D, Z is depth on screen)
+    Origin at flat centre.
 
-function buildRoom() {
-  while(roomGroup.children.length) roomGroup.remove(roomGroup.children[0]);
+    +----------+-----+------+---------+
+    |          | Kit |Yard  |         |
+    | Living   |     |      |         |
+    | Dining   +-----+------+ Ent/    |
+    |          |  Corridor   | Corr   |
+    +----+-----+------+-----+---------+
+    | B3 |Common| MB  | Master|        |
+    |    | Bath | ath | Bed   |        |
+    +----+------+-----+------+--------+
+              (approximate)
+*/
+
+// Room definitions: {name, x, z, w, d} — x,z = centre, w = width(X), d = depth(Z)
+const ROOMS=[
+  {name:"Living / Dining",x:-180,z:-100,w:540,d:420,floor:'wood'},
+  {name:"Kitchen",x:180,z:-260,w:240,d:180,floor:'tile'},
+  {name:"Service Yard",x:350,z:-260,w:100,d:180,floor:'tile'},
+  {name:"Entrance",x:300,z:-60,w:200,d:180,floor:'tile'},
+  {name:"Corridor",x:80,z:80,w:560,d:80,floor:'wood'},
+  {name:"Master Bedroom",x:200,z:230,w:340,d:260,floor:'wood'},
+  {name:"Bedroom 2",x:-120,z:230,w:280,d:260,floor:'wood'},
+  {name:"Bedroom 3",x:-370,z:230,w:220,d:260,floor:'wood'},
+  {name:"Common Bath",x:-60,z:230,w:160,d:120,floor:'tile'},
+  {name:"Master Bath",x:320,z:310,w:120,d:120,floor:'tile'},
+];
+
+// Walls — each is a box: {x,z,w,d,h,outer}
+const WALLS=[
+  // ── Outer walls ──
+  {x:0,z:-350,w:900,d:WT,h:CH,o:1}, // north
+  {x:0,z:360,w:900,d:WT,h:CH,o:1},  // south
+  {x:-450,z:0,w:WT,d:720,h:CH,o:1}, // west
+  {x:450,z:0,w:WT,d:720,h:CH,o:1},  // east
+
+  // ── Kitchen / Living divider ──
+  {x:60,z:-200,w:WT,d:120,h:CH,o:0},  // partial wall
+  {x:60,z:-310,w:WT,d:80,h:CH,o:0},
+
+  // ── Service yard wall ──
+  {x:300,z:-200,w:WT,d:120,h:CH,o:0},
+  {x:300,z:-310,w:WT,d:80,h:CH,o:0},
+  {x:380,z:-170,w:140,d:WT,h:CH,o:0}, // yard south wall
+
+  // ── Entrance / corridor walls ──
+  {x:300,z:-60,w:WT,d:60,h:CH,o:0},
+  {x:200,z:30,w:200,d:WT,h:CH,o:0},  // corridor south partial
+
+  // ── Bedroom walls ──
+  {x:-260,z:170,w:WT,d:100,h:CH,o:0},  // B3/corridor
+  {x:-260,z:290,w:WT,d:140,h:CH,o:0},  // B3/B2 divider
+  {x:30,z:290,w:WT,d:140,h:CH,o:0},   // B2/MBath or corridor
+  {x:30,z:170,w:WT,d:100,h:CH,o:0},
+
+  // ── Bath walls ──
+  {x:-130,z:170,w:WT,d:60,h:CH,o:0},  // common bath west
+  {x:-130,z:290,w:WT,d:60,h:CH,o:0},
+  {x:-60,z:230,w:140,d:WT,h:CH,o:0},  // common bath south (partial)
+
+  // ── Master bath ──
+  {x:260,z:250,w:WT,d:100,h:CH,o:0},
+  {x:320,z:250,w:120,d:WT,h:CH,o:0},
+
+  // ── Master bed / corridor ──
+  {x:200,z:100,w:340,d:WT,h:CH,o:0},
+  {x:-180,z:100,w:280,d:WT,h:CH,o:0},
+];
+
+// Doors — {x, z, w, angle, open}
+const DOORS_DEF=[
+  {name:"Main Door",x:400,z:-60,w:90,rot:0,open:false,main:true},
+  {name:"Kitchen",x:60,z:-250,w:80,rot:Math.PI/2,open:true},
+  {name:"Master Bed",x:140,z:100,w:80,rot:0,open:false},
+  {name:"Bedroom 2",x:-60,z:100,w:80,rot:0,open:false},
+  {name:"Bedroom 3",x:-320,z:100,w:80,rot:0,open:false},
+  {name:"Common Bath",x:-130,z:230,w:70,rot:Math.PI/2,open:false},
+  {name:"Master Bath",x:260,z:300,w:70,rot:Math.PI/2,open:false},
+];
+
+// Windows — {x, z, w, h, rot}
+const WINDOWS_DEF=[
+  {x:-250,z:-350,w:140,h:120,r:0}, // living north
+  {x:-450,z:-150,w:120,h:120,r:Math.PI/2}, // living west
+  {x:-450,z:230,w:100,h:100,r:Math.PI/2}, // B3 west
+  {x:-120,z:360,w:100,h:100,r:0}, // B2 south
+  {x:200,z:360,w:120,h:100,r:0}, // master south
+  {x:450,z:230,w:100,h:100,r:Math.PI/2}, // master east
+  {x:450,z:-260,w:80,h:80,r:Math.PI/2}, // yard east
+  {x:180,z:-350,w:80,h:80,r:0}, // kitchen north
+];
+
+const doors=[];
+
+function buildFlat(){
+  while(roomGroup.children.length)roomGroup.remove(roomGroup.children[0]);
+  while(doorGroup.children.length)doorGroup.remove(doorGroup.children[0]);
+  roomLabels.length=0;
+
   wallMat.color.copy(wallColor);
-  const lighterWall = wallColor.clone();
-  lighterWall.lerp(new THREE.Color(0xffffff), 0.15);
-  wallInnerMat.color.copy(lighterWall);
+  const lw=wallColor.clone().lerp(new THREE.Color(0xffffff),.15);
+  wallInner.color.copy(lw);
   floorMat.color.copy(floorColor);
 
-  const floor = new THREE.Mesh(new THREE.BoxGeometry(ROOM_W, 4, ROOM_D), floorMat);
-  floor.position.y = -2;
-  floor.receiveShadow = true;
-  roomGroup.add(floor);
+  // Ground plane
+  const gnd=new THREE.Mesh(new THREE.PlaneGeometry(5000,5000),new THREE.MeshLambertMaterial({color:0xede2d8}));
+  gnd.rotation.x=-Math.PI/2;gnd.position.y=-2;gnd.receiveShadow=true;roomGroup.add(gnd);
 
-  const lineGeo = new THREE.BufferGeometry();
-  const pts = [];
-  for(let x = -ROOM_W/2; x <= ROOM_W/2; x += 30) {
-    pts.push(x, 1, -ROOM_D/2, x, 1, ROOM_D/2);
-  }
-  lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
-  const lineMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.04 });
-  roomGroup.add(new THREE.LineSegments(lineGeo, lineMat));
+  // Room floors
+  ROOMS.forEach(r=>{
+    const mat=r.floor==='tile'?tileMat:floorMat;
+    const fl=new THREE.Mesh(new THREE.BoxGeometry(r.w,4,r.d),mat);
+    fl.position.set(r.x,0,r.z);fl.receiveShadow=true;roomGroup.add(fl);
 
-  const walls = [
-    { w: ROOM_W, h: WALL_H, d: WALL_T, x: 0, y: WALL_H/2, z: -ROOM_D/2, outer: true },
-    { w: WALL_T, h: WALL_H, d: ROOM_D, x: -ROOM_W/2, y: WALL_H/2, z: 0, outer: true },
-    { w: WALL_T, h: WALL_H * 0.4, d: ROOM_D, x: ROOM_W/2, y: WALL_H*0.2, z: 0, outer: false },
-    { w: ROOM_W, h: WALL_H * 0.4, d: WALL_T, x: 0, y: WALL_H*0.2, z: ROOM_D/2, outer: false },
-  ];
-  walls.forEach(w => {
-    const geo = new THREE.BoxGeometry(w.w, w.h, w.d);
-    const materials = [
-      w.outer ? wallMat : wallInnerMat, w.outer ? wallMat : wallInnerMat,
-      wallInnerMat, wallInnerMat,
-      w.outer ? wallMat : wallInnerMat, w.outer ? wallMat : wallInnerMat,
-    ];
-    const mesh = new THREE.Mesh(geo, materials);
-    mesh.position.set(w.x, w.y, w.z);
-    mesh.castShadow = true; mesh.receiveShadow = true;
+    // Ceiling (translucent so orbit view works)
+    const ceil=new THREE.Mesh(new THREE.BoxGeometry(r.w,4,r.d),new THREE.MeshLambertMaterial({color:0xf8f4f0,transparent:true,opacity:.3}));
+    ceil.position.set(r.x,CH,r.z);roomGroup.add(ceil);
+
+    // Floor grid lines
+    const pts=[];
+    for(let lx=r.x-r.w/2;lx<=r.x+r.w/2;lx+=30){pts.push(lx,1,r.z-r.d/2,lx,1,r.z+r.d/2)}
+    const lg=new THREE.BufferGeometry();
+    lg.setAttribute('position',new THREE.Float32BufferAttribute(pts,3));
+    roomGroup.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({color:0,transparent:true,opacity:.03})));
+
+    // Room label (3D text sprite)
+    const canvas=document.createElement('canvas');canvas.width=256;canvas.height=64;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='rgba(200,120,150,0.5)';ctx.font='bold 20px Quicksand, sans-serif';
+    ctx.textAlign='center';ctx.fillText(r.name,128,38);
+    const tex=new THREE.CanvasTexture(canvas);
+    const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,transparent:true}));
+    sprite.scale.set(200,50,1);sprite.position.set(r.x,5,r.z);
+    sprite.visible=labelsOn;
+    roomGroup.add(sprite);roomLabels.push(sprite);
+  });
+
+  // Walls
+  WALLS.forEach(w=>{
+    const geo=new THREE.BoxGeometry(w.w,w.h,w.d);
+    const m=w.o?wallMat:wallInner;
+    const mesh=new THREE.Mesh(geo,m);
+    mesh.position.set(w.x,w.h/2,w.z);
+    mesh.castShadow=true;mesh.receiveShadow=true;
     roomGroup.add(mesh);
   });
 
-  const partitions = [
-    { w: 350, d: WALL_T, x: -ROOM_W/2+175, z: -80, h: WALL_H },
-    { w: WALL_T, d: 180, x: -ROOM_W/2+350, z: -ROOM_D/2+90, h: WALL_H },
-  ];
-  partitions.forEach(p => {
-    const geo = new THREE.BoxGeometry(p.w, p.h, p.d);
-    const mesh = new THREE.Mesh(geo, wallInnerMat);
-    mesh.position.set(p.x, p.h/2, p.z);
-    mesh.castShadow = true;
-    roomGroup.add(mesh);
-  });
-
-  const windowPositions = [
-    { x: -200, y: 150, z: -ROOM_D/2+1, rY: 0, w: 120, h: 100 },
-    { x: 200, y: 150, z: -ROOM_D/2+1, rY: 0, w: 120, h: 100 },
-    { x: -ROOM_W/2+1, y: 150, z: -150, rY: Math.PI/2, w: 100, h: 100 },
-  ];
-  const windowMat = new THREE.MeshBasicMaterial({ color: 0xd8f0ff, transparent: true, opacity: 0.5 });
-  const frameMat = new THREE.MeshLambertMaterial({ color: 0xf0f0f0 });
-  windowPositions.forEach(wp => {
-    const glass = new THREE.Mesh(new THREE.PlaneGeometry(wp.w, wp.h), windowMat);
-    glass.position.set(wp.x, wp.y, wp.z); glass.rotation.y = wp.rY;
-    roomGroup.add(glass);
-    const frameT = 4;
-    [{ w: wp.w+8, h: frameT, x:0, y: wp.h/2 },
-     { w: wp.w+8, h: frameT, x:0, y: -wp.h/2 },
-     { w: frameT, h: wp.h, x: -wp.w/2, y: 0 },
-     { w: frameT, h: wp.h, x: wp.w/2, y: 0 }].forEach(f => {
-      const fm = new THREE.Mesh(new THREE.BoxGeometry(f.w, f.h, 6), frameMat);
-      fm.position.set(wp.x + (wp.rY ? 0 : f.x), wp.y + f.y, wp.z + (wp.rY ? f.x : 0));
-      fm.rotation.y = wp.rY; roomGroup.add(fm);
+  // Windows
+  WINDOWS_DEF.forEach(wn=>{
+    const glass=new THREE.Mesh(new THREE.PlaneGeometry(wn.w,wn.h),windowMat);
+    glass.position.set(wn.x,CH/2+30,wn.z);glass.rotation.y=wn.r;roomGroup.add(glass);
+    [{w:wn.w+8,h:4,x:0,y:wn.h/2},{w:wn.w+8,h:4,x:0,y:-wn.h/2},{w:4,h:wn.h,x:-wn.w/2,y:0},{w:4,h:wn.h,x:wn.w/2,y:0}].forEach(f=>{
+      const fm=new THREE.Mesh(new THREE.BoxGeometry(f.w,f.h,6),frameMat);
+      fm.position.set(wn.x+(wn.r?0:f.x),CH/2+30+f.y,wn.z+(wn.r?f.x:0));
+      fm.rotation.y=wn.r;roomGroup.add(fm);
     });
   });
 
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(4000, 4000),
-    new THREE.MeshLambertMaterial({ color: 0xede2d8 })
-  );
-  ground.rotation.x = -Math.PI/2; ground.position.y = -3;
-  ground.receiveShadow = true; roomGroup.add(ground);
+  // Doors
+  doors.length=0;
+  DOORS_DEF.forEach(dd=>{
+    const pivot=new THREE.Group();
+    pivot.position.set(dd.x,0,dd.z);
+    pivot.rotation.y=dd.rot;
+    // door panel
+    const panel=new THREE.Mesh(new THREE.BoxGeometry(dd.w,CH-20,6),dd.main?new THREE.MeshLambertMaterial({color:0x8b5530}):doorMat);
+    panel.position.set(dd.w/2,CH/2-10,0);panel.castShadow=true;
+    pivot.add(panel);
+    // door frame
+    const ft=4;
+    [{w:dd.w+12,h:ft,x:dd.w/2,y:CH-10},{w:ft,h:CH-10,x:0,y:CH/2-5},{w:ft,h:CH-10,x:dd.w+4,y:CH/2-5}].forEach(f=>{
+      const fm=new THREE.Mesh(new THREE.BoxGeometry(f.w,f.h,10),doorFrameMat);
+      fm.position.set(f.x,f.y,0);roomGroup.add(fm);
+      // offset by door position & rotation
+      fm.position.applyAxisAngle(new THREE.Vector3(0,1,0),dd.rot);
+      fm.position.x+=dd.x;fm.position.z+=dd.z;fm.rotation.y=dd.rot;
+    });
+
+    const doorObj={group:pivot,def:dd,open:dd.open,angle:dd.open?-Math.PI/2:0};
+    pivot.rotation.y=dd.rot;
+    if(dd.open)panel.rotation.y=-Math.PI/2;
+    doorGroup.add(pivot);
+    doors.push(doorObj);
+  });
+
+  // Main door handle
+  if(doors[0]){
+    const handle=new THREE.Mesh(new THREE.BoxGeometry(3,12,3),new THREE.MeshLambertMaterial({color:0x333333}));
+    handle.position.set(15,100,4);doors[0].group.children[0].add(handle);
+  }
 }
-buildRoom();
+buildFlat();
 
-// ─── Furniture mesh builder ───
-const placedItems = [];
-let selectedItem = null;
+function toggleAllDoors(){
+  const anyOpen=doors.some(d=>d.open);
+  doors.forEach(d=>{
+    d.open=!anyOpen;
+    d.angle=d.open?-Math.PI/2:0;
+    d.group.children[0].rotation.y=d.angle;
+  });
+  toast(anyOpen?'All doors closed 🚪':'All doors opened 🚪');
+}
 
-function createFurnitureMesh(item) {
-  const group = new THREE.Group();
-  group.userData = { ...item, placed: true };
+function toggleDoor(doorObj){
+  doorObj.open=!doorObj.open;
+  doorObj.angle=doorObj.open?-Math.PI/2:0;
+  doorObj.group.children[0].rotation.y=doorObj.angle;
+  toast(doorObj.def.name+' '+(doorObj.open?'opened':'closed'));
+}
 
-  const mainColor = new THREE.Color(item.color);
-  const mat = new THREE.MeshLambertMaterial({ color: mainColor });
-  const matDark = new THREE.MeshLambertMaterial({ color: mainColor.clone().multiplyScalar(0.8) });
-  const matLight = new THREE.MeshLambertMaterial({ color: mainColor.clone().lerp(new THREE.Color(0xffffff), 0.3) });
-  const w = item.w, d = item.d, h = item.h;
+/* ═══════════════════════════════════
+   FURNITURE BUILDER
+   ═══════════════════════════════════ */
+const placedItems=[];
+let selectedItem=null;
 
-  // ── Sofas ──
-  if(item.id === 'sofa' || item.id === 'sofa2') {
-    const seat = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.4, d), mat);
-    seat.position.y = h*0.2; seat.castShadow = true; group.add(seat);
-    const back = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.5, 12), matDark);
-    back.position.set(0, h*0.55, -d/2+6); back.castShadow = true; group.add(back);
-    [-1,1].forEach(s => {
-      const arm = new THREE.Mesh(new THREE.BoxGeometry(12, h*0.35, d*0.8), matDark);
-      arm.position.set(s*(w/2-6), h*0.38, -d*0.05); arm.castShadow = true; group.add(arm);
-    });
-    for(let i=0; i<Math.floor(w/80); i++) {
-      const cushion = new THREE.Mesh(new THREE.BoxGeometry(65, 8, d*0.6), matLight);
-      cushion.position.set(-w/2+55+i*80, h*0.44, 5); cushion.castShadow = true; group.add(cushion);
+function mkMesh(item){
+  const g=new THREE.Group();g.userData={...item,placed:true};
+  const mc=new THREE.Color(item.color);
+  const m=new THREE.MeshLambertMaterial({color:mc});
+  const md=new THREE.MeshLambertMaterial({color:mc.clone().multiplyScalar(.8)});
+  const ml=new THREE.MeshLambertMaterial({color:mc.clone().lerp(new THREE.Color(0xffffff),.3)});
+  const w=item.w,d=item.d,h=item.h;
+
+  if(item.id==='sofa'||item.id==='sofa2'){
+    const seat=new THREE.Mesh(new THREE.BoxGeometry(w,h*.4,d),m);seat.position.y=h*.2;seat.castShadow=true;g.add(seat);
+    const back=new THREE.Mesh(new THREE.BoxGeometry(w,h*.5,12),md);back.position.set(0,h*.55,-d/2+6);back.castShadow=true;g.add(back);
+    [-1,1].forEach(s=>{const arm=new THREE.Mesh(new THREE.BoxGeometry(12,h*.35,d*.8),md);arm.position.set(s*(w/2-6),h*.38,0);arm.castShadow=true;g.add(arm)});
+  } else if(item.id.includes('bed')){
+    const fr=new THREE.Mesh(new THREE.BoxGeometry(w,h*.4,d),md);fr.position.y=h*.2;fr.castShadow=true;g.add(fr);
+    const mt=new THREE.Mesh(new THREE.BoxGeometry(w-8,h*.3,d-8),ml);mt.position.y=h*.55;mt.castShadow=true;g.add(mt);
+    const hb=new THREE.Mesh(new THREE.BoxGeometry(w,h*.7,8),m);hb.position.set(0,h*.55,-d/2+4);hb.castShadow=true;g.add(hb);
+    [-1,1].forEach(s=>{const p=new THREE.Mesh(new THREE.BoxGeometry(50,12,35),new THREE.MeshLambertMaterial({color:0xffffff}));p.position.set(s*40,h*.75,-d/2+35);p.castShadow=true;g.add(p)});
+  } else if(item.id==='pooltable'){
+    [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz])=>{const l=new THREE.Mesh(new THREE.BoxGeometry(12,h*.75,12),md);l.position.set(sx*(w/2-20),h*.375,sz*(d/2-20));l.castShadow=true;g.add(l)});
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w,8,d),m),{position:new THREE.Vector3(0,h*.78,0),castShadow:true}));
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w-20,2,d-20),new THREE.MeshLambertMaterial({color:0x1a6a2a})),{position:new THREE.Vector3(0,h*.82,0)}));
+  } else if(item.id==='smartmirror'){
+    const fr=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshLambertMaterial({color:0x222222}));fr.position.y=h/2+20;fr.castShadow=true;g.add(fr);
+    g.add(Object.assign(new THREE.Mesh(new THREE.PlaneGeometry(w-8,h-8),new THREE.MeshBasicMaterial({color:0x88bbdd,transparent:true,opacity:.5})),{position:new THREE.Vector3(0,h/2+20,d/2+.5)}));
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w*.5,20,d+8),new THREE.MeshLambertMaterial({color:0x1a1a1a})),{position:new THREE.Vector3(0,10,0),castShadow:true}));
+  } else if(item.id==='vestaboard'){
+    const bd=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshLambertMaterial({color:0x1a1a1a}));bd.position.y=h/2+120;bd.castShadow=true;g.add(bd);
+    const lc=[0xf0c040,0xf06040,0x40a0f0,0xf0f0f0,0x40c080];
+    for(let r=0;r<3;r++)for(let c=0;c<6;c++){const t=new THREE.Mesh(new THREE.BoxGeometry(10,10,1),new THREE.MeshBasicMaterial({color:lc[(r*6+c)%lc.length]}));t.position.set(-35+c*14,130+18-r*14,d/2+.5);g.add(t)}
+  } else if(item.id==='piano'){
+    const bd=new THREE.Mesh(new THREE.BoxGeometry(w,h*.4,d),m);bd.position.y=h*.5;bd.castShadow=true;g.add(bd);
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w,4,d),md),{position:new THREE.Vector3(0,h*.72,0),castShadow:true}));
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w*.8,3,15),new THREE.MeshLambertMaterial({color:0xf8f4f0})),{position:new THREE.Vector3(0,h*.72,d/2-10)}));
+  } else if(item.id==='printer3d'){
+    const fm=new THREE.MeshLambertMaterial({color:0x2a2a2a}),ac=new THREE.MeshLambertMaterial({color:0xf08050});
+    [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz])=>{const r=new THREE.Mesh(new THREE.BoxGeometry(4,h,4),fm);r.position.set(sx*(w/2-4),h/2,sz*(d/2-4));r.castShadow=true;g.add(r)});
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w-4,4,d-4),fm),{position:new THREE.Vector3(0,2,0)}));
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w-8,6,6),ac),{position:new THREE.Vector3(0,h*.65,0)}));
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w,4,d),fm),{position:new THREE.Vector3(0,h,0)}));
+  } else if(item.id==='vertical_garden'){
+    const fr=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshLambertMaterial({color:0x5a5a5a}));fr.position.y=h/2;fr.castShadow=true;g.add(fr);
+    for(let r=0;r<6;r++)for(let c=0;c<3;c++){const p=new THREE.Mesh(new THREE.SphereGeometry(10+Math.random()*4,6,5),new THREE.MeshLambertMaterial({color:new THREE.Color().setHSL(.25+Math.random()*.15,.5+Math.random()*.3,.35+Math.random()*.2)}));p.scale.set(1.3,.7,1);p.position.set(-25+c*25,20+r*26,d/2+3);p.castShadow=true;g.add(p)}
+  } else if(item.id.includes('vase')||item.id==='orchid'||item.id==='cherry_branch'){
+    const vH=h*.45,vR=Math.min(w,d)*.35;
+    const vs=new THREE.Mesh(new THREE.CylinderGeometry(vR*.7,vR,vH,12),new THREE.MeshLambertMaterial({color:0xe8c0a8}));
+    vs.position.y=vH/2;vs.castShadow=true;g.add(vs);
+    const fc=[0xf8a0c0,0xe84070,0xf0b870,0xd070d0,0xf8a8c0];
+    for(let i=0;i<7;i++){const a=(i/7)*Math.PI*2+Math.random()*.5,r=3+Math.random()*8,fh=vH+5+Math.random()*(h-vH-8);
+      g.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(.8,.8,fh-vH*.5,4),new THREE.MeshLambertMaterial({color:0x4a8a4a})),{position:new THREE.Vector3(Math.cos(a)*r,vH*.7+(fh-vH*.5)/2,Math.sin(a)*r)}));
+      const bl=new THREE.Mesh(new THREE.SphereGeometry(4+Math.random()*4,8,6),new THREE.MeshLambertMaterial({color:fc[i%fc.length]}));bl.position.set(Math.cos(a)*r,fh,Math.sin(a)*r);bl.castShadow=true;g.add(bl);
     }
-  }
-  // ── Beds ──
-  else if(item.id.includes('bed')) {
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.4, d), matDark);
-    frame.position.y = h*0.2; frame.castShadow = true; group.add(frame);
-    const mattress = new THREE.Mesh(new THREE.BoxGeometry(w-8, h*0.3, d-8), matLight);
-    mattress.position.y = h*0.55; mattress.castShadow = true; group.add(mattress);
-    const headboard = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.7, 8), mat);
-    headboard.position.set(0, h*0.55, -d/2+4); headboard.castShadow = true; group.add(headboard);
-    [-1,1].forEach(s => {
-      const pillow = new THREE.Mesh(new THREE.BoxGeometry(50, 12, 35), new THREE.MeshLambertMaterial({ color: 0xffffff }));
-      pillow.position.set(s*40, h*0.75, -d/2+35); pillow.castShadow = true; group.add(pillow);
-    });
-  }
-  // ── Pool table ──
-  else if(item.id === 'pooltable') {
-    [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz]) => {
-      const leg = new THREE.Mesh(new THREE.BoxGeometry(12, h*0.75, 12), matDark);
-      leg.position.set(sx*(w/2-20), h*0.375, sz*(d/2-20)); leg.castShadow = true; group.add(leg);
-    });
-    const top = new THREE.Mesh(new THREE.BoxGeometry(w, 8, d), mat);
-    top.position.y = h*0.78; top.castShadow = true; group.add(top);
-    const felt = new THREE.Mesh(new THREE.BoxGeometry(w-20, 2, d-20), new THREE.MeshLambertMaterial({ color: 0x1a6a2a }));
-    felt.position.y = h*0.82; group.add(felt);
-    const bumperMat = new THREE.MeshLambertMaterial({ color: 0x4a2a1a });
-    [{w:w-20,d:10,x:0,z:-d/2+15},{w:w-20,d:10,x:0,z:d/2-15},{w:10,d:d-20,x:-w/2+15,z:0},{w:10,d:d-20,x:w/2-15,z:0}].forEach(b => {
-      const bm = new THREE.Mesh(new THREE.BoxGeometry(b.w, 12, b.d), bumperMat);
-      bm.position.set(b.x, h*0.85, b.z); bm.castShadow = true; group.add(bm);
-    });
-  }
-  // ── Smart mirror ──
-  else if(item.id === 'smartmirror') {
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color: 0x222222 }));
-    frame.position.y = h/2+20; frame.castShadow = true; group.add(frame);
-    const screen = new THREE.Mesh(new THREE.PlaneGeometry(w-8, h-8), new THREE.MeshBasicMaterial({ color: 0x88bbdd, transparent: true, opacity: 0.5 }));
-    screen.position.set(0, h/2+20, d/2+0.5); group.add(screen);
-    const glow = new THREE.Mesh(new THREE.PlaneGeometry(w+4, h+4), new THREE.MeshBasicMaterial({ color: 0x66aacc, transparent: true, opacity: 0.15 }));
-    glow.position.set(0, h/2+20, d/2+1); group.add(glow);
-    const standH = 20;
-    const stand = new THREE.Mesh(new THREE.BoxGeometry(w*0.5, standH, d+8), new THREE.MeshLambertMaterial({ color: 0x1a1a1a }));
-    stand.position.y = standH/2; stand.castShadow = true; group.add(stand);
-  }
-  // ── Vestaboard ──
-  else if(item.id === 'vestaboard') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color: 0x1a1a1a }));
-    body.position.y = h/2+120; body.castShadow = true; group.add(body);
-    const letterColors = [0xf0c040, 0xf06040, 0x40a0f0, 0xf0f0f0, 0x40c080];
-    for(let r=0; r<3; r++) for(let c=0; c<6; c++) {
-      const tile = new THREE.Mesh(new THREE.BoxGeometry(10, 10, 1), new THREE.MeshBasicMaterial({ color: letterColors[(r*6+c) % letterColors.length] }));
-      tile.position.set(-35+c*14, 130+18-r*14, d/2+0.5); group.add(tile);
-    }
-  }
-  // ── Piano ──
-  else if(item.id === 'piano') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.4, d), mat);
-    body.position.y = h*0.5; body.castShadow = true; group.add(body);
-    const lid = new THREE.Mesh(new THREE.BoxGeometry(w, 4, d), matDark);
-    lid.position.y = h*0.72; lid.castShadow = true; group.add(lid);
-    [[-1,-1],[-1,1],[1,1]].forEach(([sx,sz]) => {
-      const leg = new THREE.Mesh(new THREE.BoxGeometry(8, h*0.3, 8), mat);
-      leg.position.set(sx*(w/2-15), h*0.15, sz*(d/2-15)); leg.castShadow = true; group.add(leg);
-    });
-    const keys = new THREE.Mesh(new THREE.BoxGeometry(w*0.8, 3, 15), new THREE.MeshLambertMaterial({ color: 0xf8f4f0 }));
-    keys.position.set(0, h*0.72, d/2-10); group.add(keys);
-  }
-  // ── 3D Printer ──
-  else if(item.id === 'printer3d') {
-    const frame = new THREE.MeshLambertMaterial({ color: 0x2a2a2a });
-    const accentMat = new THREE.MeshLambertMaterial({ color: 0xf08050 });
-    [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz]) => {
-      const rod = new THREE.Mesh(new THREE.BoxGeometry(4, h, 4), frame);
-      rod.position.set(sx*(w/2-4), h/2, sz*(d/2-4)); rod.castShadow = true; group.add(rod);
-    });
-    const base = new THREE.Mesh(new THREE.BoxGeometry(w-4, 4, d-4), frame);
-    base.position.y = 2; base.castShadow = true; group.add(base);
-    const plate = new THREE.Mesh(new THREE.BoxGeometry(w*0.7, 3, d*0.7), new THREE.MeshLambertMaterial({ color: 0x444444 }));
-    plate.position.y = h*0.3; group.add(plate);
-    const bar = new THREE.Mesh(new THREE.BoxGeometry(w-8, 6, 6), accentMat);
-    bar.position.set(0, h*0.65, 0); bar.castShadow = true; group.add(bar);
-    const nozzle = new THREE.Mesh(new THREE.BoxGeometry(8, 10, 8), accentMat);
-    nozzle.position.set(5, h*0.55, 3); group.add(nozzle);
-    const topBar = new THREE.Mesh(new THREE.BoxGeometry(w, 4, d), frame);
-    topBar.position.y = h; group.add(topBar);
-  }
-  // ── Resin 3D Printer ──
-  else if(item.id === 'printer3d_resin') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.7, d), mat);
-    body.position.y = h*0.35; body.castShadow = true; group.add(body);
-    const cover = new THREE.Mesh(new THREE.BoxGeometry(w-4, h*0.45, d-4), new THREE.MeshLambertMaterial({ color: 0x6060c0, transparent: true, opacity: 0.4 }));
-    cover.position.y = h*0.55; group.add(cover);
-    const screen = new THREE.Mesh(new THREE.PlaneGeometry(w*0.5, 10), new THREE.MeshBasicMaterial({ color: 0x40ff80 }));
-    screen.position.set(0, h*0.15, d/2+0.5); group.add(screen);
-  }
-  // ── Laser Cutter ──
-  else if(item.id === 'lasercutter') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-    body.position.y = h/2; body.castShadow = true; group.add(body);
-    const lid = new THREE.Mesh(new THREE.BoxGeometry(w-4, 3, d-4), new THREE.MeshLambertMaterial({ color: 0x6688aa, transparent: true, opacity: 0.5 }));
-    lid.position.y = h+1; group.add(lid);
-    const gantry = new THREE.Mesh(new THREE.BoxGeometry(w*0.8, 4, 4), new THREE.MeshLambertMaterial({ color: 0xdd4444 }));
-    gantry.position.set(0, h+4, 0); group.add(gantry);
-    const vent = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 8, 8), new THREE.MeshLambertMaterial({ color: 0x666666 }));
-    vent.rotation.z = Math.PI/2; vent.position.set(w/2+2, h*0.5, 0); group.add(vent);
-  }
-  // ── CNC Router ──
-  else if(item.id === 'cnc') {
-    const base = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.4, d), mat);
-    base.position.y = h*0.2; base.castShadow = true; group.add(base);
-    [-1,1].forEach(s => {
-      const rail = new THREE.Mesh(new THREE.BoxGeometry(4, 6, d), new THREE.MeshLambertMaterial({ color: 0x888888 }));
-      rail.position.set(s*(w/2-10), h*0.43, 0); group.add(rail);
-    });
-    const spindle = new THREE.Mesh(new THREE.CylinderGeometry(4, 3, h*0.4, 8), new THREE.MeshLambertMaterial({ color: 0xaaaaaa }));
-    spindle.position.set(0, h*0.6, 0); spindle.castShadow = true; group.add(spindle);
-  }
-  // ── Espresso Machine ──
-  else if(item.id === 'espresso') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.8, d), mat);
-    body.position.y = h*0.4; body.castShadow = true; group.add(body);
-    const top = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.15, d), matDark);
-    top.position.y = h*0.85; group.add(top);
-    const pf = new THREE.Mesh(new THREE.CylinderGeometry(6, 4, 3, 8), new THREE.MeshLambertMaterial({ color: 0x444444 }));
-    pf.position.set(0, h*0.2, d/2+3); group.add(pf);
-    const wand = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1, 18, 6), new THREE.MeshLambertMaterial({ color: 0xcccccc }));
-    wand.position.set(w/2-5, h*0.35, d/2-5); wand.rotation.z = 0.3; group.add(wand);
-    const gauge = new THREE.Mesh(new THREE.CylinderGeometry(4, 4, 2, 12), new THREE.MeshLambertMaterial({ color: 0xd4a860 }));
-    gauge.rotation.x = Math.PI/2; gauge.position.set(0, h*0.65, d/2+1); group.add(gauge);
-  }
-  // ── Pour-over coffee station ──
-  else if(item.id === 'coffeemaker') {
-    const base = new THREE.Mesh(new THREE.BoxGeometry(w, 4, d), mat);
-    base.position.y = 2; base.castShadow = true; group.add(base);
-    const stand = new THREE.Mesh(new THREE.CylinderGeometry(2, 2, h*0.7, 6), matDark);
-    stand.position.set(0, h*0.35, 0); group.add(stand);
-    const cone = new THREE.Mesh(new THREE.CylinderGeometry(8, 4, 12, 8), new THREE.MeshLambertMaterial({ color: 0xf0e8d8 }));
-    cone.position.set(0, h*0.75, 0); cone.castShadow = true; group.add(cone);
-    const carafe = new THREE.Mesh(new THREE.CylinderGeometry(7, 6, 16, 8), new THREE.MeshLambertMaterial({ color: 0xccddee, transparent: true, opacity: 0.6 }));
-    carafe.position.set(0, h*0.22, 0); group.add(carafe);
-  }
-  // ── Vertical garden ──
-  else if(item.id === 'vertical_garden') {
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshLambertMaterial({ color: 0x5a5a5a }));
-    frame.position.y = h/2; frame.castShadow = true; group.add(frame);
-    for(let row=0; row<6; row++) for(let col=0; col<3; col++) {
-      const hue = 0.25 + Math.random()*0.15;
-      const plantColor = new THREE.Color().setHSL(hue, 0.5+Math.random()*0.3, 0.35+Math.random()*0.2);
-      const plant = new THREE.Mesh(new THREE.SphereGeometry(10+Math.random()*4, 6, 5), new THREE.MeshLambertMaterial({ color: plantColor }));
-      plant.scale.set(1.3, 0.7, 1);
-      plant.position.set(-25+col*25, 20+row*26, d/2+3);
-      plant.castShadow = true; group.add(plant);
-    }
-  }
-  // ── Hydro tower ──
-  else if(item.id === 'hydro_tower') {
-    const col = new THREE.Mesh(new THREE.CylinderGeometry(8, 10, h, 12), new THREE.MeshLambertMaterial({ color: 0xeeeeee }));
-    col.position.y = h/2; col.castShadow = true; group.add(col);
-    for(let i=0; i<6; i++) {
-      const angle = (i/6)*Math.PI*2;
-      const py = 20+i*22;
-      const pod = new THREE.Mesh(new THREE.BoxGeometry(16, 8, 12), new THREE.MeshLambertMaterial({ color: 0xdddddd }));
-      pod.position.set(Math.cos(angle)*16, py, Math.sin(angle)*16); pod.castShadow = true; group.add(pod);
-      const hue = 0.2 + Math.random()*0.2;
-      const plant = new THREE.Mesh(new THREE.SphereGeometry(7+Math.random()*4, 6, 5), new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(hue, 0.6, 0.4) }));
-      plant.position.set(Math.cos(angle)*16, py+10, Math.sin(angle)*16); plant.castShadow = true; group.add(plant);
-    }
-    const led = new THREE.Mesh(new THREE.TorusGeometry(14, 2, 8, 16), new THREE.MeshBasicMaterial({ color: 0xcc55ff, transparent: true, opacity: 0.5 }));
-    led.position.y = h-5; led.rotation.x = Math.PI/2; group.add(led);
-  }
-  // ── Herb garden ──
-  else if(item.id === 'herb_garden') {
-    const base = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.4, d), mat);
-    base.position.y = h*0.2; base.castShadow = true; group.add(base);
-    const led = new THREE.Mesh(new THREE.BoxGeometry(w-6, 3, 4), new THREE.MeshBasicMaterial({ color: 0xcc66ff, transparent: true, opacity: 0.6 }));
-    led.position.y = h; group.add(led);
-    [-1,1].forEach(s => {
-      const stem = new THREE.Mesh(new THREE.BoxGeometry(3, h*0.6, 3), new THREE.MeshLambertMaterial({ color: 0xcccccc }));
-      stem.position.set(s*(w/2-6), h*0.7, 0); group.add(stem);
-    });
-    for(let i=0; i<3; i++) {
-      const plant = new THREE.Mesh(new THREE.SphereGeometry(6, 6, 5), new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.28+i*0.05, 0.6, 0.4) }));
-      plant.scale.set(1, 1.2, 1);
-      plant.position.set(-14+i*14, h*0.5, 0); plant.castShadow = true; group.add(plant);
-    }
-  }
-  // ── Aquaponics ──
-  else if(item.id === 'aquaponics') {
-    const tank = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.5, d), new THREE.MeshLambertMaterial({ color: 0x80c0e0, transparent: true, opacity: 0.5 }));
-    tank.position.y = h*0.25; tank.castShadow = true; group.add(tank);
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(w+4, 4, d+4), new THREE.MeshLambertMaterial({ color: 0x666666 }));
-    frame.position.y = h*0.5; group.add(frame);
-    const bed = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.15, d), new THREE.MeshLambertMaterial({ color: 0x6a4a30 }));
-    bed.position.y = h*0.58; group.add(bed);
-    for(let i=0; i<4; i++) {
-      const plant = new THREE.Mesh(new THREE.SphereGeometry(8, 6, 5), new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.28, 0.6, 0.35+Math.random()*0.15) }));
-      plant.position.set(-w/3+i*(w/4), h*0.72, 0); plant.castShadow = true; group.add(plant);
-    }
-    for(let i=0; i<3; i++) {
-      const fish = new THREE.Mesh(new THREE.SphereGeometry(3, 6, 4), new THREE.MeshLambertMaterial({ color: [0xf09030,0xff5050,0xf0d040][i] }));
-      fish.scale.set(2, 0.8, 1);
-      fish.position.set(-15+i*15, h*0.15, 0); group.add(fish);
-    }
-  }
-  // ── Grow shelf ──
-  else if(item.id === 'grow_shelf') {
-    const frameMat2 = new THREE.MeshLambertMaterial({ color: 0xc8a878 });
-    [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz]) => {
-      const leg = new THREE.Mesh(new THREE.BoxGeometry(4, h, 4), frameMat2);
-      leg.position.set(sx*(w/2-4), h/2, sz*(d/2-4)); leg.castShadow = true; group.add(leg);
-    });
-    for(let i=0; i<3; i++) {
-      const sy = 10+i*48;
-      const shelf = new THREE.Mesh(new THREE.BoxGeometry(w-4, 4, d-4), frameMat2);
-      shelf.position.y = sy; group.add(shelf);
-      if(i < 2) {
-        const led = new THREE.Mesh(new THREE.BoxGeometry(w-10, 2, 4), new THREE.MeshBasicMaterial({ color: 0xcc55ff, transparent: true, opacity: 0.5 }));
-        led.position.set(0, sy+46, 0); group.add(led);
-      }
-      for(let j=0; j<2; j++) {
-        const plant = new THREE.Mesh(new THREE.SphereGeometry(8+Math.random()*4, 6, 5), new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.25+Math.random()*0.15, 0.5, 0.35) }));
-        plant.position.set(-12+j*24, sy+14, 0); plant.castShadow = true; group.add(plant);
-      }
-    }
-  }
-  // ── Workbench ──
-  else if(item.id === 'workbench') {
-    [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz]) => {
-      const leg = new THREE.Mesh(new THREE.BoxGeometry(8, h*0.9, 8), matDark);
-      leg.position.set(sx*(w/2-8), h*0.45, sz*(d/2-8)); leg.castShadow = true; group.add(leg);
-    });
-    const top = new THREE.Mesh(new THREE.BoxGeometry(w, 6, d), mat);
-    top.position.y = h*0.92; top.castShadow = true; group.add(top);
-    const vise = new THREE.Mesh(new THREE.BoxGeometry(12, 10, 14), new THREE.MeshLambertMaterial({ color: 0x555555 }));
-    vise.position.set(w/2-10, h+2, 0); vise.castShadow = true; group.add(vise);
-  }
-  // ── Pegboard ──
-  else if(item.id === 'pegboard') {
-    const board = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-    board.position.y = h/2+80; board.castShadow = true; group.add(board);
-    for(let r=0; r<5; r++) for(let c=0; c<7; c++) {
-      const peg = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.5, 4, 6), new THREE.MeshLambertMaterial({ color: 0x888888 }));
-      peg.rotation.x = Math.PI/2;
-      peg.position.set(-w/2+15+c*16, 90+r*16, d/2+2); group.add(peg);
-    }
-    const toolColors = [0xdd4444, 0x4488dd, 0xddaa44];
-    for(let i=0; i<3; i++) {
-      const tool = new THREE.Mesh(new THREE.BoxGeometry(4, 18, 3), new THREE.MeshLambertMaterial({ color: toolColors[i] }));
-      tool.position.set(-30+i*30, 100, d/2+3); group.add(tool);
-    }
-  }
-  // ── Bean Bag ──
-  else if(item.id === 'beanbag') {
-    const body = new THREE.Mesh(new THREE.SphereGeometry(w/2, 12, 10), mat);
-    body.scale.set(1, 0.6, 1);
-    body.position.y = h*0.35; body.castShadow = true; group.add(body);
-  }
-  // ── Hammock ──
-  else if(item.id === 'hammock') {
-    [-1,1].forEach(s => {
-      const post = new THREE.Mesh(new THREE.CylinderGeometry(3, 3, h, 8), matDark);
-      post.position.set(s*(w/2-10), h/2, 0); post.castShadow = true; group.add(post);
-    });
-    const fabric = new THREE.Mesh(new THREE.SphereGeometry(w/2-20, 12, 8), mat);
-    fabric.scale.set(1, 0.15, 0.4);
-    fabric.position.y = h*0.45; fabric.castShadow = true; group.add(fabric);
-  }
-  // ── Shoe Cabinet ──
-  else if(item.id === 'shoe_cabinet') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-    body.position.y = h/2+10; body.castShadow = true; group.add(body);
-    const cubby = new THREE.Mesh(new THREE.BoxGeometry(w-8, 20, d-4), new THREE.MeshLambertMaterial({ color: 0x333333 }));
-    cubby.position.y = h/2+10; group.add(cubby);
-    [-1,1].forEach(s => {
-      const leg = new THREE.Mesh(new THREE.BoxGeometry(w*0.8, 10, 4), matDark);
-      leg.position.set(0, 5, s*(d/2-3)); group.add(leg);
-    });
-  }
-  // ── Record Player ──
-  else if(item.id === 'recordplayer') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h*0.5, d), mat);
-    body.position.y = h*0.25; body.castShadow = true; group.add(body);
-    const lid = new THREE.Mesh(new THREE.BoxGeometry(w-2, 2, d-2), matLight);
-    lid.position.y = h*0.52; group.add(lid);
-    const platter = new THREE.Mesh(new THREE.CylinderGeometry(12, 12, 2, 16), new THREE.MeshLambertMaterial({ color: 0x1a1a1a }));
-    platter.position.set(-4, h*0.55, 0); group.add(platter);
-    const tonearm = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 14), new THREE.MeshLambertMaterial({ color: 0xcccccc }));
-    tonearm.position.set(w/3, h*0.55, -4); group.add(tonearm);
-  }
-  // ── Standing Desk ──
-  else if(item.id === 'standing_desk') {
-    [[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([sx,sz]) => {
-      const leg = new THREE.Mesh(new THREE.BoxGeometry(6, h*0.9, 6), new THREE.MeshLambertMaterial({ color: 0x888888 }));
-      leg.position.set(sx*(w/2-8), h*0.45, sz*(d/2-8)); leg.castShadow = true; group.add(leg);
-    });
-    const top = new THREE.Mesh(new THREE.BoxGeometry(w, 4, d), mat);
-    top.position.y = h*0.92; top.castShadow = true; group.add(top);
-    const monitor = new THREE.Mesh(new THREE.BoxGeometry(50, 30, 3), new THREE.MeshLambertMaterial({ color: 0x222222 }));
-    monitor.position.set(0, h+18, -d/3); monitor.castShadow = true; group.add(monitor);
-    const screenGlow = new THREE.Mesh(new THREE.PlaneGeometry(46, 26), new THREE.MeshBasicMaterial({ color: 0x446688, transparent: true, opacity: 0.4 }));
-    screenGlow.position.set(0, h+18, -d/3+2); group.add(screenGlow);
-  }
-  // ── Electric Fireplace ──
-  else if(item.id === 'fireplace') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-    body.position.y = h/2; body.castShadow = true; group.add(body);
-    const opening = new THREE.Mesh(new THREE.BoxGeometry(w*0.6, h*0.5, d-4), new THREE.MeshLambertMaterial({ color: 0x1a1a1a }));
-    opening.position.y = h*0.3; group.add(opening);
-    for(let i = 0; i < 3; i++) {
-      const flame = new THREE.Mesh(new THREE.CylinderGeometry(2, 5, 15+Math.random()*10, 6), new THREE.MeshBasicMaterial({ color: [0xff6030, 0xff9040, 0xffcc20][i], transparent: true, opacity: 0.6 }));
-      flame.position.set(-10+i*10, h*0.35, 0); group.add(flame);
-    }
-    const mantel = new THREE.Mesh(new THREE.BoxGeometry(w+10, 5, d+6), matLight);
-    mantel.position.y = h+2; mantel.castShadow = true; group.add(mantel);
-  }
-  // ── Terrarium ──
-  else if(item.id === 'terrarium') {
-    const glass = new THREE.Mesh(new THREE.SphereGeometry(w/2, 12, 10), new THREE.MeshLambertMaterial({ color: 0xcceecc, transparent: true, opacity: 0.35 }));
-    glass.position.y = h/2; group.add(glass);
-    const soil = new THREE.Mesh(new THREE.SphereGeometry(w/2-2, 8, 4, 0, Math.PI*2, Math.PI/2, Math.PI/2), new THREE.MeshLambertMaterial({ color: 0x6a4a30 }));
-    soil.position.y = w/4; group.add(soil);
-    for(let i=0; i<4; i++) {
-      const plant = new THREE.Mesh(new THREE.SphereGeometry(3+Math.random()*2, 5, 4), new THREE.MeshLambertMaterial({ color: new THREE.Color().setHSL(0.28+Math.random()*0.1, 0.6, 0.35) }));
-      plant.position.set((Math.random()-0.5)*w*0.4, h*0.4+Math.random()*h*0.2, (Math.random()-0.5)*d*0.4);
-      group.add(plant);
-    }
-  }
-  // ── Vases / flowers ──
-  else if(item.id.includes('vase') || item.id === 'orchid' || item.id === 'driedflower' || item.id === 'lavender' || item.id === 'cherry_branch' || item.id === 'eucalyptus' || item.id === 'sunflower' || item.id === 'tulip' || item.id === 'hydrangea') {
-    const vaseH = h * 0.45;
-    const vaseR = Math.min(w, d) * 0.35;
-    const vaseGeo = new THREE.CylinderGeometry(vaseR*0.7, vaseR, vaseH, 12);
-    const vaseMat = new THREE.MeshLambertMaterial({ color: item.id === 'vase_mixed' ? 0xc07050 : item.id === 'cherry_branch' ? 0xf0d0d0 : item.id === 'sunflower' ? 0xd4a060 : item.id === 'hydrangea' ? 0xc0b0d0 : 0xe8c0a8 });
-    const vase = new THREE.Mesh(vaseGeo, vaseMat);
-    vase.position.y = vaseH/2; vase.castShadow = true; group.add(vase);
-    const flowerColors = {
-      'vase_rose': [0xe84070, 0xd03060, 0xf06080],
-      'vase_peony': [0xf8a0c0, 0xf080a0, 0xf8c0d8],
-      'vase_mixed': [0xf8a0c0, 0x80b0f0, 0xf0b870, 0xe060a0, 0xa0d0a0],
-      'orchid': [0xd070d0, 0xe090e0, 0xc050c0],
-      'driedflower': [0xc8a080, 0xb89070, 0xd8b090],
-      'lavender': [0x9a70c0, 0x8a60b0, 0xaa80d0],
-      'cherry_branch': [0xf8a8c0, 0xffc0d8, 0xf090a8],
-      'eucalyptus': [0x7aaa8a, 0x6a9a7a, 0x8abaa0],
-      'sunflower': [0xf0c030, 0xf0a020, 0xf8d040],
-      'tulip': [0xf06080, 0xe05070, 0xf080a0],
-      'hydrangea': [0x8090d0, 0x9080c0, 0x70a0e0],
-    };
-    const colors = flowerColors[item.id] || [0xf080a0];
-    for(let i=0; i<7; i++) {
-      const angle = (i/7)*Math.PI*2 + Math.random()*0.5;
-      const r = 3 + Math.random()*8;
-      const fh = vaseH + 5 + Math.random()*(h - vaseH - 8);
-      const stemGeo = new THREE.CylinderGeometry(0.8, 0.8, fh - vaseH*0.5, 4);
-      const stem = new THREE.Mesh(stemGeo, new THREE.MeshLambertMaterial({ color: 0x4a8a4a }));
-      stem.position.set(Math.cos(angle)*r, vaseH*0.7+(fh-vaseH*0.5)/2, Math.sin(angle)*r); group.add(stem);
-      const bloomR = 4 + Math.random()*4;
-      const bloom = new THREE.Mesh(new THREE.SphereGeometry(bloomR, 8, 6), new THREE.MeshLambertMaterial({ color: colors[i % colors.length] }));
-      bloom.position.set(Math.cos(angle)*r, fh, Math.sin(angle)*r); bloom.castShadow = true; group.add(bloom);
-    }
-    for(let i=0; i<4; i++) {
-      const angle = (i/4)*Math.PI*2;
-      const leaf = new THREE.Mesh(new THREE.SphereGeometry(5, 6, 4), new THREE.MeshLambertMaterial({ color: 0x5a9a5a }));
-      leaf.scale.set(1.5, 0.4, 1);
-      leaf.position.set(Math.cos(angle)*8, vaseH*0.8, Math.sin(angle)*8); group.add(leaf);
-    }
-  }
-  // ── Plants (monstera, fiddle, succulent, bonsai) ──
-  else if(item.id === 'monstera' || item.id === 'fiddle' || item.id === 'succulent' || item.id === 'bonsai') {
-    const potH = Math.min(h*0.2, 25);
-    const potR = Math.min(w, d)*0.35;
-    const pot = new THREE.Mesh(new THREE.CylinderGeometry(potR, potR*0.8, potH, 8), new THREE.MeshLambertMaterial({ color: 0x9a7060 }));
-    pot.position.y = potH/2; pot.castShadow = true; group.add(pot);
-    const foliageCount = item.id === 'succulent' ? 5 : item.id === 'bonsai' ? 8 : 12;
-    for(let i=0; i<foliageCount; i++) {
-      const angle = Math.random()*Math.PI*2;
-      const r = Math.random()*w*0.3;
-      const y = potH + Math.random()*(h - potH);
-      const leafSize = item.id === 'succulent' ? 6 : item.id === 'bonsai' ? 7 : 10 + Math.random()*8;
-      const leaf = new THREE.Mesh(new THREE.SphereGeometry(leafSize, 6, 5),
-        new THREE.MeshLambertMaterial({ color: new THREE.Color(item.color).clone().offsetHSL(0, Math.random()*0.1-0.05, Math.random()*0.1-0.05) }));
-      leaf.scale.set(1.2, 0.5, 1);
-      leaf.position.set(Math.cos(angle)*r, y, Math.sin(angle)*r);
-      leaf.rotation.set(Math.random()*0.5, angle, Math.random()*0.3);
-      leaf.castShadow = true; group.add(leaf);
-    }
-    if(item.id === 'bonsai') {
-      const trunk = new THREE.Mesh(new THREE.CylinderGeometry(2, 4, h*0.4, 6), new THREE.MeshLambertMaterial({ color: 0x6a4a30 }));
-      trunk.position.y = potH + h*0.15; group.add(trunk);
-    }
-  }
-  // ── Hanging planter ──
-  else if(item.id === 'hanging') {
-    const wire = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, h*0.4, 4), new THREE.MeshLambertMaterial({ color: 0x888888 }));
-    wire.position.y = h*0.8; group.add(wire);
-    const pot = new THREE.Mesh(new THREE.CylinderGeometry(w*0.35, w*0.3, 18, 8), new THREE.MeshLambertMaterial({ color: 0xc09070 }));
-    pot.position.y = h*0.58; pot.castShadow = true; group.add(pot);
-    for(let i=0; i<10; i++) {
-      const angle = Math.random()*Math.PI*2;
-      const leaf = new THREE.Mesh(new THREE.SphereGeometry(5, 5, 4), new THREE.MeshLambertMaterial({ color: 0x5a9a5a }));
-      leaf.scale.set(1.2, 0.5, 1);
-      leaf.position.set(Math.cos(angle)*(8+Math.random()*6), h*0.5-Math.random()*20, Math.sin(angle)*(8+Math.random()*6));
-      leaf.castShadow = true; group.add(leaf);
-    }
-  }
-  // ── Rug ──
-  else if(item.id === 'rug') {
-    const rug = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-    rug.position.y = h/2; rug.receiveShadow = true; group.add(rug);
-    const border = new THREE.Mesh(new THREE.BoxGeometry(w-20, h+0.5, d-20), matDark);
-    border.position.y = h/2; group.add(border);
-    const inner = new THREE.Mesh(new THREE.BoxGeometry(w-40, h+1, d-40), matLight);
-    inner.position.y = h/2; group.add(inner);
-  }
-  // ── Floor lamp ──
-  else if(item.id === 'floorlamp') {
-    const base = new THREE.Mesh(new THREE.CylinderGeometry(12, 14, 4, 12), matDark);
-    base.position.y = 2; base.castShadow = true; group.add(base);
-    const pole = new THREE.Mesh(new THREE.CylinderGeometry(2, 2, h-30, 8), matDark);
-    pole.position.y = h/2-13; group.add(pole);
-    const shade = new THREE.Mesh(new THREE.CylinderGeometry(8, 16, 30, 12), new THREE.MeshLambertMaterial({ color: 0xf8e8d0, transparent: true, opacity: 0.9 }));
-    shade.position.y = h-15; shade.castShadow = true; group.add(shade);
-    const glow = new THREE.PointLight(0xffeecc, 0.3, 200);
-    glow.position.y = h-15; group.add(glow);
-  }
-  // ── Lava lamp ──
-  else if(item.id === 'lava_lamp') {
-    const base = new THREE.Mesh(new THREE.CylinderGeometry(6, 7, 6, 10), matDark);
-    base.position.y = 3; base.castShadow = true; group.add(base);
-    const body = new THREE.Mesh(new THREE.CylinderGeometry(5, 6, h-10, 10), new THREE.MeshLambertMaterial({ color: mainColor, transparent: true, opacity: 0.6 }));
-    body.position.y = h/2+1; group.add(body);
-    for(let i=0; i<3; i++) {
-      const blob = new THREE.Mesh(new THREE.SphereGeometry(3+Math.random()*2, 8, 6), new THREE.MeshBasicMaterial({ color: mainColor }));
-      blob.position.set(0, 10+i*10, 0); group.add(blob);
-    }
-    const cap = new THREE.Mesh(new THREE.CylinderGeometry(4, 5, 4, 10), matDark);
-    cap.position.y = h-2; group.add(cap);
-  }
-  // ── Mushroom log ──
-  else if(item.id === 'mushroom_log') {
-    const log = new THREE.Mesh(new THREE.CylinderGeometry(8, 9, h*0.6, 8), mat);
-    log.position.y = h*0.3; log.castShadow = true; group.add(log);
-    for(let i=0; i<5; i++) {
-      const angle = Math.random()*Math.PI*2;
-      const mushCap = new THREE.Mesh(new THREE.SphereGeometry(4+Math.random()*3, 8, 4), new THREE.MeshLambertMaterial({ color: 0xf0d8c0 }));
-      mushCap.scale.set(1, 0.4, 1);
-      mushCap.position.set(Math.cos(angle)*10, h*0.2+Math.random()*h*0.4, Math.sin(angle)*10);
-      mushCap.castShadow = true; group.add(mushCap);
-    }
-  }
-  // ── Smart composter ──
-  else if(item.id === 'compost') {
-    const body = new THREE.Mesh(new THREE.CylinderGeometry(w/2, w/2-2, h, 10), mat);
-    body.position.y = h/2; body.castShadow = true; group.add(body);
-    const lid = new THREE.Mesh(new THREE.CylinderGeometry(w/2+1, w/2+1, 3, 10), matDark);
-    lid.position.y = h+1; group.add(lid);
-    const led = new THREE.Mesh(new THREE.SphereGeometry(2, 6, 4), new THREE.MeshBasicMaterial({ color: 0x40ff40 }));
-    led.position.set(w/2-3, h*0.7, w/2-3); group.add(led);
-  }
-  // ── Smart Curtains ──
-  else if(item.id === 'smart_curtain') {
-    const rail = new THREE.Mesh(new THREE.BoxGeometry(w, 4, 4), new THREE.MeshLambertMaterial({ color: 0xcccccc }));
-    rail.position.y = h; rail.castShadow = true; group.add(rail);
-    const fabricMat = new THREE.MeshLambertMaterial({ color: mainColor, transparent: true, opacity: 0.85 });
-    [-1, 1].forEach(s => {
-      const panel = new THREE.Mesh(new THREE.BoxGeometry(w*0.35, h-10, d), fabricMat);
-      panel.position.set(s * w * 0.3, h / 2 - 3, 0); panel.castShadow = true; group.add(panel);
-    });
-    const motor = new THREE.Mesh(new THREE.BoxGeometry(8, 6, 6), new THREE.MeshLambertMaterial({ color: 0x444444 }));
-    motor.position.set(w/2 - 6, h + 3, 0); group.add(motor);
-  }
-  // ── Moss Wall Art ──
-  else if(item.id === 'moss_wall') {
-    const frame = new THREE.Mesh(new THREE.BoxGeometry(w+6, h+6, d), new THREE.MeshLambertMaterial({ color: 0xc8a878 }));
-    frame.position.y = h/2 + 80; frame.castShadow = true; group.add(frame);
-    for(let i = 0; i < 20; i++) {
-      const mossColor = new THREE.Color().setHSL(0.28+Math.random()*0.1, 0.5+Math.random()*0.2, 0.3+Math.random()*0.15);
-      const moss = new THREE.Mesh(new THREE.SphereGeometry(5+Math.random()*6, 6, 5), new THREE.MeshLambertMaterial({ color: mossColor }));
-      moss.scale.set(1, 0.5, 0.8);
-      moss.position.set((Math.random()-0.5)*w*0.85, 80+h/2+(Math.random()-0.5)*h*0.7, d/2+1);
-      group.add(moss);
-    }
-  }
-  // ── Moon Lamp ──
-  else if(item.id === 'moon_lamp') {
-    const sphere = new THREE.Mesh(new THREE.SphereGeometry(w/2, 16, 12), new THREE.MeshLambertMaterial({ color: 0xf8e8c0, transparent: true, opacity: 0.9 }));
-    sphere.position.y = h/2+5; sphere.castShadow = true; group.add(sphere);
-    const base = new THREE.Mesh(new THREE.CylinderGeometry(w*0.2, w*0.25, 5, 8), new THREE.MeshLambertMaterial({ color: 0x8a7060 }));
-    base.position.y = 2.5; group.add(base);
-    const glow = new THREE.PointLight(0xffeecc, 0.2, 100);
-    glow.position.y = h/2+5; group.add(glow);
-  }
-  // ── Full-Length Mirror ──
-  else if(item.id === 'full_mirror' || item.id === 'vanity_mirror') {
-    const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), matDark);
-    body.position.y = h/2 + (item.id === 'vanity_mirror' ? 80 : 20); body.castShadow = true; group.add(body);
-    const glass = new THREE.Mesh(new THREE.PlaneGeometry(w-6, h-6), new THREE.MeshBasicMaterial({ color: 0xaabbcc, transparent: true, opacity: 0.45 }));
-    glass.position.set(0, h/2 + (item.id === 'vanity_mirror' ? 80 : 20), d/2+0.5); group.add(glass);
-    if(item.id === 'vanity_mirror') {
-      const ledStrip = new THREE.Mesh(new THREE.TorusGeometry(Math.min(w,h)/2-2, 1.5, 8, 32), new THREE.MeshBasicMaterial({ color: 0xfff0dd, transparent: true, opacity: 0.6 }));
-      ledStrip.position.set(0, h/2+80, d/2+1); group.add(ledStrip);
-    }
-  }
-  // ── Generic fallback ──
-  else {
-    const main = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-    main.position.y = h/2; main.castShadow = true; main.receiveShadow = true; group.add(main);
-    if(h > 20) {
-      const topFace = new THREE.Mesh(new THREE.BoxGeometry(w-4, 2, d-4), matLight);
-      topFace.position.y = h-1; group.add(topFace);
-    }
+  } else if(item.id==='monstera'||item.id==='fiddle'||item.id==='bonsai'){
+    const pH=Math.min(h*.2,25),pR=Math.min(w,d)*.35;
+    g.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(pR,pR*.8,pH,8),new THREE.MeshLambertMaterial({color:0x9a7060})),{position:new THREE.Vector3(0,pH/2,0),castShadow:true}));
+    for(let i=0;i<(item.id==='bonsai'?8:12);i++){const a=Math.random()*Math.PI*2,r=Math.random()*w*.3;
+      const lf=new THREE.Mesh(new THREE.SphereGeometry(item.id==='bonsai'?7:10+Math.random()*8,6,5),new THREE.MeshLambertMaterial({color:new THREE.Color(item.color).clone().offsetHSL(0,Math.random()*.1-.05,Math.random()*.1-.05)}));
+      lf.scale.set(1.2,.5,1);lf.position.set(Math.cos(a)*r,pH+Math.random()*(h-pH),Math.sin(a)*r);lf.castShadow=true;g.add(lf)}
+  } else if(item.id==='rug'){
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m),{position:new THREE.Vector3(0,h/2,0),receiveShadow:true}));
+    g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w-20,h+.5,d-20),md),{position:new THREE.Vector3(0,h/2,0)}));
+  } else if(item.id==='floorlamp'){
+    g.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(12,14,4,12),md),{position:new THREE.Vector3(0,2,0),castShadow:true}));
+    g.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(2,2,h-30,8),md),{position:new THREE.Vector3(0,h/2-13,0)}));
+    g.add(Object.assign(new THREE.Mesh(new THREE.CylinderGeometry(8,16,30,12),new THREE.MeshLambertMaterial({color:0xf8e8d0,transparent:true,opacity:.9})),{position:new THREE.Vector3(0,h-15,0),castShadow:true}));
+    const glow=new THREE.PointLight(0xffeecc,.3,200);glow.position.y=h-15;g.add(glow);
+  } else if(item.id==='beanbag'){
+    const bd=new THREE.Mesh(new THREE.SphereGeometry(w/2,12,10),m);bd.scale.set(1,.6,1);bd.position.y=h*.35;bd.castShadow=true;g.add(bd);
+  } else {
+    // Generic box
+    const mn=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);mn.position.y=h/2;mn.castShadow=true;mn.receiveShadow=true;g.add(mn);
+    if(h>20){g.add(Object.assign(new THREE.Mesh(new THREE.BoxGeometry(w-4,2,d-4),ml),{position:new THREE.Vector3(0,h-1,0)}))}
   }
 
   // Selection ring
-  const ringGeo = new THREE.RingGeometry(Math.max(w, d)/2+5, Math.max(w, d)/2+10, 32);
-  const ringMat = new THREE.MeshBasicMaterial({ color: 0xe8a0b4, transparent: true, opacity: 0 });
-  const ring = new THREE.Mesh(ringGeo, ringMat);
-  ring.rotation.x = -Math.PI/2; ring.position.y = 1;
-  ring.userData.isRing = true;
-  group.add(ring);
-  group.userData.ring = ring;
-
-  return group;
+  const rg=new THREE.Mesh(new THREE.RingGeometry(Math.max(w,d)/2+5,Math.max(w,d)/2+10,32),new THREE.MeshBasicMaterial({color:0xe8a0b4,transparent:true,opacity:0}));
+  rg.rotation.x=-Math.PI/2;rg.position.y=1;rg.userData.isRing=true;g.add(rg);g.userData.ring=rg;
+  return g;
 }
 
-// ─── UI: Build panel ───
-const catTabsEl = document.getElementById('cat-tabs');
-const itemGridEl = document.getElementById('item-grid');
-const categories = Object.keys(CATALOG);
-let activeCategory = categories[1]; // Start on Living, not Favourites
-let searchQuery = '';
+/* ═══════════════════════════════════
+   UI — PANEL
+   ═══════════════════════════════════ */
+const catTabsEl=document.getElementById('cat-tabs');
+const itemGridEl=document.getElementById('item-grid');
+const categories=Object.keys(CATALOG);
+let activeCat=categories[0];
+let searchQ='';
 
-function renderCatTabs() {
-  catTabsEl.innerHTML = '';
-  if(searchQuery) return;
-  categories.forEach(cat => {
-    if(cat === "⭐ Favourites" && CATALOG[cat].length === 0) return;
-    const btn = document.createElement('div');
-    btn.className = 'cat-tab' + (cat === activeCategory ? ' active' : '');
-    btn.textContent = cat;
-    btn.onclick = () => { activeCategory = cat; renderCatTabs(); renderItems(); };
-    catTabsEl.appendChild(btn);
-  });
+function renderTabs(){
+  catTabsEl.innerHTML='';if(searchQ)return;
+  categories.forEach(c=>{const b=document.createElement('div');b.className='ctb'+(c===activeCat?' active':'');b.textContent=c;b.onclick=()=>{activeCat=c;renderTabs();renderGrid()};catTabsEl.appendChild(b)});
 }
-
-function renderItems() {
-  itemGridEl.innerHTML = '';
+function renderGrid(){
+  itemGridEl.innerHTML='';
   let items;
-  if(searchQuery) {
-    const q = searchQuery.toLowerCase();
-    items = [];
-    Object.entries(CATALOG).forEach(([cat, arr]) => {
-      if(cat === "⭐ Favourites") return;
-      arr.forEach(it => {
-        const searchable = (it.name + ' ' + it.id + ' ' + (it.price||'') + ' ' + (it.tag||'') + ' ' + cat).toLowerCase();
-        if(searchable.includes(q)) items.push(it);
-      });
-    });
-  } else {
-    items = CATALOG[activeCategory];
-  }
-  if(!items || items.length === 0) {
-    itemGridEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--text-light);font-size:12px;">No items found 🌷</div>';
-    return;
-  }
-  items.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    const isFav = favourites.includes(item.id);
-    let html = `<button class="fav-btn ${isFav?'active':''}" onclick="toggleFav('${item.id}',event)">${isFav?'❤️':'🤍'}</button>`;
-    html += `<span class="icon">${item.icon}</span><span class="name">${item.name}</span>`;
-    if(item.price) html += `<span class="price">${item.price}</span>`;
-    if(item.tag) {
-      const tagClass = item.tag === 'GREEN' ? ' green' : item.tag === 'MAKER' ? ' maker' : '';
-      html += `<span class="tag${tagClass}">${item.tag}</span>`;
-    }
-    card.innerHTML = html;
-    card.onclick = (e) => { if(e.target.classList.contains('fav-btn')) return; placeItem(item); };
-    itemGridEl.appendChild(card);
+  if(searchQ){const q=searchQ.toLowerCase();items=[];Object.values(CATALOG).forEach(a=>a.forEach(it=>{if((it.name+' '+it.id+' '+(it.price||'')+' '+(it.tag||'')).toLowerCase().includes(q))items.push(it)}))}
+  else items=CATALOG[activeCat];
+  if(!items||!items.length){itemGridEl.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:16px;color:var(--text-light);font-size:11px">No items found 🌷</div>';return}
+  items.forEach(it=>{
+    const c=document.createElement('div');c.className='ic';
+    let h=`<span class="icon">${it.icon}</span><span class="nm">${it.name}</span>`;
+    if(it.price)h+=`<span class="pr">${it.price}</span>`;
+    if(it.tag)h+=`<span class="tg">${it.tag}</span>`;
+    c.innerHTML=h;c.onclick=()=>placeItem(it);itemGridEl.appendChild(c);
   });
 }
+function onSearch(v){searchQ=v.trim();renderTabs();renderGrid()}
 
-function onSearch(val) {
-  searchQuery = val.trim();
-  renderCatTabs();
-  renderItems();
-}
-
-function placeItem(item) {
+function placeItem(item){
   pushUndo();
-  const mesh = createFurnitureMesh(item);
-  mesh.position.set(snapValue((Math.random()-0.5)*200), 0, snapValue((Math.random()-0.5)*200));
-  scene.add(mesh);
-  placedItems.push(mesh);
-  selectItem(mesh);
-  updateCounter();
-  showToast(`Placed ${item.name} 🌸`);
-  autoSave();
+  const mesh=mkMesh(item);
+  // Place near camera target
+  mesh.position.set(snap((Math.random()-.5)*200+camTgt.x),0,snap((Math.random()-.5)*200+camTgt.z));
+  scene.add(mesh);placedItems.push(mesh);
+  selectItem(mesh);updCnt();
+  toast('Placed '+item.name+' 🌸');autoSave();
 }
 
-function updateCounter() {
-  document.getElementById('counter-num').textContent = placedItems.length;
+function updCnt(){document.getElementById('cn').textContent=placedItems.length}
+
+// ── Swatches ──
+function renderSwatches(){
+  const wEl=document.getElementById('wall-sw');wEl.innerHTML='';
+  WALL_COLORS.forEach(c=>{const s=document.createElement('div');s.className='sw';s.style.background=c.h;s.title=c.n;
+    s.onclick=()=>{pushUndo();wallColor.set(c.h);buildFlat();document.querySelectorAll('#wall-sw .sw').forEach(x=>x.classList.remove('active'));s.classList.add('active');autoSave()};wEl.appendChild(s)});
+  const fEl=document.getElementById('floor-sw');fEl.innerHTML='';
+  FLOOR_COLORS.forEach(c=>{const s=document.createElement('div');s.className='sw';s.style.background=c.h;s.title=c.n;
+    s.onclick=()=>{pushUndo();floorColor.set(c.h);buildFlat();document.querySelectorAll('#floor-sw .sw').forEach(x=>x.classList.remove('active'));s.classList.add('active');autoSave()};fEl.appendChild(s)});
+  const pEl=document.getElementById('preset-tabs');pEl.innerHTML='';
+  PRESETS.forEach(p=>{const b=document.createElement('div');b.className='ctb';b.textContent=p.n;
+    b.onclick=()=>{pushUndo();wallColor.set(p.w);floorColor.set(p.f);buildFlat();toast('Applied '+p.n+' ✨');autoSave()};pEl.appendChild(b)});
 }
 
-// ─── Wall swatches ───
-function renderSwatches() {
-  const wallEl = document.getElementById('wall-swatches');
-  wallEl.innerHTML = '';
-  WALL_COLORS.forEach(c => {
-    const s = document.createElement('div');
-    s.className = 'swatch'; s.style.background = c.hex; s.title = c.name;
-    s.onclick = () => {
-      pushUndo();
-      wallColor.set(c.hex); buildRoom();
-      document.querySelectorAll('#wall-swatches .swatch').forEach(x => x.classList.remove('active'));
-      s.classList.add('active'); autoSave();
-    };
-    wallEl.appendChild(s);
-  });
-
-  const floorEl = document.getElementById('floor-swatches');
-  floorEl.innerHTML = '';
-  FLOOR_COLORS.forEach(c => {
-    const s = document.createElement('div');
-    s.className = 'swatch'; s.style.background = c.hex; s.title = c.name;
-    s.onclick = () => {
-      pushUndo();
-      floorColor.set(c.hex); buildRoom();
-      document.querySelectorAll('#floor-swatches .swatch').forEach(x => x.classList.remove('active'));
-      s.classList.add('active'); autoSave();
-    };
-    floorEl.appendChild(s);
-  });
-
-  const presetEl = document.getElementById('preset-tabs');
-  presetEl.innerHTML = '';
-  PRESETS.forEach(p => {
-    const btn = document.createElement('div');
-    btn.className = 'cat-tab'; btn.textContent = p.name;
-    btn.onclick = () => {
-      pushUndo();
-      wallColor.set(p.wall); floorColor.set(p.floor); buildRoom();
-      showToast(`Applied ${p.name} palette ✨`); autoSave();
-    };
-    presetEl.appendChild(btn);
-  });
+/* ═══════════════════════════════════
+   SELECTION
+   ═══════════════════════════════════ */
+function selectItem(mesh){
+  if(selectedItem)deselectItem();
+  selectedItem=mesh;if(mesh.userData.ring)mesh.userData.ring.material.opacity=.6;
+  document.getElementById('stb').classList.add('visible');document.getElementById('ch').style.display='none';
+  document.getElementById('icp').value='#'+new THREE.Color(mesh.userData.color).getHexString();
 }
-
-// ─── Selection ───
-function selectItem(mesh) {
-  if(selectedItem) deselectItem();
-  selectedItem = mesh;
-  if(mesh.userData.ring) mesh.userData.ring.material.opacity = 0.6;
-  document.getElementById('selected-toolbar').classList.add('visible');
-  document.getElementById('controls-hint').style.display = 'none';
-  const hex = '#' + new THREE.Color(mesh.userData.color).getHexString();
-  document.getElementById('item-color-picker').value = hex;
+function deselectItem(){
+  if(selectedItem&&selectedItem.userData.ring)selectedItem.userData.ring.material.opacity=0;
+  selectedItem=null;document.getElementById('stb').classList.remove('visible');document.getElementById('ch').style.display='flex';
 }
-
-function deselectItem() {
-  if(selectedItem && selectedItem.userData.ring) selectedItem.userData.ring.material.opacity = 0;
-  selectedItem = null;
-  document.getElementById('selected-toolbar').classList.remove('visible');
-  document.getElementById('controls-hint').style.display = 'flex';
-}
-
-function rotateSelected(dir) {
-  if(!selectedItem) return;
-  pushUndo();
-  selectedItem.rotation.y += dir * Math.PI / 4;
-  autoSave();
-}
-
-function duplicateSelected() {
-  if(!selectedItem) return;
-  pushUndo();
-  const data = selectedItem.userData;
-  const mesh = createFurnitureMesh(data);
-  mesh.position.copy(selectedItem.position);
-  mesh.position.x += 50; mesh.position.z += 50;
+function rotSel(dir){if(!selectedItem)return;pushUndo();selectedItem.rotation.y+=dir*Math.PI/4;autoSave()}
+function dupSel(){
+  if(!selectedItem)return;pushUndo();
+  const d=selectedItem.userData,mesh=mkMesh(d);
+  mesh.position.copy(selectedItem.position);mesh.position.x+=50;mesh.position.z+=50;
   mesh.rotation.copy(selectedItem.rotation);
-  scene.add(mesh); placedItems.push(mesh); selectItem(mesh);
-  updateCounter();
-  showToast(`Copied ${data.name}`); autoSave();
+  scene.add(mesh);placedItems.push(mesh);selectItem(mesh);updCnt();toast('Copied '+d.name);autoSave();
+}
+function delSel(){
+  if(!selectedItem)return;pushUndo();
+  const n=selectedItem.userData.name;scene.remove(selectedItem);
+  const i=placedItems.indexOf(selectedItem);if(i>=0)placedItems.splice(i,1);
+  deselectItem();updCnt();toast('Removed '+n);autoSave();
+}
+function recolSel(hex){
+  if(!selectedItem)return;pushUndo();
+  const nc=parseInt(hex.replace('#',''),16);selectedItem.userData.color=nc;
+  const d=selectedItem.userData,p=selectedItem.position.clone(),r=selectedItem.rotation.clone();
+  scene.remove(selectedItem);const i=placedItems.indexOf(selectedItem);
+  const mesh=mkMesh(d);mesh.position.copy(p);mesh.rotation.copy(r);scene.add(mesh);
+  if(i>=0)placedItems[i]=mesh;else placedItems.push(mesh);
+  selectedItem=null;selectItem(mesh);toast('Recoloured '+d.name+' 🎨');autoSave();
 }
 
-function deleteSelected() {
-  if(!selectedItem) return;
-  pushUndo();
-  const name = selectedItem.userData.name;
-  scene.remove(selectedItem);
-  const idx = placedItems.indexOf(selectedItem);
-  if(idx >= 0) placedItems.splice(idx, 1);
-  deselectItem();
-  updateCounter();
-  showToast(`Removed ${name}`); autoSave();
-}
+/* ═══════════════════════════════════
+   CAMERA & VIEWS
+   ═══════════════════════════════════ */
+let viewMode='orbit';
+let camAngle=Math.PI/4,camPitch=.6,camDist=1200;
+let camTgt=new THREE.Vector3(0,80,0);
+let isPanning=false,panStart={x:0,y:0};
+let isDragging=false,dragItem=null,dragStarted=false;
+const dragPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+const dragOffset=new THREE.Vector3();
 
-function recolorSelected(hexStr) {
-  if(!selectedItem) return;
-  pushUndo();
-  const newColor = parseInt(hexStr.replace('#',''), 16);
-  selectedItem.userData.color = newColor;
-  const data = selectedItem.userData;
-  const pos = selectedItem.position.clone();
-  const rot = selectedItem.rotation.clone();
-  scene.remove(selectedItem);
-  const idx = placedItems.indexOf(selectedItem);
-  const mesh = createFurnitureMesh(data);
-  mesh.position.copy(pos); mesh.rotation.copy(rot);
-  scene.add(mesh);
-  if(idx >= 0) placedItems[idx] = mesh;
-  else placedItems.push(mesh);
-  selectedItem = null;
-  selectItem(mesh);
-  showToast(`Recoloured ${data.name} 🎨`);
-  autoSave();
-}
+// Walk mode state
+let walkYaw=0,walkPitch=0;
+const walkVel=new THREE.Vector3();
+const walkKeys={w:false,a:false,s:false,d:false,space:false,shift:false};
+let isPointerLocked=false;
+let walkY=160; // eye height
+let walkVY=0;
+const GRAVITY=600;
+const JUMP_V=280;
 
-// ─── Camera controls ───
-let camAngle = Math.PI / 4;
-let camPitch = 0.6;
-let camDist = 900;
-let camTarget = new THREE.Vector3(0, 60, 0);
-let isPanning = false;
-let panStart = { x: 0, y: 0 };
-let isDragging = false;
-let dragItem = null;
-let dragPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-let dragOffset = new THREE.Vector3();
-let viewMode = 'iso';
-let dragStarted = false;
-
-function updateCamera() {
-  if(viewMode === 'iso') {
-    const halfW = camDist * aspect, halfH = camDist;
-    camera.left = -halfW; camera.right = halfW; camera.top = halfH; camera.bottom = -halfH;
-    camera.position.set(
-      camTarget.x + Math.cos(camAngle)*800,
-      camTarget.y + camPitch*800,
-      camTarget.z + Math.sin(camAngle)*800
-    );
-    camera.lookAt(camTarget); camera.updateProjectionMatrix();
-  } else if(viewMode === 'top') {
-    const halfW = camDist * aspect, halfH = camDist;
-    camera.left = -halfW; camera.right = halfW; camera.top = halfH; camera.bottom = -halfH;
-    camera.position.set(camTarget.x, 1000, camTarget.z);
-    camera.lookAt(camTarget.x, 0, camTarget.z); camera.updateProjectionMatrix();
+function updateCamera(){
+  if(viewMode==='orbit'){
+    camera=orthoCam;
+    const hw=camDist*aspect,hh=camDist;
+    camera.left=-hw;camera.right=hw;camera.top=hh;camera.bottom=-hh;
+    camera.position.set(camTgt.x+Math.cos(camAngle)*1000,camTgt.y+camPitch*1000,camTgt.z+Math.sin(camAngle)*1000);
+    camera.lookAt(camTgt);camera.updateProjectionMatrix();
+  } else if(viewMode==='top'){
+    camera=orthoCam;
+    const hw=camDist*aspect,hh=camDist;
+    camera.left=-hw;camera.right=hw;camera.top=hh;camera.bottom=-hh;
+    camera.position.set(camTgt.x,2000,camTgt.z);
+    camera.lookAt(camTgt.x,0,camTgt.z);camera.updateProjectionMatrix();
+  } else {
+    camera=perspCam;
+    camera.aspect=aspect;camera.updateProjectionMatrix();
   }
 }
 
-function setView(mode) {
-  viewMode = mode;
-  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+function setView(mode){
+  viewMode=mode;
+  document.querySelectorAll('.vb').forEach(b=>b.classList.remove('active'));
   document.getElementById('btn-'+mode)?.classList.add('active');
-  if(mode === 'iso') { camAngle = Math.PI/4; camPitch = 0.6; camDist = 900; }
-  if(mode === 'top') { camDist = 700; }
-  if(mode === 'walk') { showToast('Walk mode: WASD to move, mouse to look 🚶'); camDist = 600; }
+  document.getElementById('crosshair').style.display=mode==='walk'?'block':'none';
+
+  if(mode==='orbit'){camAngle=Math.PI/4;camPitch=.6;camDist=1200}
+  if(mode==='top'){camDist=900}
+  if(mode==='walk'){
+    perspCam.position.set(camTgt.x,160,camTgt.z);walkYaw=camAngle;walkPitch=0;walkY=160;
+    toast('Walk mode — click to look, WASD to move, E to open doors 🚶');
+    // Request pointer lock
+    document.getElementById('c').requestPointerLock?.();
+  } else {
+    document.exitPointerLock?.();
+    isPointerLocked=false;
+  }
   updateCamera();
 }
 
-// ─── Raycasting ───
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+/* ═══════════════════════════════════
+   RAYCASTING
+   ═══════════════════════════════════ */
+const raycaster=new THREE.Raycaster();
+const mouse=new THREE.Vector2();
 
-function getClickedItem(event) {
-  const rect = renderer.domElement.getBoundingClientRect();
-  const cx = event.touches ? event.touches[0].clientX : event.clientX;
-  const cy = event.touches ? event.touches[0].clientY : event.clientY;
-  mouse.x = ((cx - rect.left) / rect.width) * 2 - 1;
-  mouse.y = -((cy - rect.top) / rect.height) * 2 + 1;
-  raycaster.setFromCamera(mouse, camera);
-  const meshes = [];
-  placedItems.forEach(g => { g.traverse(c => { if(c.isMesh && !c.userData.isRing) meshes.push(c); }); });
-  const hits = raycaster.intersectObjects(meshes);
-  if(hits.length > 0) {
-    let obj = hits[0].object;
-    while(obj.parent && !obj.userData.placed) obj = obj.parent;
-    if(obj.userData.placed) return { item: obj, point: hits[0].point };
-  }
+function getHit(e){
+  const rect=renderer.domElement.getBoundingClientRect();
+  const cx=e.touches?e.touches[0].clientX:e.clientX,cy=e.touches?e.touches[0].clientY:e.clientY;
+  mouse.x=((cx-rect.left)/rect.width)*2-1;mouse.y=-((cy-rect.top)/rect.height)*2+1;
+  raycaster.setFromCamera(mouse,camera);
+  const meshes=[];placedItems.forEach(g=>g.traverse(c=>{if(c.isMesh&&!c.userData.isRing)meshes.push(c)}));
+  const hits=raycaster.intersectObjects(meshes);
+  if(hits.length){let o=hits[0].object;while(o.parent&&!o.userData.placed)o=o.parent;if(o.userData.placed)return{item:o,point:hits[0].point}}
   return null;
 }
-
-function getFloorPoint(event) {
-  const rect = renderer.domElement.getBoundingClientRect();
-  const cx = event.touches ? event.touches[0].clientX : event.clientX;
-  const cy = event.touches ? event.touches[0].clientY : event.clientY;
-  mouse.x = ((cx - rect.left) / rect.width) * 2 - 1;
-  mouse.y = -((cy - rect.top) / rect.height) * 2 + 1;
-  raycaster.setFromCamera(mouse, camera);
-  const pt = new THREE.Vector3();
-  raycaster.ray.intersectPlane(dragPlane, pt);
-  return pt;
+function getFloorPt(e){
+  const rect=renderer.domElement.getBoundingClientRect();
+  const cx=e.touches?e.touches[0].clientX:e.clientX,cy=e.touches?e.touches[0].clientY:e.clientY;
+  mouse.x=((cx-rect.left)/rect.width)*2-1;mouse.y=-((cy-rect.top)/rect.height)*2+1;
+  raycaster.setFromCamera(mouse,camera);
+  const pt=new THREE.Vector3();raycaster.ray.intersectPlane(dragPlane,pt);return pt;
 }
 
-// ─── Pointer event handlers ───
-const canvasEl = document.getElementById('c');
+// Check if a point is near a door
+function nearestDoor(pos,maxDist){
+  let best=null,bestD=maxDist;
+  doors.forEach(d=>{
+    const dx=pos.x-d.def.x,dz=pos.z-d.def.z;
+    const dist=Math.sqrt(dx*dx+dz*dz);
+    if(dist<bestD){bestD=dist;best=d}
+  });
+  return best;
+}
 
-canvasEl.addEventListener('pointerdown', (e) => {
-  if(e.pointerType === 'touch') return; // handled by touch events
-  if(e.button === 2) { isPanning = true; panStart = { x: e.clientX, y: e.clientY }; e.preventDefault(); return; }
-  if(e.button === 0) {
-    const hit = getClickedItem(e);
-    if(hit) {
-      selectItem(hit.item);
-      isDragging = true; dragItem = hit.item; dragStarted = false;
-      const floorPt = getFloorPoint(e);
-      if(floorPt) { dragOffset.subVectors(dragItem.position, floorPt); dragOffset.y = 0; }
-      canvasEl.style.cursor = 'grabbing';
-    } else { deselectItem(); }
+/* ═══════════════════════════════════
+   EVENTS
+   ═══════════════════════════════════ */
+const canvasEl=document.getElementById('c');
+
+// Pointer lock for walk mode
+document.addEventListener('pointerlockchange',()=>{isPointerLocked=!!document.pointerLockElement});
+
+canvasEl.addEventListener('click',(e)=>{
+  if(viewMode==='walk'&&!isPointerLocked){canvasEl.requestPointerLock?.();return}
+});
+
+canvasEl.addEventListener('pointerdown',(e)=>{
+  if(viewMode==='walk')return;
+  if(e.pointerType==='touch')return;
+  if(e.button===2){isPanning=true;panStart={x:e.clientX,y:e.clientY};e.preventDefault();return}
+  if(e.button===0){
+    // Orbit mode: left-drag to orbit, or click item
+    const hit=getHit(e);
+    if(hit){selectItem(hit.item);isDragging=true;dragItem=hit.item;dragStarted=false;const fp=getFloorPt(e);if(fp){dragOffset.subVectors(dragItem.position,fp);dragOffset.y=0}canvasEl.style.cursor='grabbing'}
+    else{deselectItem();if(!selectedItem){isPanning=true;panStart={x:e.clientX,y:e.clientY}}}
   }
 });
 
-canvasEl.addEventListener('pointermove', (e) => {
-  if(e.pointerType === 'touch') return;
-  if(isPanning) {
-    const dx = e.clientX - panStart.x, dy = e.clientY - panStart.y;
-    const speed = camDist / 400;
-    camTarget.x -= (dx*Math.cos(camAngle) + dy*Math.sin(camAngle)) * speed * 0.5;
-    camTarget.z -= (-dx*Math.sin(camAngle) + dy*Math.cos(camAngle)) * speed * 0.5;
-    panStart = { x: e.clientX, y: e.clientY }; updateCamera(); return;
-  }
-  if(isDragging && dragItem) {
-    if(!dragStarted) { pushUndo(); dragStarted = true; }
-    const floorPt = getFloorPoint(e);
-    if(floorPt) {
-      dragItem.position.x = snapValue(Math.max(-ROOM_W/2+20, Math.min(ROOM_W/2-20, floorPt.x + dragOffset.x)));
-      dragItem.position.z = snapValue(Math.max(-ROOM_D/2+20, Math.min(ROOM_D/2-20, floorPt.z + dragOffset.z)));
-    }
+canvasEl.addEventListener('pointermove',(e)=>{
+  if(viewMode==='walk'){
+    if(isPointerLocked){walkYaw-=e.movementX*.002;walkPitch=Math.max(-1.2,Math.min(1.2,walkPitch-e.movementY*.002))}
     return;
   }
-  const hit = getClickedItem(e);
-  canvasEl.style.cursor = (hit && hit.item !== selectedItem) ? 'pointer' : 'default';
+  if(e.pointerType==='touch')return;
+  if(isPanning){
+    const dx=e.clientX-panStart.x,dy=e.clientY-panStart.y;
+    if(viewMode==='orbit'){camAngle+=dx*.005;camPitch=Math.max(.1,Math.min(1.2,camPitch-dy*.003))}
+    else{const sp=camDist/400;camTgt.x-=(dx*Math.cos(camAngle)+dy*Math.sin(camAngle))*sp*.5;camTgt.z-=(-dx*Math.sin(camAngle)+dy*Math.cos(camAngle))*sp*.5}
+    panStart={x:e.clientX,y:e.clientY};updateCamera();return;
+  }
+  if(isDragging&&dragItem){
+    if(!dragStarted){pushUndo();dragStarted=true}
+    const fp=getFloorPt(e);
+    if(fp){dragItem.position.x=snap(fp.x+dragOffset.x);dragItem.position.z=snap(fp.z+dragOffset.z)}
+    return;
+  }
+  const hit=getHit(e);canvasEl.style.cursor=(hit&&hit.item!==selectedItem)?'pointer':'default';
 });
 
-canvasEl.addEventListener('pointerup', (e) => {
-  if(e.pointerType === 'touch') return;
-  if(isPanning) { isPanning = false; return; }
-  if(isDragging) { isDragging = false; dragItem = null; dragStarted = false; canvasEl.style.cursor = 'default'; autoSave(); }
+canvasEl.addEventListener('pointerup',(e)=>{
+  if(e.pointerType==='touch')return;
+  if(isPanning){isPanning=false;return}
+  if(isDragging){isDragging=false;dragItem=null;dragStarted=false;canvasEl.style.cursor='default';autoSave()}
 });
 
-canvasEl.addEventListener('wheel', (e) => {
-  e.preventDefault();
-  camDist += e.deltaY * 0.5;
-  camDist = Math.max(200, Math.min(2000, camDist));
-  updateCamera();
-}, { passive: false });
+canvasEl.addEventListener('wheel',(e)=>{
+  e.preventDefault();camDist+=e.deltaY*.6;camDist=Math.max(300,Math.min(2500,camDist));updateCamera();
+},{passive:false});
 
-canvasEl.addEventListener('contextmenu', e => e.preventDefault());
+canvasEl.addEventListener('contextmenu',e=>e.preventDefault());
 
-// ─── Touch controls ───
-let touchState = { type: null, startDist: 0, startAngle: 0, startCamDist: 0, startCamAngle: 0 };
-let lastTouchTime = 0;
-
-canvasEl.addEventListener('touchstart', (e) => {
-  if(e.touches.length === 1) {
-    const now = Date.now();
-    const hit = getClickedItem(e.touches[0]);
-    if(hit) {
-      selectItem(hit.item);
-      touchState.type = 'drag'; dragItem = hit.item; dragStarted = false;
-      const floorPt = getFloorPoint(e.touches[0]);
-      if(floorPt) { dragOffset.subVectors(dragItem.position, floorPt); dragOffset.y = 0; }
-    } else {
-      if(now - lastTouchTime < 300) { deselectItem(); }
-      touchState.type = 'look';
-      panStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    }
-    lastTouchTime = now;
-  } else if(e.touches.length === 2) {
-    touchState.type = 'pinch';
-    const dx = e.touches[0].clientX - e.touches[1].clientX;
-    const dy = e.touches[0].clientY - e.touches[1].clientY;
-    touchState.startDist = Math.hypot(dx, dy);
-    touchState.startCamDist = camDist;
-    const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-    const my = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-    panStart = { x: mx, y: my };
+// Touch
+let touchState={type:null,startDist:0,startCamDist:0};
+canvasEl.addEventListener('touchstart',(e)=>{
+  if(viewMode==='walk')return;
+  if(e.touches.length===1){
+    const hit=getHit(e.touches[0]);
+    if(hit){selectItem(hit.item);touchState.type='drag';dragItem=hit.item;dragStarted=false;const fp=getFloorPt(e.touches[0]);if(fp){dragOffset.subVectors(dragItem.position,fp);dragOffset.y=0}}
+    else{touchState.type='look';panStart={x:e.touches[0].clientX,y:e.touches[0].clientY}}
+  } else if(e.touches.length===2){
+    touchState.type='pinch';const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+    touchState.startDist=Math.hypot(dx,dy);touchState.startCamDist=camDist;
+    panStart={x:(e.touches[0].clientX+e.touches[1].clientX)/2,y:(e.touches[0].clientY+e.touches[1].clientY)/2};
   }
   e.preventDefault();
-}, { passive: false });
+},{passive:false});
 
-canvasEl.addEventListener('touchmove', (e) => {
-  if(touchState.type === 'drag' && dragItem && e.touches.length === 1) {
-    if(!dragStarted) { pushUndo(); dragStarted = true; }
-    const floorPt = getFloorPoint(e.touches[0]);
-    if(floorPt) {
-      dragItem.position.x = snapValue(Math.max(-ROOM_W/2+20, Math.min(ROOM_W/2-20, floorPt.x + dragOffset.x)));
-      dragItem.position.z = snapValue(Math.max(-ROOM_D/2+20, Math.min(ROOM_D/2-20, floorPt.z + dragOffset.z)));
-    }
-  } else if(touchState.type === 'look' && e.touches.length === 1) {
-    const dx = e.touches[0].clientX - panStart.x;
-    const dy = e.touches[0].clientY - panStart.y;
-    const speed = camDist / 400;
-    camTarget.x -= (dx*Math.cos(camAngle) + dy*Math.sin(camAngle)) * speed * 0.5;
-    camTarget.z -= (-dx*Math.sin(camAngle) + dy*Math.cos(camAngle)) * speed * 0.5;
-    panStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    updateCamera();
-  } else if(touchState.type === 'pinch' && e.touches.length === 2) {
-    const dx = e.touches[0].clientX - e.touches[1].clientX;
-    const dy = e.touches[0].clientY - e.touches[1].clientY;
-    const dist = Math.hypot(dx, dy);
-    camDist = Math.max(200, Math.min(2000, touchState.startCamDist * (touchState.startDist / dist)));
-    // Two-finger pan
-    const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-    const my = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-    const pdx = mx - panStart.x, pdy = my - panStart.y;
-    const speed = camDist / 400;
-    camTarget.x -= (pdx*Math.cos(camAngle) + pdy*Math.sin(camAngle)) * speed * 0.3;
-    camTarget.z -= (-pdx*Math.sin(camAngle) + pdy*Math.cos(camAngle)) * speed * 0.3;
-    panStart = { x: mx, y: my };
+canvasEl.addEventListener('touchmove',(e)=>{
+  if(touchState.type==='drag'&&dragItem&&e.touches.length===1){
+    if(!dragStarted){pushUndo();dragStarted=true}
+    const fp=getFloorPt(e.touches[0]);if(fp){dragItem.position.x=snap(fp.x+dragOffset.x);dragItem.position.z=snap(fp.z+dragOffset.z)}
+  } else if(touchState.type==='look'&&e.touches.length===1){
+    const dx=e.touches[0].clientX-panStart.x,dy=e.touches[0].clientY-panStart.y;
+    camAngle+=dx*.005;camPitch=Math.max(.1,Math.min(1.2,camPitch-dy*.003));
+    panStart={x:e.touches[0].clientX,y:e.touches[0].clientY};updateCamera();
+  } else if(touchState.type==='pinch'&&e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
+    camDist=Math.max(300,Math.min(2500,touchState.startCamDist*(touchState.startDist/Math.hypot(dx,dy))));
     updateCamera();
   }
   e.preventDefault();
-}, { passive: false });
+},{passive:false});
 
-canvasEl.addEventListener('touchend', (e) => {
-  if(touchState.type === 'drag') { dragItem = null; dragStarted = false; autoSave(); }
-  if(e.touches.length === 0) touchState.type = null;
-  else if(e.touches.length === 1) {
-    touchState.type = 'look';
-    panStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-  }
+canvasEl.addEventListener('touchend',(e)=>{
+  if(touchState.type==='drag'){dragItem=null;dragStarted=false;autoSave()}
+  touchState.type=e.touches.length?'look':null;
 });
 
-// ─── Keyboard ───
-window.addEventListener('keydown', (e) => {
-  if(e.key === 'z' && (e.ctrlKey || e.metaKey) && !e.shiftKey) { e.preventDefault(); undo(); return; }
-  if((e.key === 'y' && (e.ctrlKey || e.metaKey)) || (e.key === 'z' && (e.ctrlKey || e.metaKey) && e.shiftKey)) { e.preventDefault(); redo(); return; }
-  if(e.key === 'q' || e.key === 'Q') rotateSelected(-1);
-  if(e.key === 'e' || e.key === 'E') rotateSelected(1);
-  if(e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
-  if(e.key === 'Escape') deselectItem();
-  if(!selectedItem) {
-    if(e.key === 'ArrowLeft') { camAngle += 0.1; updateCamera(); }
-    if(e.key === 'ArrowRight') { camAngle -= 0.1; updateCamera(); }
-    if(e.key === 'ArrowUp') { camPitch = Math.min(1.2, camPitch + 0.05); updateCamera(); }
-    if(e.key === 'ArrowDown') { camPitch = Math.max(0.1, camPitch - 0.05); updateCamera(); }
+// Keyboard
+window.addEventListener('keydown',(e)=>{
+  if(e.key==='z'&&(e.ctrlKey||e.metaKey)&&!e.shiftKey){e.preventDefault();undo();return}
+  if((e.key==='y'&&(e.ctrlKey||e.metaKey))||(e.key==='z'&&(e.ctrlKey||e.metaKey)&&e.shiftKey)){e.preventDefault();redo();return}
+
+  if(viewMode==='walk'){
+    if(e.key==='w'||e.key==='W')walkKeys.w=true;
+    if(e.key==='a'||e.key==='A')walkKeys.a=true;
+    if(e.key==='s'||e.key==='S')walkKeys.s=true;
+    if(e.key==='d'||e.key==='D')walkKeys.d=true;
+    if(e.key===' '){walkKeys.space=true;e.preventDefault()}
+    if(e.key==='Shift')walkKeys.shift=true;
+    if(e.key==='e'||e.key==='E'){
+      // Try to open nearest door
+      const d=nearestDoor(perspCam.position,150);
+      if(d)toggleDoor(d);
+    }
+    if(e.key==='Escape'){document.exitPointerLock?.();setView('orbit')}
+    return;
+  }
+
+  if(e.key==='q'||e.key==='Q')rotSel(-1);
+  if(e.key==='e'||e.key==='E')rotSel(1);
+  if(e.key==='Delete'||e.key==='Backspace')delSel();
+  if(e.key==='Escape')deselectItem();
+  if(!selectedItem){
+    if(e.key==='ArrowLeft'){camAngle+=.1;updateCamera()}
+    if(e.key==='ArrowRight'){camAngle-=.1;updateCamera()}
+    if(e.key==='ArrowUp'){camPitch=Math.min(1.2,camPitch+.05);updateCamera()}
+    if(e.key==='ArrowDown'){camPitch=Math.max(.1,camPitch-.05);updateCamera()}
   }
 });
+window.addEventListener('keyup',(e)=>{
+  if(e.key==='w'||e.key==='W')walkKeys.w=false;
+  if(e.key==='a'||e.key==='A')walkKeys.a=false;
+  if(e.key==='s'||e.key==='S')walkKeys.s=false;
+  if(e.key==='d'||e.key==='D')walkKeys.d=false;
+  if(e.key===' ')walkKeys.space=false;
+  if(e.key==='Shift')walkKeys.shift=false;
+});
 
-// ─── Panel toggle ───
-let panelOpen = true;
-function togglePanel() {
-  panelOpen = !panelOpen;
-  document.getElementById('sidepanel').classList.toggle('collapsed', !panelOpen);
-  document.getElementById('canvas-wrap').classList.toggle('full', !panelOpen);
-  document.getElementById('toggle-panel').classList.toggle('shifted', !panelOpen);
-  document.getElementById('help-btn').classList.toggle('shifted', !panelOpen);
-  document.getElementById('toggle-panel').textContent = panelOpen ? '›' : '‹';
+/* ═══════════════════════════════════
+   WALK MODE PHYSICS
+   ═══════════════════════════════════ */
+function updateWalk(dt){
+  if(viewMode!=='walk')return;
+  const speed=(walkKeys.shift?400:200)*dt;
+  const forward=new THREE.Vector3(-Math.sin(walkYaw),0,-Math.cos(walkYaw));
+  const right=new THREE.Vector3(Math.cos(walkYaw),0,-Math.sin(walkYaw));
+
+  if(walkKeys.w)perspCam.position.addScaledVector(forward,speed);
+  if(walkKeys.s)perspCam.position.addScaledVector(forward,-speed);
+  if(walkKeys.a)perspCam.position.addScaledVector(right,-speed);
+  if(walkKeys.d)perspCam.position.addScaledVector(right,speed);
+
+  // Jump / gravity
+  if(walkKeys.space&&Math.abs(walkY-160)<1){walkVY=JUMP_V}
+  walkVY-=GRAVITY*dt;
+  walkY+=walkVY*dt;
+  if(walkY<160){walkY=160;walkVY=0}
+
+  perspCam.position.y=walkY;
+
+  // Look direction
+  const lookDir=new THREE.Vector3(-Math.sin(walkYaw)*Math.cos(walkPitch),Math.sin(walkPitch),-Math.cos(walkYaw)*Math.cos(walkPitch));
+  perspCam.lookAt(perspCam.position.clone().add(lookDir));
+
+  // Update camera target for item placement
+  camTgt.set(perspCam.position.x,0,perspCam.position.z);
+}
+
+/* ═══════════════════════════════════
+   PANEL TOGGLE
+   ═══════════════════════════════════ */
+let panelOpen=true;
+function togglePanel(){
+  panelOpen=!panelOpen;
+  document.getElementById('sidepanel').classList.toggle('collapsed',!panelOpen);
+  document.getElementById('cw').classList.toggle('full',!panelOpen);
+  document.getElementById('tp').classList.toggle('shifted',!panelOpen);
+  document.getElementById('tp').textContent=panelOpen?'›':'‹';
   onResize();
 }
 
-// ─── Toast ───
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+/* ═══════════════════════════════════
+   TOAST
+   ═══════════════════════════════════ */
+let toastT;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2200)}
+
+/* ═══════════════════════════════════
+   SAVE / LOAD
+   ═══════════════════════════════════ */
+function serialize(){
+  return{v:5,wc:'#'+wallColor.getHexString(),fc:'#'+floorColor.getHexString(),
+    items:placedItems.map(m=>({id:m.userData.id,name:m.userData.name,icon:m.userData.icon,w:m.userData.w,d:m.userData.d,h:m.userData.h,color:m.userData.color,price:m.userData.price||'',tag:m.userData.tag||'',
+      px:Math.round(m.position.x),py:Math.round(m.position.y),pz:Math.round(m.position.z),ry:Math.round(m.rotation.y*1000)/1000}))}
+}
+function loadData(data,skipSave){
+  placedItems.forEach(m=>scene.remove(m));placedItems.length=0;deselectItem();
+  if(data.wc)wallColor.set(data.wc);if(data.fc)floorColor.set(data.fc);
+  buildFlat();
+  (data.items||[]).forEach(it=>{const mesh=mkMesh(it);mesh.position.set(it.px||0,it.py||0,it.pz||0);mesh.rotation.y=it.ry||0;scene.add(mesh);placedItems.push(mesh)});
+  updCnt();if(!skipSave)autoSave();
+}
+function autoSave(){try{localStorage.setItem('r162',JSON.stringify(serialize()))}catch(e){}}
+function saveLayout(){autoSave();toast('Layout saved! 💾')}
+function loadLayout(){try{const d=JSON.parse(localStorage.getItem('r162'));if(d){pushUndo();loadData(d);toast('Layout loaded')}else toast('No saved layout found')}catch(e){toast('Error loading layout')}}
+function downloadLayout(){const j=JSON.stringify(serialize(),null,2);const b=new Blob([j],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='rajah-162-layout.json';a.click();URL.revokeObjectURL(a.href);toast('Layout downloaded ⬇')}
+function uploadLayout(){document.getElementById('ufi').click()}
+document.getElementById('ufi').addEventListener('change',(e)=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=(ev)=>{try{pushUndo();loadData(JSON.parse(ev.target.result));toast('Layout loaded from file');autoSave()}catch(err){toast('Invalid layout file')}};r.readAsText(f);e.target.value=''});
+function resetLayout(){if(!confirm('Reset layout? This removes all placed items.'))return;pushUndo();placedItems.forEach(m=>scene.remove(m));placedItems.length=0;deselectItem();wallColor.set(0xf5c6d0);floorColor.set(0xe0c8a0);buildFlat();updCnt();autoSave();toast('Layout reset 🗑')}
+
+/* ═══════════════════════════════════
+   RESIZE & ANIMATE
+   ═══════════════════════════════════ */
+function onResize(){
+  const w=document.getElementById('cw'),cw=w.clientWidth,ch=w.clientHeight;
+  renderer.setSize(cw,ch);aspect=cw/ch;
+  perspCam.aspect=aspect;perspCam.updateProjectionMatrix();
+  updateCamera();
+}
+window.addEventListener('resize',onResize);
+
+let lastTime=performance.now();
+function animate(now){
+  requestAnimationFrame(animate);
+  const dt=Math.min((now-lastTime)/1000,.05);lastTime=now;
+  updateWalk(dt);
+  renderer.render(scene,camera);
 }
 
-// ─── Save / Load ───
-function serializeLayout() {
-  return {
-    version: 4,
-    wallColor: '#' + wallColor.getHexString(),
-    floorColor: '#' + floorColor.getHexString(),
-    items: placedItems.map(m => ({
-      id: m.userData.id, name: m.userData.name, icon: m.userData.icon,
-      w: m.userData.w, d: m.userData.d, h: m.userData.h,
-      color: m.userData.color, price: m.userData.price || '', tag: m.userData.tag || '',
-      px: Math.round(m.position.x), py: Math.round(m.position.y), pz: Math.round(m.position.z),
-      ry: Math.round(m.rotation.y * 1000) / 1000,
-    }))
-  };
-}
-
-function loadFromData(data, skipUndo) {
-  placedItems.forEach(m => scene.remove(m));
-  placedItems.length = 0; deselectItem();
-  if(data.wallColor) wallColor.set(data.wallColor);
-  if(data.floorColor) floorColor.set(data.floorColor);
-  buildRoom();
-  (data.items || []).forEach(it => {
-    const mesh = createFurnitureMesh(it);
-    mesh.position.set(it.px||0, it.py||0, it.pz||0);
-    mesh.rotation.y = it.ry||0;
-    scene.add(mesh); placedItems.push(mesh);
-  });
-  updateCounter();
-  if(!skipUndo) autoSave();
-}
-
-function autoSave() {
-  try { localStorage.setItem('rajah162_layout', JSON.stringify(serializeLayout())); } catch(e) {}
-}
-function saveLayout() { autoSave(); showToast('Layout saved! 💾'); }
-function loadLayout() {
-  try {
-    const data = JSON.parse(localStorage.getItem('rajah162_layout'));
-    if(data) { pushUndo(); loadFromData(data); showToast('Layout loaded'); }
-    else showToast('No saved layout found');
-  } catch(e) { showToast('Error loading layout'); }
-}
-function downloadLayout() {
-  const json = JSON.stringify(serializeLayout(), null, 2);
-  const blob = new Blob([json], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'rajah-162-layout.json'; a.click();
-  URL.revokeObjectURL(a.href); showToast('Layout downloaded ⬇');
-}
-function uploadLayout() { document.getElementById('upload-input').click(); }
-document.getElementById('upload-input').addEventListener('change', (e) => {
-  const file = e.target.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev) => {
-    try { pushUndo(); loadFromData(JSON.parse(ev.target.result)); showToast('Layout loaded from file'); autoSave(); }
-    catch(err) { showToast('Invalid layout file'); }
-  };
-  reader.readAsText(file); e.target.value = '';
-});
-function resetLayout() {
-  if(!confirm('Reset layout? This removes all placed items.')) return;
-  pushUndo();
-  placedItems.forEach(m => scene.remove(m)); placedItems.length = 0; deselectItem();
-  wallColor.set(0xf5c6d0); floorColor.set(0xe0c8a0); buildRoom(); updateCounter(); autoSave(); showToast('Layout reset 🗑');
-}
-
-// ─── Resize ───
-function onResize() {
-  const wrap = document.getElementById('canvas-wrap');
-  const w = wrap.clientWidth, h = wrap.clientHeight;
-  renderer.setSize(w, h); aspect = w / h; updateCamera();
-}
-window.addEventListener('resize', onResize);
-
-// ─── Animate ───
-function animate() { requestAnimationFrame(animate); renderer.render(scene, camera); }
-
-// ─── Init ───
-renderCatTabs(); renderItems(); renderSwatches(); onResize();
-try {
-  const saved = JSON.parse(localStorage.getItem('rajah162_layout'));
-  if(saved && saved.items && saved.items.length > 0) loadFromData(saved);
-} catch(e) {}
-updateCounter(); updateCamera(); animate();
+// ── Init ──
+renderTabs();renderGrid();renderSwatches();onResize();
+try{const s=JSON.parse(localStorage.getItem('r162'));if(s&&s.items&&s.items.length>0)loadData(s)}catch(e){}
+updCnt();updateCamera();animate(performance.now());
 </script>
 </body>
 </html>
